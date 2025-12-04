@@ -1,12 +1,13 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
-
+import Header from "../../components/layout/Header";
+import { Footer } from "../../components/layout/Footer";
 const navItems = [
-  { to: "/client/questions", label: "Личные вопросы" },
+  { to: "/client", label: "Личные вопросы" },
   { to: "/client/psychologists", label: "Выбор психолога" },
   { to: "/client/settings", label: "Настройки" },
   { to: "/client/billing", label: "Оплата" },
-  { to: "/client/video", label: "Видеочат" },
+  { to: "/client/videochat", label: "Видеочат" },
   { to: "/client/support", label: "Поддержка" },
 ];
 
@@ -14,6 +15,8 @@ export function ClientLayout() {
   const { logout } = useAuth();
 
   return (
+    <>
+    <Header /> 
     <div className="min-h-screen bg-skySoft pt-8 pb-16">
       <div className="mx-auto flex max-w-[1296px] gap-8 px-4 lg:px-0">
         {/* ЛЕВАЯ КОЛОНКА */}
@@ -56,5 +59,10 @@ export function ClientLayout() {
         </main>
       </div>
     </div>
+    <Footer />
+    </>
+
   );
 }
+
+export default ClientLayout;

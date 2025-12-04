@@ -10,4 +10,4 @@ export function ClientVideoChatPage() {
       </div>
     );
   }
-  
+export default ClientVideoChatPage;

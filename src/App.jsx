@@ -9,6 +9,10 @@ import { FavoritesProvider } from "./features/favorites/FavoritesContext";
 import { LandingPage } from "./pages/LandingPage";
 import { ForbiddenPage } from "./pages/ForbiddenPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
+import InfluencersPage from "./pages/InfluencersPage";
+import CompaniesPage from "./pages/CompaniesPage";
+import ForPsychologistsPage from "./pages/ForPsychologistsPage";
+
 
 // Auth
 import { LoginPage } from "./features/auth/LoginPage";
@@ -19,16 +23,14 @@ import PsychologistsListPage from "./features/psychologists/pages/PsychologistsL
 import PsychologistDetailPage from "./features/psychologists/pages/PsychologistDetailPage";
 import FavoritePsychologistsPage from "./features/psychologists/pages/FavoritePsychologistsPage";
 
-// Кабинет психолога
-import { PsyLayout } from "./features/psy/PsyLayout";
-import { PsyDashboardPage } from "./features/psy/pages/PsyDashboardPage";
-import { PsyProfilePage } from "./features/psy/pages/PsyProfilePage";
-import { PsySchedulePage } from "./features/psy/pages/PsySchedulePage";
-import { PsyPricesPage } from "./features/psy/pages/PsyPricesPage";
-import { PsyEducationPage } from "./features/psy/pages/PsyEducationPage";
-import { PsyPaymentsPage } from "./features/psy/pages/PsyPaymentsPage";
-import { PsyFinancePage } from "./features/psy/pages/PsyFinancePage";
-import { PsyClientsPage } from "./features/psy/pages/PsyClientsPage";
+// Кабинет клиента (client)
+import ClientLayout from "./features/profile/ClientLayout";
+import ClientProfilePage from "./features/profile/ClientProfilePage";
+import ClientPsychologistsPage from "./features/profile/ClientPsychologistsPage";
+import ClientSettingsPage from "./features/profile/ClientSettingsPage";
+import ClientBillingPage from "./features/profile/ClientBillingPage";
+import ClientVideoChatPage from "./features/profile/ClientVideoChatPage";
+import ClientSupportPage from "./features/profile/ClientSupportPage";
 
 export default function App() {
   return (
@@ -39,6 +41,10 @@ export default function App() {
             {/* Публичные страницы */}
             <Route path="/" element={<LandingPage />} />
             <Route path="/psychologists" element={<PsychologistsListPage />} />
+            <Route path="/influencers" element={<InfluencersPage />} />
+            <Route path="/companies" element={<CompaniesPage />} />
+            <Route path="/psy" element={<ForPsychologistsPage />} />
+
             <Route
               path="/psychologists/:id"
               element={<PsychologistDetailPage />}
@@ -59,23 +65,24 @@ export default function App() {
             <Route path="/auth/register" element={<RegisterPage />} />
             <Route path="/forbidden" element={<ForbiddenPage />} />
 
-            {/* Кабинет психолога (только роль psychologist) */}
+            {/* Кабинет клиента (роль client) */}
             <Route
-              path="/psy"
+              path="/client"
               element={
-                <RequireAuth role="psychologist">
-                  <PsyLayout />
+                <RequireAuth role="client">
+                  <ClientLayout />
                 </RequireAuth>
               }
             >
-              <Route index element={<PsyDashboardPage />} />
-              <Route path="profile" element={<PsyProfilePage />} />
-              <Route path="schedule" element={<PsySchedulePage />} />
-              <Route path="prices" element={<PsyPricesPage />} />
-              <Route path="education" element={<PsyEducationPage />} />
-              <Route path="payments" element={<PsyPaymentsPage />} />
-              <Route path="finance" element={<PsyFinancePage />} />
-              <Route path="clients" element={<PsyClientsPage />} />
+              <Route index element={<ClientProfilePage />} />
+              <Route
+                path="psychologists"
+                element={<ClientPsychologistsPage />}
+              />
+              <Route path="settings" element={<ClientSettingsPage />} />
+              <Route path="billing" element={<ClientBillingPage />} />
+              <Route path="videochat" element={<ClientVideoChatPage />} />
+              <Route path="support" element={<ClientSupportPage />} />
             </Route>
 
             {/* 404 */}

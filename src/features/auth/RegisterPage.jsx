@@ -1,139 +1,173 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { MainLayout } from "../../components/layout/MainLayout";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
 import { useAuth } from "./AuthContext";
+import { MainLayout } from "../../components/layout/MainLayout";
 
 export function RegisterPage() {
-  const [role, setRole] = useState("client");
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password1, setPassword1] = useState("");
-  const [password2, setPassword2] = useState("");
-  const [error, setError] = useState(null);
   const { register } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordRepeat, setPasswordRepeat] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // роль теперь фиксированная
+  const role = "client";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
-    if (password1 !== password2) {
+    setError("");
+
+    if (password !== passwordRepeat) {
       setError("Пароли не совпадают");
       return;
     }
 
     try {
-      await register({ fullName, email, password: password1, role });
-      if (role === "psychologist") navigate("/psy/profile", { replace: true });
-      else navigate("/psychologists", { replace: true });
-    } catch (e) {
-      setError(e.message || "Ошибка регистрации");
+      setLoading(true);
+
+      await register({
+        role,
+        fullName,
+        email,
+        password,
+      });
+
+      const from =
+        location.state?.from?.pathname && location.state.from.pathname !== "/auth/login"
+          ? location.state.from.pathname
+          : "/";
+
+      navigate(from, { replace: true });
+    } catch (err) {
+      console.error(err);
+      setError(err?.message || "Не удалось зарегистрироваться. Попробуйте позже.");
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const handleGoogleAuth = () => {
+    // Заглушка. Бэкендер потом сюда подставит реальный URL
+    // например: window.location.href = "/api/auth/google";
+    console.log("Google auth clicked");
   };
 
   return (
     <MainLayout>
-      <div className="mx-auto flex max-w-md flex-1 items-center py-10">
-        <form
-          onSubmit={handleSubmit}
-          className="w-full rounded-3xl bg-white p-6 shadow-sm"
-        >
-          <h1 className="text-lg font-semibold text-sky-950">
-            Регистрация
-          </h1>
-          <p className="mt-1 text-xs text-slate-500">
-            Выберите роль и заполните данные.
-          </p>
+      <main className="bg-skySoft min-h-[calc(100vh-80px)]">
+        <div className="mx-auto flex max-w-[1200px] justify-center px-4 py-10 lg:px-[72px] lg:py-16">
+          <div className="w-full max-w-[520px] rounded-[32px] bg-white p-6 shadow-[0_18px_52px_rgba(67,142,229,0.18)] lg:p-8">
+            <h1 className="text-[22px] font-bold text-[#071A34] lg:text-[24px]">
+              Регистрация
+            </h1>
+            <p className="mt-1 text-[13px] text-[#6D7685]">
+              Выберите роль и заполните данные.
+            </p>
 
-          <div className="mt-4 flex gap-2 rounded-2xl bg-sky-50 p-1 text-xs">
+            {error && (
+              <div className="mb-4 rounded-xl bg-[#FFECEC] px-3 py-2 text-[13px] text-[#D12C2C]">
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+              <div>
+                <label className="mb-1 block text-[12px] font-semibold text-[#071A34]">
+                  ФИО
+                </label>
+                <input
+                  type="text"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  required
+                  className="w-full rounded-xl border border-[#D7E0ED] bg-[#F9FBFF] px-3 py-2 text-[13px] text-[#071A34] outline-none transition focus:border-[#1F98FA] focus:bg-white"
+                  placeholder="Как к вам обращаться"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-[12px] font-semibold text-[#071A34]">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full rounded-xl border border-[#D7E0ED] bg-[#F9FBFF] px-3 py-2 text-[13px] text-[#071A34] outline-none transition focus:border-[#1F98FA] focus:bg-white"
+                  placeholder="you@example.com"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-[12px] font-semibold text-[#071A34]">
+                  Пароль
+                </label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full rounded-xl border border-[#D7E0ED] bg-[#F9FBFF] px-3 py-2 text-[13px] text-[#071A34] outline-none transition focus:border-[#1F98FA] focus:bg-white"
+                  placeholder="Придумайте пароль"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-[12px] font-semibold text-[#071A34]">
+                  Повторите пароль
+                </label>
+                <input
+                  type="password"
+                  value={passwordRepeat}
+                  onChange={(e) => setPasswordRepeat(e.target.value)}
+                  required
+                  className="w-full rounded-xl border border-[#D7E0ED] bg-[#F9FBFF] px-3 py-2 text-[13px] text-[#071A34] outline-none transition focus:border-[#1F98FA] focus:bg-white"
+                  placeholder="Повторите пароль"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="mt-2 inline-flex w-full items-center justify-center rounded-full border border-[#1F98FA] bg-[#1F98FA] px-6 py-2.5 text-[13px] font-semibold text-white shadow-[0_10px_24px_rgba(31,152,250,0.45)] hover:bg-[#0f84e2] transition disabled:opacity-60"
+              >
+                {loading ? "Регистрация..." : "Зарегистрироваться"}
+              </button>
+            </form>
+
+            {/* Разделитель */}
+            <div className="my-5 flex items-center gap-3">
+              <div className="h-px flex-1 bg-[#E1E8F0]" />
+              <span className="text-[11px] text-[#9BA6B5]">или</span>
+              <div className="h-px flex-1 bg-[#E1E8F0]" />
+            </div>
+
+            {/* Кнопка Google */}
             <button
               type="button"
-              onClick={() => setRole("client")}
-              className={`flex-1 rounded-xl px-3 py-2 font-semibold ${
-                role === "client"
-                  ? "bg-white text-sky-800 shadow-sm"
-                  : "text-sky-700"
-              }`}
+              onClick={handleGoogleAuth}
+              className="flex w-full items-center justify-center gap-2 rounded-full border border-[#D7E0ED] bg-white px-6 py-2.5 text-[13px] font-medium text-[#071A34] hover:border-[#1F98FA] hover:bg-[#F5F8FF] transition"
             >
-              Я клиент
+              {/* сюда потом можно иконку Google воткнуть */}
+              <span>Продолжить через Google</span>
             </button>
-            <button
-              type="button"
-              onClick={() => setRole("psychologist")}
-              className={`flex-1 rounded-xl px-3 py-2 font-semibold ${
-                role === "psychologist"
-                  ? "bg-white text-sky-800 shadow-sm"
-                  : "text-sky-700"
-              }`}
-            >
-              Я психолог
-            </button>
+
+            <div className="mt-5 text-center text-[12px] text-[#6D7685]">
+              Уже есть аккаунт?{" "}
+              <Link to="/auth/login" className="text-[#1F98FA] hover:underline">
+                Войти
+              </Link>
+            </div>
           </div>
-
-          <label className="mt-4 block text-xs font-medium text-slate-600">
-            ФИО
-            <input
-              required
-              className="mt-1 w-full rounded-2xl border border-slate-200 px-3 py-2 text-xs outline-none focus:border-sky-400"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-            />
-          </label>
-
-          <label className="mt-3 block text-xs font-medium text-slate-600">
-            Email
-            <input
-              type="email"
-              required
-              className="mt-1 w-full rounded-2xl border border-slate-200 px-3 py-2 text-xs outline-none focus:border-sky-400"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </label>
-
-          <label className="mt-3 block text-xs font-medium text-slate-600">
-            Пароль
-            <input
-              type="password"
-              required
-              className="mt-1 w-full rounded-2xl border border-slate-200 px-3 py-2 text-xs outline-none focus:border-sky-400"
-              value={password1}
-              onChange={(e) => setPassword1(e.target.value)}
-            />
-          </label>
-
-          <label className="mt-3 block text-xs font-medium text-slate-600">
-            Повторите пароль
-            <input
-              type="password"
-              required
-              className="mt-1 w-full rounded-2xl border border-slate-200 px-3 py-2 text-xs outline-none focus:border-sky-400"
-              value={password2}
-              onChange={(e) => setPassword2(e.target.value)}
-            />
-          </label>
-
-          {error && (
-            <p className="mt-2 text-[11px] text-rose-600">{error}</p>
-          )}
-
-          <button
-            type="submit"
-            className="mt-5 w-full rounded-full bg-sky-500 px-4 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-sky-600"
-          >
-            Зарегистрироваться
-          </button>
-
-          <p className="mt-3 text-center text-[11px] text-slate-500">
-            Уже есть аккаунт?{" "}
-            <Link
-              to="/auth/login"
-              className="font-semibold text-sky-700 hover:underline"
-            >
-              Войти
-            </Link>
-          </p>
-        </form>
-      </div>
+        </div>
+      </main>
     </MainLayout>
   );
 }

@@ -11,4 +11,6 @@ export function ClientPsychologistsPage() {
       </div>
     );
   }
+
+export default ClientPsychologistsPage;
   

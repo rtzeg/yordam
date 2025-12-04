@@ -62,9 +62,6 @@ export function Header() {
                             alt="Yordam"
                             className="h-[32px] w-auto object-contain"
                         />
-                        <span className="text-[13px] font-medium text-[#1F98FA] underline underline-offset-4">
-                            Сервис
-                        </span>
                     </Link>
 
                     {/* НАВИГАЦИЯ */}
@@ -162,7 +159,6 @@ export function Header() {
                                         <ChevronDown className="h-4 w-4 text-[#9BA6B5]" />
                                     )}
                                 </button>
-
                                 {/* ДРОПДАУН АККАУНТА */}
                                 {menuOpen && (
                                     <div className="absolute right-0 top-[110%] z-30 w-[260px] rounded-2xl border border-[#E1E8F0] bg-white p-3 shadow-[0_18px_42px_rgba(67,142,229,0.25)]">
@@ -171,8 +167,9 @@ export function Header() {
                                         </div>
 
                                         <div className="space-y-1 text-[14px] text-[#071A34]">
+                                            {/* Личные вопросы → главная страница кабинета клиента */}
                                             <Link
-                                                to="/cabinet"
+                                                to="/client"
                                                 onClick={() => setMenuOpen(false)}
                                                 className="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-[#F5F8FF]"
                                             >
@@ -180,6 +177,7 @@ export function Header() {
                                                 <span>Личные вопросы</span>
                                             </Link>
 
+                                            {/* Выбор психолога → внутренняя страница кабинета */}
                                             <Link
                                                 to="/psychologists"
                                                 onClick={() => setMenuOpen(false)}
@@ -189,37 +187,45 @@ export function Header() {
                                                 <span>Выбор психолога</span>
                                             </Link>
 
-                                            <button
-                                                type="button"
-                                                className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left hover:bg-[#F5F8FF]"
+                                            {/* Настройки */}
+                                            <Link
+                                                to="/client/settings"
+                                                onClick={() => setMenuOpen(false)}
+                                                className="flex w-full items-center gap-3 rounded-xl px-3 py-2 hover:bg-[#F5F8FF]"
                                             >
                                                 <Settings className="h-4 w-4 text-[#1F98FA]" />
                                                 <span>Настройки</span>
-                                            </button>
+                                            </Link>
 
-                                            <button
-                                                type="button"
-                                                className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left hover:bg-[#F5F8FF]"
+                                            {/* Оплата */}
+                                            <Link
+                                                to="/client/billing"
+                                                onClick={() => setMenuOpen(false)}
+                                                className="flex w-full items-center gap-3 rounded-xl px-3 py-2 hover:bg-[#F5F8FF]"
                                             >
                                                 <CreditCard className="h-4 w-4 text-[#1F98FA]" />
                                                 <span>Оплата</span>
-                                            </button>
+                                            </Link>
 
-                                            <button
-                                                type="button"
-                                                className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left hover:bg-[#F5F8FF]"
+                                            {/* Видеочат */}
+                                            <Link
+                                                to="/client/videochat"
+                                                onClick={() => setMenuOpen(false)}
+                                                className="flex w-full items-center gap-3 rounded-xl px-3 py-2 hover:bg-[#F5F8FF]"
                                             >
                                                 <Video className="h-4 w-4 text-[#1F98FA]" />
                                                 <span>Видеочат</span>
-                                            </button>
+                                            </Link>
 
-                                            <button
-                                                type="button"
-                                                className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left hover:bg-[#F5F8FF]"
+                                            {/* Поддержка */}
+                                            <Link
+                                                to="/client/support"
+                                                onClick={() => setMenuOpen(false)}
+                                                className="flex w-full items-center gap-3 rounded-xl px-3 py-2 hover:bg-[#F5F8FF]"
                                             >
                                                 <LifeBuoy className="h-4 w-4 text-[#1F98FA]" />
                                                 <span>Поддержка</span>
-                                            </button>
+                                            </Link>
 
                                             <div className="my-1 border-t border-[#E7EDF5]" />
 

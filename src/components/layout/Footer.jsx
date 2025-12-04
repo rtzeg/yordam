@@ -85,25 +85,26 @@ export function Footer() {
             <div className="flex gap-16">
               <div>
                 <h3 className="text-[13px] font-semibold text-[#1A2841]">
-                  Company
+                  Yordam
                 </h3>
                 <ul className="mt-3 space-y-2 text-[13px] text-[#4A6277]">
-                  <li>About</li>
-                  <li>Features</li>
-                  <li>Works</li>
-                  <li>Career</li>
+                  <li>Специалисты</li>
+                  <li>Инфлюенсерам</li>
+                  <li>Партнерам</li>
+                  <li>Компаниям</li>
                 </ul>
               </div>
 
               <div>
                 <h3 className="text-[13px] font-semibold text-[#1A2841]">
-                  Help
+                  Помощь
                 </h3>
                 <ul className="mt-3 space-y-2 text-[13px] text-[#4A6277]">
-                  <li>Customer Support</li>
-                  <li>Delivery Details</li>
-                  <li>Terms &amp; Conditions</li>
-                  <li>Privacy Policy</li>
+                  <li>Контакты</li>
+                  <li>Тех. Поддержка</li>
+                  <li>Работать Психологом</li>
+                  <li>Политика приватности</li>
+
                 </ul>
               </div>
             </div>
@@ -120,7 +121,7 @@ export function Footer() {
                   className="w-full rounded-full border border-[#E0E7F0] bg-white px-4 py-2 text-[13px] text-[#4A6277] outline-none placeholder:text-[#B0BDC9] focus:border-[#1F98FA]"
                 />
                 <button className="w-full rounded-full bg-[#1F98FA] px-4 py-2 text-[13px] font-semibold text-white shadow-sm transition-colors hover:bg-[#0f84e2]">
-                  Subscribe Now
+                  Больше акций с рассылкой
                 </button>
               </div>
             </div>
