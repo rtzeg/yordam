@@ -1,32 +1,69 @@
 // src/features/psychologists/pages/PsychologistDetailPage.jsx
 
-import { useParams, Link } from "react-router-dom";
-import { useState } from "react";
-import psychologistsMock from "../mockPsychologists";
-import { MainLayout } from "../../../components/layout/MainLayout";
-import { CheckCircle2, Heart, HelpCircle } from "lucide-react";
+import { useMemo, useRef } from "react";
+import { Link, useParams } from "react-router-dom";
+import { Heart, ArrowLeft, ArrowRight } from "lucide-react";
+
+import { MainLayout } from "../../../components/layout/MainLayout.jsx";
+import psychologistsMock from "../mockPsychologists.js";
+import { useFavorites } from "../../favorites/FavoritesContext.jsx";
+
+function getYearsLabel(years = 0) {
+  if (years % 10 === 1 && years % 100 !== 11) return `${years} год`;
+  if ([2, 3, 4].includes(years % 10) && ![12, 13, 14].includes(years % 100)) {
+    return `${years} года`;
+  }
+  return `${years} лет`;
+}
+
+// моковые отзывы для блока «Отзывы»
+const mockReviews = [
+  {
+    id: 1,
+    name: "Leslie Alexander",
+    role: "Клиент сервиса Yordam",
+    text: "Сервис помог найти своего специалиста. Сайт удобный, записаться на сессию пару кликов.",
+  },
+  {
+    id: 2,
+    name: "Jenny Wilson",
+    role: "Клиентка сервиса Yordam",
+    text: "Не верилось, что онлайн-терапия зайдёт. Но с вашим психологом получилось выстроить доверие.",
+  },
+  {
+    id: 3,
+    name: "Michael Smith",
+    role: "Клиент сервиса Yordam",
+    text: "Нравится, что напоминания о сессиях приходят вовремя, а оплату и документы удобно хранить в одном месте.",
+  },
+  {
+    id: 4,
+    name: "Emily Jones",
+    role: "Клиентка сервиса Yordam",
+    text: "Нашла специалиста, который понимает именно мой запрос. Формат и интерфейс очень комфортные.",
+  },
+];
 
 export function PsychologistDetailPage() {
   const { id } = useParams();
-  const [isFav, setIsFav] = useState(false);
+  const { favoriteIds, toggleFavorite } = useFavorites();
+  const reviewsRef = useRef(null);
 
-  const psychologist = psychologistsMock.find(
-    (p) => String(p.id) === String(id)
+  const psychologist = useMemo(
+    () => psychologistsMock.find((p) => String(p.id) === String(id)),
+    [id]
   );
 
   if (!psychologist) {
     return (
       <MainLayout>
-        <div className="w-full px-4 py-10 lg:px-12 xl:px-[72px]">
-          <div className="mb-4 text-sm text-slate-500">
-            Специалист не найден.
-          </div>
-          <Link
-            to="/psychologists"
-            className="rounded-full border border-[#1F98FA] px-6 py-2 text-sm text-[#1F98FA] hover:bg-[#ECF7FF]"
-          >
-            Вернуться к списку специалистов
-          </Link>
+        <div className="w-full px-4 lg:px-12 xl:px-[72px] py-10">
+          <p className="text-[#071A34] text-[16px]">
+            Специалист не найден.{" "}
+            <Link to="/psychologists" className="text-[#1F98FA] underline">
+              Вернуться к списку
+            </Link>
+          </p>
         </div>
       </MainLayout>
     );
@@ -36,148 +73,183 @@ export function PsychologistDetailPage() {
     name,
     age,
     experienceYears,
-    pricePerHour,
-    verified,
-    tags,
+    about,
     approach,
     therapyType,
+    topics = [],
+    tags = [],
+    pricePerHour,
+    currency = "сум",
+    verified,
+    education = [],
+    certificates = [],
   } = psychologist;
 
-  const initials = name?.trim()?.[0]?.toUpperCase() || "П";
+  const isFavorite = favoriteIds.includes(psychologist.id);
 
-  const experienceText = experienceYears
-    ? `Опыт ${experienceYears} ${experienceYears === 1 ? "год" : experienceYears < 5 ? "года" : "лет"
-    }`
-    : null;
+  const initials = name
+    ?.trim()
+    .split(" ")
+    .filter(Boolean)
+    .map((n) => n[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
 
-  const ageText = age ? `${age} лет` : null;
+  const priceText =
+    pricePerHour != null
+      ? `${pricePerHour.toLocaleString("ru-RU")} ${currency}/час`
+      : "Цена уточняется";
 
-  const topLine =
-    ageText && experienceText
-      ? `${ageText} • ${experienceText}`
-      : ageText || experienceText || "";
+  const handleScrollLeft = () => {
+    if (!reviewsRef.current) return;
+    reviewsRef.current.scrollBy({ left: -320, behavior: "smooth" });
+  };
 
-  const priceText = pricePerHour
-    ? `${pricePerHour.toLocaleString("ru-RU")} сум/час`
-    : "По запросу";
-
-  const pills =
-    (Array.isArray(tags) && tags.length
-      ? tags
-      : [therapyType, approach].filter(Boolean)
-    ).slice(0, 5);
+  const handleScrollRight = () => {
+    if (!reviewsRef.current) return;
+    reviewsRef.current.scrollBy({ left: 320, behavior: "smooth" });
+  };
 
   return (
     <MainLayout>
-      <div className="w-full px-4 py-10 lg:px-12 xl:px-[72px]">
-        {/* Хлебные крошки */}
-        <div className="mb-3 flex items-center gap-1 text-[13px] text-[#9BA6B5]">
-          <Link to="/" className="hover:text-[#1F98FA]">
-            Главная страница
-          </Link>
-          <span>›</span>
-          <Link
-            to="/psychologists"
-            className="hover:text-[#1F98FA] text-[#071A34]"
-          >
-            Выбор специалиста
-          </Link>
-          <span>›</span>
-          <span className="text-[#071A34]">{name}</span>
-        </div>
+      {/* Чуть больше воздуха сверху/снизу и центрируем контент по max-width */}
+      <div className="w-full px-4 lg:px-10 xl:px-12 py-12">
+        <div className="mx-auto max-w-[1320px]">
+          {/* Хлебные крошки */}
+          <div className="mb-5 flex flex-wrap items-center gap-1 text-[13px] text-[#9BA6B5]">
+            <Link to="/" className="hover:text-[#1F98FA] transition-colors">
+              Главная страница
+            </Link>
+            <span>›</span>
+            <Link
+              to="/psychologists"
+              className="hover:text-[#1F98FA] transition-colors"
+            >
+              Выбор специалиста
+            </Link>
+            <span>›</span>
+            <span className="text-[#071A34] truncate max-w-[260px]">
+              {name}
+            </span>
+          </div>
 
-        {/* Заголовок страницы */}
-        <h1 className="mb-6 font-display text-[32px] font-bold text-[#1F98FA] md:text-[40px]">
-          Страница специалиста
-        </h1>
+          {/* Заголовок страницы */}
+          <h1 className="mb-8 font-display text-[32px] md:text-[38px] text-[#1F98FA] leading-tight">
+            Страница специалиста
+          </h1>
 
-        {/* Основной белый блок */}
-        <div className="rounded-[32px] bg-white px-6 pt-6 pb-10 shadow-[0_24px_60px_rgba(67,142,229,0.25)] lg:px-10 lg:pt-8">
-          <div className="flex flex-col gap-10 lg:flex-row">
-            {/* Левая колонка: аватар + кнопки */}
-            <div className="flex w-full max-w-[320px] flex-col items-center">
-              <div className="flex h-[300px] w-full items-center justify-center rounded-[32px] bg-[#F5F8FF]">
-                <div className="flex h-[180px] w-[180px] items-center justify-center rounded-full bg-[#1F98FA] text-[64px] font-semibold text-white">
-                  {initials}
+          {/* Основной блок профиля */}
+          <section className="rounded-[40px] bg-white px-7 py-8 md:px-10 md:py-10 shadow-[0_26px_70px_rgba(67,142,229,0.16)] flex flex-col lg:flex-row gap-10 lg:gap-14">
+            {/* Левая колонка: аватар, действия */}
+            <div className="w-full max-w-[280px] flex flex-col items-center lg:items-start gap-4">
+              <div className="flex h-[240px] w-[240px] items-center justify-center rounded-[40px] bg-[#F3F7FF] overflow-hidden">
+                <div className="flex h-[190px] w-[190px] items-center justify-center rounded-full bg-[#1F98FA] text-[60px] font-semibold text-white">
+                  {initials || "П"}
                 </div>
               </div>
 
               <button
                 type="button"
-                className="mt-6 w-full rounded-full bg-[#1F98FA] px-6 py-3 text-[14px] font-semibold text-white shadow-[0_14px_28px_rgba(31,152,250,0.55)] hover:bg-[#0f84e2]"
+                className="mt-2 w-full rounded-full bg-[#1F98FA] py-3.5 text-[14px] font-semibold text-white shadow-[0_16px_32px_rgba(31,152,250,0.55)] hover:bg-[#0f84e2] transition-colors"
               >
                 Забронировать время
               </button>
 
               <button
                 type="button"
-                onClick={() => setIsFav((v) => !v)}
-                className={`mt-4 flex w-full items-center justify-center gap-2 rounded-full border px-6 py-3 text-[14px] ${isFav
-                    ? "border-[#FF4D6A] text-[#FF4D6A]"
-                    : "border-[#1F98FA] text-[#1F98FA]"
-                  } bg-white`}
+                onClick={() => toggleFavorite(psychologist.id)}
+                className={`mt-1 flex w-full items-center justify-center gap-2 rounded-full border py-2.5 text-[13px] transition ${isFavorite
+                    ? "border-[#1F98FA] bg-[#E8F4FF] text-[#1F98FA]"
+                    : "border-[#D6DEE9] bg-white text-[#071A34] hover:bg-[#F5F7FA]"
+                  }`}
               >
                 <Heart
-                  className={`h-4 w-4 ${isFav ? "fill-[#FF4D6A]" : "fill-transparent"
+                  className={`h-4 w-4 ${isFavorite ? "fill-[#1F98FA] text-[#1F98FA]" : "text-[#1F98FA]"
                     }`}
                 />
-                <span>{isFav ? "В избранном" : "Добавить в избранное"}</span>
+                <span>
+                  {isFavorite ? "В избранном" : "Добавить в избранное"}
+                </span>
               </button>
             </div>
 
             {/* Правая колонка: информация */}
             <div className="flex-1">
-              <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
-                <div>
-                  {verified && (
-                    <div className="mb-1 flex items-center gap-1 text-[12px] text-[#6F7A89]">
-                      <CheckCircle2 className="h-4 w-4 text-[#1F98FA]" />
-                      <span>Проверен Yordam</span>
-                    </div>
-                  )}
-                  <div className="text-[22px] font-semibold text-[#071A34] md:text-[24px]">
+              <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                <div className="max-w-[640px]">
+                  <p className="flex items-center gap-2 text-[12px] text-[#9BA6B5]">
+                    {verified && (
+                      <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#1F98FA]" />
+                    )}
+                    {verified ? "Проверен Yordam" : "Специалист Yordam"}
+                  </p>
+                  <h2 className="mt-1 text-[24px] md:text-[26px] font-semibold text-[#071A34]">
                     {name}
-                  </div>
-                  {topLine && (
-                    <div className="mt-1 text-[13px] text-[#6F7A89]">
-                      {topLine}
-                    </div>
-                  )}
-                  <div className="mt-2 flex items-center gap-1 text-[12px] text-[#9BA6B5]">
-                    <HelpCircle className="h-4 w-4" />
-                    <span>Соответствует вашему запросу</span>
-                  </div>
+                  </h2>
+                  <p className="mt-1 text-[13px] text-[#6F7A89]">
+                    {age ? `${age} лет` : "Возраст не указан"} •{" "}
+                    {experienceYears
+                      ? `Опыт ${getYearsLabel(experienceYears)}`
+                      : "Опыт не указан"}
+                  </p>
                 </div>
 
-                <div className="text-right">
-                  <div className="text-[18px] font-bold text-[#1F98FA] md:text-[20px]">
+                <div className="text-right pt-1">
+                  <div className="text-[20px] md:text-[22px] font-semibold text-[#1F98FA]">
                     {priceText}
                   </div>
-                  <div className="mt-1 text-[12px] text-[#6F7A89]">
-                    {pricePerHour ? "Стоимость сессии" : "Стоимость по запросу"}
-                  </div>
+                  <p className="text-[11px] text-[#9BA6B5] mt-1">
+                    Стоимость сессии
+                  </p>
                 </div>
               </div>
 
-              {pills.length > 0 && (
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {pills.map((pill) => (
+              {/* Описание */}
+              <div className="mt-6">
+                <h3 className="mb-2 text-[14px] font-semibold text-[#071A34]">
+                  Обо мне
+                </h3>
+                <p className="text-[13px] leading-relaxed text-[#4B5563] max-w-[760px]">
+                  {about ||
+                    "Описание специалиста будет добавлено позже. Здесь можно рассказать о своём подходе, опыте и темах, с которыми вы работаете."}
+                </p>
+              </div>
+
+              {/* Подход и форматы */}
+              <div className="mt-6">
+                <h3 className="mb-2 text-[14px] font-semibold text-[#071A34]">
+                  Психологический подход к работе
+                </h3>
+
+                <div className="flex flex-wrap gap-2">
+                  {therapyType && (
+                    <span className="rounded-full bg-[#F3F7FF] px-3 py-1 text-[11px] text-[#071A34]">
+                      {therapyType}
+                    </span>
+                  )}
+                  {approach && (
+                    <span className="rounded-full bg-[#F3F7FF] px-3 py-1 text-[11px] text-[#071A34]">
+                      {approach}
+                    </span>
+                  )}
+                  {[...topics, ...tags].slice(0, 6).map((chip) => (
                     <span
-                      key={pill}
-                      className="rounded-full bg-[#F2F4F8] px-4 py-1 text-[12px] text-[#071A34]"
+                      key={chip}
+                      className="rounded-full bg-[#F5F7FA] px-3 py-1 text-[11px] text-[#4B5563]"
                     >
-                      {pill}
+                      {chip}
                     </span>
                   ))}
                 </div>
-              )}
+              </div>
 
-              {/* Примеры блоков "Образование" / "Сертификаты" / "Обо мне" ты сможешь добить сам по тому же принципу */}
-              <section className="mb-8">
+              {/* Образование / Сертификаты */}
+              <section className="mt-8 mb-4">
                 <h3 className="mb-3 text-[14px] font-semibold text-[#071A34]">
                   Образование
                 </h3>
-                <div className="grid gap-4 md:grid-cols-2 text-[13px] text-[#4A5568]">
+                <div className="grid gap-5 md:grid-cols-2 text-[13px] text-[#4A5568]">
                   <div>
                     <p>ФГБОУ ВО Амурская ГМА • 2019</p>
                     <p>Лечебное дело, очная форма</p>
@@ -194,56 +266,72 @@ export function PsychologistDetailPage() {
                   </div>
                 </div>
               </section>
-
-              <section>
-                <h3 className="mb-3 text-[14px] font-semibold text-[#071A34]">
-                  Сертификаты
-                </h3>
-                <div className="grid gap-4 md:grid-cols-2 text-[13px] text-[#4A5568]">
-                  <div>
-                    <p>ФГБОУ ВО Амурская ГМА • 2019</p>
-                    <p>Психотерапия</p>
-                    <button className="mt-1 text-[12px] text-[#1F98FA] underline underline-offset-4">
-                      Ссылка на документ →
-                    </button>
-                  </div>
-                  <div>
-                    <p>АНО ДПО “ПК Профи” • 2019</p>
-                    <p>Когнитивно-поведенческая терапия</p>
-                    <button className="mt-1 text-[12px] text-[#1F98FA] underline underline-offset-4">
-                      Ссылка на документ →
-                    </button>
-                  </div>
-                </div>
-              </section>
-              <section className="mt-16">
-                <h2 className="mb-6 text-[28px] font-display text-[#071A34]">
-                  Отзывы
-                </h2>
-
-                <div className="grid gap-6 md:grid-cols-3">
-                  {[1, 2, 3].map((i) => (
-                    <article
-                      key={i}
-                      className="rounded-[24px] bg-white p-6 shadow-[0_18px_50px_rgba(67,142,229,0.18)]"
-                    >
-                      <div className="mb-2 text-[#FFC94A] text-[18px] leading-none">
-                        ★★★★★
-                      </div>
-                      <p className="mb-4 text-[13px] text-[#4A5568]">
-                        “Очень помог(ла) разобраться в себе, стало спокойнее и
-                        понятнее, что делать дальше. Чувствую поддержку и
-                        прогресс после сессий.”
-                      </p>
-                      <div className="mt-4 text-[13px] font-medium text-[#071A34]">
-                        Клиент {i}
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              </section>
             </div>
-          </div>
+          </section>
+
+          {/* Блок отзывов */}
+          <section className="mt-12">
+            <div className="mb-5 flex items-center justify-between">
+              <h2 className="font-display text-[26px] md:text-[30px] text-[#1F98FA]">
+                Отзывы
+              </h2>
+
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={handleScrollLeft}
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-[#D6DEE9] bg-white text-[#071A34] hover:bg-[#F5F7FA] transition"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={handleScrollRight}
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-[#D6DEE9] bg-white text-[#071A34] hover:bg-[#F5F7FA] transition"
+                >
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+
+            <div
+              ref={reviewsRef}
+              className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-[#D6DEE9]"
+            >
+              {mockReviews.map((review) => (
+                <article
+                  key={review.id}
+                  className="min-w-[280px] max-w-[340px] flex-1 rounded-[32px] bg-white px-7 py-7 shadow-[0_18px_42px_rgba(67,142,229,0.16)]"
+                >
+                  <div className="mb-3 flex gap-1 text-[#FFC857] text-[14px]">
+                    {"★★★★★".split("").map((star, idx) => (
+                      <span key={idx}>{star}</span>
+                    ))}
+                  </div>
+                  <p className="text-[13px] leading-relaxed text-[#4B5563]">
+                    {review.text}
+                  </p>
+
+                  <div className="mt-4 flex items-center gap-3">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#F3F7FF] text-[13px] font-semibold text-[#1F98FA]">
+                      {review.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </div>
+                    <div>
+                      <p className="text-[13px] font-semibold text-[#071A34]">
+                        {review.name}
+                      </p>
+                      <p className="text-[11px] text-[#9BA6B5]">
+                        {review.role}
+                      </p>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
         </div>
       </div>
     </MainLayout>

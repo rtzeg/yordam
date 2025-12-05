@@ -4,7 +4,7 @@ import Header from "../../components/layout/Header";
 import { Footer } from "../../components/layout/Footer";
 const navItems = [
   { to: "/client", label: "Личные вопросы" },
-  { to: "/client/psychologists", label: "Выбор психолога" },
+  { to: "/psychologists", label: "Выбор психолога" },
   { to: "/client/settings", label: "Настройки" },
   { to: "/client/billing", label: "Оплата" },
   { to: "/client/videochat", label: "Видеочат" },

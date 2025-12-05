@@ -1,5 +1,5 @@
 import { MainLayout } from "../components/layout/MainLayout";
-
+import supportImage from "../assets/images/4.svg";
 export default function CompaniesPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -213,6 +213,11 @@ export default function CompaniesPage() {
                   регулярные приёмы для сотрудников, дни открытых консультаций,
                   анонимные обращения и сопровождение HR-команды.
                 </p>
+                <img
+                    src={supportImage}
+                    alt="Тёплая поддерживающая иллюстрация"
+                    className="max-h-[300px] w-[400px]"
+                  />
               </div>
 
               <p className="text-[11px] text-[#A9B8D8]">

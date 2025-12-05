@@ -1,6 +1,6 @@
 // src/pages/InfluencersPage.jsx
 import { MainLayout } from "../components/layout/MainLayout";
-import supportImage from "../assets/images/5.png";
+import supportImage from "../assets/images/5.svg";
 
 export default function InfluencersPage() {
   const handleSubmit = (e) => {
@@ -151,13 +151,9 @@ export default function InfluencersPage() {
             <div className="flex flex-col justify-between gap-4 rounded-2xl bg-[#071A34] p-6 text-white">
               {/* КАРТИНКА */}
               <div className="flex flex-col items-center text-center gap-4">
-                <img
-                  src={supportImage}
-                  alt="Тёплая поддерживающая иллюстрация"
-                  className="max-h-[190px] w-auto"
-                />
 
-                <div>
+
+                <div className="flex flex-col justify-between">
                   <h2 className="font-heading text-[18px] font-semibold">
                     Поддержать развитие сервиса
                   </h2>
@@ -167,6 +163,11 @@ export default function InfluencersPage() {
                     помогает нам развивать платформу и создавать новые
                     форматы поддержки.
                   </p>
+                  <img
+                    src={supportImage}
+                    alt="Тёплая поддерживающая иллюстрация"
+                    className="max-h-[300px] w-[400px]"
+                  />
                 </div>
               </div>
 

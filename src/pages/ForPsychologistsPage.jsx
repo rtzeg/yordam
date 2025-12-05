@@ -2,6 +2,15 @@
 import { useState } from "react";
 import { MainLayout } from "../components/layout/MainLayout";
 import psyHero from "../assets/images/psy.png";
+import {
+    GraduationCap,
+    BookOpenCheck,
+    BriefcaseBusiness,
+    Laptop2,
+    ShieldCheck,
+    Scale,
+} from "lucide-react";
+
 export default function ForPsychologistsPage() {
     // Калькулятор нагрузки
     const [sessionsPerDay, setSessionsPerDay] = useState(3);
@@ -36,7 +45,7 @@ export default function ForPsychologistsPage() {
         },
         {
             label: "Проведённых сессий",
-            value: "75 000+",
+            value: "1 000+",
             note: "на нашей платформе",
         },
         {
@@ -72,6 +81,39 @@ export default function ForPsychologistsPage() {
             title:
                 "Поддерживаем, чтобы вы меньше выгорали и не оставались одни с нагрузкой",
             text: "Команда сопровождения и коллеги по платформе — это пространство, где можно обсудить рабочие сложности и не тащить всё в одиночку.",
+        },
+    ];
+
+    const requirements = [
+        {
+            title: "Образование",
+            icon: GraduationCap,
+            text: "Высшее психологическое образование (бакалавриат, магистратура, специалитет) или диплом о профессиональной переподготовке по психологии.",
+        },
+        {
+            title: "Дополнительное обучение",
+            icon: BookOpenCheck,
+            text: "Завершённая программа обучения одному из психологических подходов (например, КПТ, гештальт-терапия, психоанализ и др.).",
+        },
+        {
+            title: "Практический опыт",
+            icon: BriefcaseBusiness,
+            text: "Опыт проведения психологических консультаций от 2 лет: онлайн или офлайн, в частной практике или в организации.",
+        },
+        {
+            title: "Технические требования",
+            icon: Laptop2,
+            text: "Компьютер или телефон с рабочей камерой и микрофоном, стабильный интернет для проведения онлайн-сессий.",
+        },
+        {
+            title: "Этические нормы",
+            icon: ShieldCheck,
+            text: "Строгое соблюдение профессиональной этики, конфиденциальности и уважительного отношения к каждому клиенту.",
+        },
+        {
+            title: "Юридический статус",
+            icon: Scale,
+            text: "Наличие статуса индивидуального предпринимателя или юридического лица в Республике Узбекистан либо готовность его оформить.",
         },
     ];
 
@@ -112,7 +154,6 @@ export default function ForPsychologistsPage() {
                         </div>
 
                         <div className="flex flex-1 items-center justify-center">
-                            {/* Placeholder под иллюстрацию в фирменном стиле */}
                             <div className="relative h-[260px] w-[260px] rounded-[40px] bg-gradient-to-br from-[#C3E6FF] via-[#F5E3FF] to-[#FFE8C6] shadow-[0_24px_60px_rgba(31,152,250,0.25)] lg:h-[320px] lg:w-[320px]">
                                 <div className="absolute inset-6 rounded-[32px] bg-white/40 backdrop-blur-sm" />
                                 <div className="absolute inset-0 flex items-center justify-center px-6 text-center text-[13px] text-[#4A5B78]">
@@ -125,7 +166,6 @@ export default function ForPsychologistsPage() {
                                             />
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -202,7 +242,6 @@ export default function ForPsychologistsPage() {
                             Начать сотрудничество
                         </button>
                     </section>
-
                     {/* КАЛЬКУЛЯТОР ДОХОДА */}
                     <section className="mb-10">
                         <h2 className="font-heading text-[22px] font-display text-[#1F98FA] lg:text-[26px]">
@@ -244,7 +283,9 @@ export default function ForPsychologistsPage() {
                                         min={1}
                                         max={7}
                                         value={daysPerWeek}
-                                        onChange={(e) => setDaysPerWeek(Number(e.target.value))}
+                                        onChange={(e) =>
+                                            setDaysPerWeek(Number(e.target.value))
+                                        }
                                         className="w-full accent-[#1F98FA]"
                                     />
                                     <div className="mt-1 text-[12px] text-[#6D7685]">
@@ -291,6 +332,42 @@ export default function ForPsychologistsPage() {
                             </div>
                         </div>
                     </section>
+                    {/* ТРЕБОВАНИЯ К СПЕЦИАЛИСТАМ */}
+                    <section className="mb-14 rounded-[32px] bg-gradient-to-br from-[#E2F3FF] via-[#F4F7FF] to-[#FFEFF5] px-5 py-8 lg:px-8 lg:py-10">
+                        <h2 className="font-heading text-[22px] font-display text-[#071A34] lg:text-[26px]">
+                            Требования к специалистам
+                        </h2>
+
+                        <p className="mt-3 max-w-[640px] text-[13px] text-[#6D7685]">
+                            Мы работаем с практикующими психологами, которые разделяют наши
+                            ценности, бережно относятся к клиентам и готовы развиваться в
+                            онлайн-формате.
+                        </p>
+
+                        <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            {requirements.map((item) => {
+                                const Icon = item.icon;
+                                return (
+                                    <div
+                                        key={item.title}
+                                        className="flex flex-col rounded-3xl bg-white/90 p-4 shadow-sm backdrop-blur-sm transition hover:-translate-y-[2px] hover:shadow-md"
+                                    >
+                                        <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[#E5F3FF] text-[#1F98FA]">
+                                            <Icon className="h-5 w-5" />
+                                        </div>
+                                        <h3 className="text-[14px] font-semibold text-[#071A34]">
+                                            {item.title}
+                                        </h3>
+                                        <p className="mt-2 text-[12px] leading-relaxed text-[#6D7685]">
+                                            {item.text}
+                                        </p>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </section>
+
+
                 </div>
             </main>
         </MainLayout>

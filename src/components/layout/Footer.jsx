@@ -112,7 +112,7 @@ export function Footer() {
             {/* Право: Newsletter */}
             <div className="max-w-[260px]">
               <h3 className="text-[13px] font-semibold text-[#1A2841]">
-                Newsletter
+                 Рассылка Новостей
               </h3>
               <div className="mt-4 flex flex-col gap-3">
                 <input
