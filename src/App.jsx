@@ -13,6 +13,8 @@ import InfluencersPage from "./pages/InfluencersPage";
 import CompaniesPage from "./pages/CompaniesPage";
 import ForPsychologistsPage from "./pages/ForPsychologistsPage";
 
+// Тест API (страница, где дергаем Swagger-эндпоинт)
+import TestApiPage from "./pages/TestApiPage";
 
 // Auth
 import { LoginPage } from "./features/auth/LoginPage";
@@ -45,6 +47,10 @@ export default function App() {
             <Route path="/companies" element={<CompaniesPage />} />
             <Route path="/psy" element={<ForPsychologistsPage />} />
 
+            {/* Тестовый экран для проверки подключения к API */}
+            <Route path="/test-api" element={<TestApiPage />} />
+
+            {/* Страница конкретного психолога */}
             <Route
               path="/psychologists/:id"
               element={<PsychologistDetailPage />}
