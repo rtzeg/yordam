@@ -602,81 +602,170 @@ const resources = {
             psychDetail: {
                 loading: "Загружаем специалиста...",
                 notFound: {
-                  text: "Специалист не найден.",
-                  backLink: "Вернуться к списку",
+                    text: "Специалист не найден.",
+                    backLink: "Вернуться к списку",
                 },
                 error: {
-                  prefix: "Ошибка:",
-                  backLink: "Вернуться к списку",
+                    prefix: "Ошибка:",
+                    backLink: "Вернуться к списку",
                 },
                 breadcrumbs: {
-                  home: "Главная страница",
-                  list: "Выбор специалиста",
+                    home: "Главная страница",
+                    list: "Выбор специалиста",
                 },
                 title: "Страница специалиста",
                 buttons: {
-                  book: "Забронировать время",
-                  favoriteAdd: "Добавить в избранное",
-                  favoriteIn: "В избранном",
+                    book: "Забронировать время",
+                    favoriteAdd: "Добавить в избранное",
+                    favoriteIn: "В избранном",
                 },
                 header: {
-                  verified: "Проверен Yordam",
-                  notVerified: "Специалист Yordam",
-                  age: "{{age}} лет",
-                  ageNotSpecified: "Возраст не указан",
-                  experience: "Опыт {{years}} лет",
-                  experienceNotSpecified: "Опыт не указан",
-                  pricePerHour: "{{price}} {{currency}}/час",
-                  priceTBD: "Цена уточняется",
-                  priceNote: "Стоимость сессии",
+                    verified: "Проверен Yordam",
+                    notVerified: "Специалист Yordam",
+                    age: "{{age}} лет",
+                    ageNotSpecified: "Возраст не указан",
+                    experience: "Опыт {{years}} лет",
+                    experienceNotSpecified: "Опыт не указан",
+                    pricePerHour: "{{price}} {{currency}}/час",
+                    priceTBD: "Цена уточняется",
+                    priceNote: "Стоимость сессии",
                 },
                 about: {
-                  title: "Обо мне",
-                  fallback:
-                    "Описание специалиста будет добавлено позже. Здесь можно рассказать о своём подходе, опыте и темах, с которыми вы работаете.",
+                    title: "Обо мне",
+                    fallback:
+                        "Описание специалиста будет добавлено позже. Здесь можно рассказать о своём подходе, опыте и темах, с которыми вы работаете.",
                 },
                 approach: {
-                  title: "Психологический подход к работе",
+                    title: "Психологический подход к работе",
                 },
                 education: {
-                  title: "Образование",
-                  empty: "Информация об образовании будет добавлена позже.",
-                  documentLink: "Ссылка на документ →",
+                    title: "Образование",
+                    empty: "Информация об образовании будет добавлена позже.",
+                    documentLink: "Ссылка на документ →",
                 },
                 certificates: {
-                  title: "Сертификаты",
-                  empty: "Информация о сертификатах будет добавлена позже.",
-                  issued: "Выдан: {{date}}",
-                  validUntil: "Действителен до: {{date}}",
-                  documentLink: "Ссылка на документ →",
+                    title: "Сертификаты",
+                    empty: "Информация о сертификатах будет добавлена позже.",
+                    issued: "Выдан: {{date}}",
+                    validUntil: "Действителен до: {{date}}",
+                    documentLink: "Ссылка на документ →",
                 },
                 reviews: {
-                  title: "Отзывы",
-                  items: {
-                    r1: {
-                      text:
-                        "Сервис помог найти своего специалиста. Сайт удобный, записаться на сессию пару кликов.",
-                      role: "Клиент сервиса Yordam",
+                    title: "Отзывы",
+                    items: {
+                        r1: {
+                            text:
+                                "Сервис помог найти своего специалиста. Сайт удобный, записаться на сессию пару кликов.",
+                            role: "Клиент сервиса Yordam",
+                        },
+                        r2: {
+                            text:
+                                "Не верилось, что онлайн-терапия зайдёт. Но с вашим психологом получилось выстроить доверие.",
+                            role: "Клиентка сервиса Yordam",
+                        },
+                        r3: {
+                            text:
+                                "Нравится, что напоминания о сессиях приходят вовремя, а оплату и документы удобно хранить в одном месте.",
+                            role: "Клиент сервиса Yordam",
+                        },
+                        r4: {
+                            text:
+                                "Нашла специалиста, который понимает именно мой запрос. Формат и интерфейс очень комфортные.",
+                            role: "Клиентка сервиса Yordam",
+                        },
                     },
-                    r2: {
-                      text:
-                        "Не верилось, что онлайн-терапия зайдёт. Но с вашим психологом получилось выстроить доверие.",
-                      role: "Клиентка сервиса Yordam",
-                    },
-                    r3: {
-                      text:
-                        "Нравится, что напоминания о сессиях приходят вовремя, а оплату и документы удобно хранить в одном месте.",
-                      role: "Клиент сервиса Yordam",
-                    },
-                    r4: {
-                      text:
-                        "Нашла специалиста, который понимает именно мой запрос. Формат и интерфейс очень комфортные.",
-                      role: "Клиентка сервиса Yordam",
-                    },
-                  },
                 },
-              }
-              
+            },
+            favoritesPage: {
+                title: "Избранные психологи",
+
+                breadcrumbs: {
+                    home: "Главная страница",
+                    favorites: "Избранные психологи",
+                },
+
+                loading: "Загружаем ваших избранных специалистов...",
+
+                error: {
+                    prefix: "Ошибка:",
+                    default: "Произошла ошибка при загрузке избранных специалистов.",
+                },
+
+                empty: {
+                    noFavorites:
+                        "У вас пока нет избранных специалистов. Добавьте психолога на странице поиска или профиля.",
+                    missingFromList:
+                        "Вы добавили специалистов в избранное, но они сейчас не найдены в списке. Возможно, их статус изменился.",
+                },
+            },
+            auth: {
+                login: {
+                    title: "Вход в аккаунт",
+                    subtitle: "Введите email и пароль, чтобы продолжить.",
+                    fields: {
+                        email: {
+                            label: "Email",
+                            placeholder: "you@example.com",
+                        },
+                        password: {
+                            label: "Пароль",
+                            placeholder: "Ваш пароль",
+                        },
+                    },
+                    buttons: {
+                        submit: "Войти",
+                        submitLoading: "Входим...",
+                    },
+                    or: "или",
+                    google: "Продолжить через Google",
+                    noAccount: {
+                        prefix: "Еще нет аккаунта?",
+                        link: "Зарегистрироваться",
+                    },
+                    error: {
+                        default:
+                            "Не удалось войти. Проверьте данные и попробуйте снова.",
+                    },
+                },
+                register: {
+                    title: "Регистрация",
+                    subtitle: "Выберите роль и заполните данные.",
+                    fields: {
+                        fullName: {
+                            label: "ФИО",
+                            placeholder: "Как к вам обращаться",
+                        },
+                        email: {
+                            label: "Email",
+                            placeholder: "you@example.com",
+                        },
+                        password: {
+                            label: "Пароль",
+                            placeholder: "Придумайте пароль",
+                        },
+                        passwordRepeat: {
+                            label: "Повторите пароль",
+                            placeholder: "Повторите пароль",
+                        },
+                    },
+                    buttons: {
+                        submit: "Зарегистрироваться",
+                        submitLoading: "Регистрация...",
+                    },
+                    or: "или",
+                    google: "Продолжить через Google",
+                    alreadyHave: {
+                        prefix: "Уже есть аккаунт?",
+                        link: "Войти",
+                    },
+                    errors: {
+                        passwordMismatch: "Пароли не совпадают",
+                        default: "Не удалось зарегистрироваться. Попробуйте позже.",
+                    },
+                }
+            },
+
+
 
 
         },
@@ -1278,82 +1367,173 @@ const resources = {
             psychDetail: {
                 loading: "Mutaxassis yuklanmoqda...",
                 notFound: {
-                  text: "Mutaxassis topilmadi.",
-                  backLink: "Ro‘yxatga qaytish",
+                    text: "Mutaxassis topilmadi.",
+                    backLink: "Ro‘yxatga qaytish",
                 },
                 error: {
-                  prefix: "Xatolik:",
-                  backLink: "Ro‘yxatga qaytish",
+                    prefix: "Xatolik:",
+                    backLink: "Ro‘yxatga qaytish",
                 },
                 breadcrumbs: {
-                  home: "Bosh sahifa",
-                  list: "Mutaxassis tanlash",
+                    home: "Bosh sahifa",
+                    list: "Mutaxassis tanlash",
                 },
                 title: "Mutaxassis sahifasi",
                 buttons: {
-                  book: "Vaqt band qilish",
-                  favoriteAdd: "Sevimlilarga qo‘shish",
-                  favoriteIn: "Sevimlilarda",
+                    book: "Vaqt band qilish",
+                    favoriteAdd: "Sevimlilarga qo‘shish",
+                    favoriteIn: "Sevimlilarda",
                 },
                 header: {
-                  verified: "Yordam tomonidan tasdiqlangan",
-                  notVerified: "Yordam mutaxassisi",
-                  age: "{{age}} yosh",
-                  ageNotSpecified: "Yoshi ko‘rsatilmagan",
-                  experience: "Tajriba {{years}} yil",
-                  experienceNotSpecified: "Tajriba ko‘rsatilmagan",
-                  pricePerHour: "{{price}} {{currency}}/soat",
-                  priceTBD: "Narx aniqlashtiriladi",
-                  priceNote: "Sessiya narxi",
+                    verified: "Yordam tomonidan tasdiqlangan",
+                    notVerified: "Yordam mutaxassisi",
+                    age: "{{age}} yosh",
+                    ageNotSpecified: "Yoshi ko‘rsatilmagan",
+                    experience: "Tajriba {{years}} yil",
+                    experienceNotSpecified: "Tajriba ko‘rsatilmagan",
+                    pricePerHour: "{{price}} {{currency}}/soat",
+                    priceTBD: "Narx aniqlashtiriladi",
+                    priceNote: "Sessiya narxi",
                 },
                 about: {
-                  title: "Men haqimda",
-                  fallback:
-                    "Mutaxassis tavsifi keyinroq qo‘shiladi. Bu yerda siz o‘zingizning yondashuvingiz, tajribangiz va ishlayotgan mavzularingiz haqida yozishingiz mumkin.",
+                    title: "Men haqimda",
+                    fallback:
+                        "Mutaxassis tavsifi keyinroq qo‘shiladi. Bu yerda siz o‘zingizning yondashuvingiz, tajribangiz va ishlayotgan mavzularingiz haqida yozishingiz mumkin.",
                 },
                 approach: {
-                  title: "Ishdagi psixologik yondashuv",
+                    title: "Ishdagi psixologik yondashuv",
                 },
                 education: {
-                  title: "Ta’lim",
-                  empty: "Ta’lim haqida ma’lumot keyinroq qo‘shiladi.",
-                  documentLink: "Hujjatga havola →",
+                    title: "Ta’lim",
+                    empty: "Ta’lim haqida ma’lumot keyinroq qo‘shiladi.",
+                    documentLink: "Hujjatga havola →",
                 },
                 certificates: {
-                  title: "Sertifikatlar",
-                  empty: "Sertifikatlar haqida ma’lumot keyinroq qo‘shiladi.",
-                  issued: "Berilgan sana: {{date}}",
-                  validUntil: "Amal qilish muddati: {{date}}",
-                  documentLink: "Hujjatga havola →",
+                    title: "Sertifikatlar",
+                    empty: "Sertifikatlar haqida ma’lumot keyinroq qo‘shiladi.",
+                    issued: "Berilgan sana: {{date}}",
+                    validUntil: "Amal qilish muddati: {{date}}",
+                    documentLink: "Hujjatga havola →",
                 },
                 reviews: {
-                  title: "Fikrlar",
-                  items: {
-                    r1: {
-                      text:
-                        "Servis o‘zimga mos mutaxassis topishga yordam berdi. Sayt qulay, sessiyaga yozilish bir necha bosqichda.",
-                      role: "Yordam servisi mijozı",
+                    title: "Fikrlar",
+                    items: {
+                        r1: {
+                            text:
+                                "Servis o‘zimga mos mutaxassis topishga yordam berdi. Sayt qulay, sessiyaga yozilish bir necha bosqichda.",
+                            role: "Yordam servisi mijozı",
+                        },
+                        r2: {
+                            text:
+                                "Onlayn terapiya menga mos keladi deb o‘ylamagan edim. Lekin sizning psixologingiz bilan ishonchli aloqa o‘rnatildi.",
+                            role: "Yordam servisi mijozasi",
+                        },
+                        r3: {
+                            text:
+                                "Sessiya eslatmalari o‘z vaqtida kelishi yoqadi, to‘lov va hujjatlarni bitta joyda saqlash juda qulay.",
+                            role: "Yordam servisi mijozı",
+                        },
+                        r4: {
+                            text:
+                                "Aynan mening so‘rovimni tushunadigan mutaxassisni topdim. Format ham, interfeys ham juda qulay.",
+                            role: "Yordam servisi mijozasi",
+                        },
                     },
-                    r2: {
-                      text:
-                        "Onlayn terapiya menga mos keladi deb o‘ylamagan edim. Lekin sizning psixologingiz bilan ishonchli aloqa o‘rnatildi.",
-                      role: "Yordam servisi mijozasi",
+                },
+            },
+            favoritesPage: {
+                title: "Sevimli psixologlar",
+
+                breadcrumbs: {
+                    home: "Bosh sahifa",
+                    favorites: "Sevimli psixologlar",
+                },
+
+                loading: "Sevimli mutaxassislaringiz yuklanmoqda...",
+
+                error: {
+                    prefix: "Xatolik:",
+                    default: "Mutaxassislarni yuklashda xatolik yuz berdi.",
+                },
+
+                empty: {
+                    noFavorites:
+                        "Hozircha sevimli mutaxassislaringiz yo‘q. Psixologni qidiruv sahifasida yoki profil sahifasida sevimlilarga qo‘shishingiz mumkin.",
+                    missingFromList:
+                        "Siz ba’zi mutaxassislarni sevimlilarga qo‘shgansiz, lekin ular hozir ro‘yxatda topilmadi. Ehtimol, ularning statusi o‘zgargan.",
+                },
+            },
+            auth: {
+                login: {
+                    title: "Akkauntga kirish",
+                    subtitle: "Davom etish uchun email va parolni kiriting.",
+                    fields: {
+                        email: {
+                            label: "Email",
+                            placeholder: "you@example.com",
+                        },
+                        password: {
+                            label: "Parol",
+                            placeholder: "Sizning parolingiz",
+                        },
                     },
-                    r3: {
-                      text:
-                        "Sessiya eslatmalari o‘z vaqtida kelishi yoqadi, to‘lov va hujjatlarni bitta joyda saqlash juda qulay.",
-                      role: "Yordam servisi mijozı",
+                    buttons: {
+                        submit: "Kirish",
+                        submitLoading: "Kirmoqdamiz...",
                     },
-                    r4: {
-                      text:
-                        "Aynan mening so‘rovimni tushunadigan mutaxassisni topdim. Format ham, interfeys ham juda qulay.",
-                      role: "Yordam servisi mijozasi",
+                    or: "yoki",
+                    google: "Google orqali davom etish",
+                    noAccount: {
+                        prefix: "Hali akkauntingiz yo‘qmi?",
+                        link: "Ro‘yxatdan o‘tish",
                     },
-                  },
+                    error: {
+                        default:
+                            "Kirish imkoni bo‘lmadi. Ma’lumotlarni tekshirib, qayta urinib ko‘ring.",
+                    },
+                },
+                register: {
+                    title: "Ro‘yxatdan o‘tish",
+                    subtitle: "Rolni tanlab, ma’lumotlarni to‘ldiring.",
+                    fields: {
+                        fullName: {
+                            label: "F.I.Sh.",
+                            placeholder: "Sizga qanday murojaat qilaylik?",
+                        },
+                        email: {
+                            label: "Email",
+                            placeholder: "you@example.com",
+                        },
+                        password: {
+                            label: "Parol",
+                            placeholder: "Parol o‘ylab toping",
+                        },
+                        passwordRepeat: {
+                            label: "Parolni qayta kiriting",
+                            placeholder: "Parolni qayta kiriting",
+                        },
+                    },
+                    buttons: {
+                        submit: "Ro‘yxatdan o‘tish",
+                        submitLoading: "Ro‘yxatdan o‘tilmoqda...",
+                    },
+                    or: "yoki",
+                    google: "Google orqali davom etish",
+                    alreadyHave: {
+                        prefix: "Akkauntingiz allaqachon bormi?",
+                        link: "Kirish",
+                    },
+                    errors: {
+                        passwordMismatch: "Parollar mos kelmadi",
+                        default:
+                            "Ro‘yxatdan o‘tishda xatolik yuz berdi. Keyinroq qayta urinib ko‘ring.",
+                    },
                 },
             }
-              
-            
+
+
+
+
 
 
 
