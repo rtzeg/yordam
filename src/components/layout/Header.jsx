@@ -1,3 +1,5 @@
+// src/components/layout/Header.jsx
+
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -17,10 +19,15 @@ import logo from "../../assets/images/logo.png";
 import { useAuth } from "../../features/auth/AuthContext";
 import { useFavorites } from "../../features/favorites/FavoritesContext";
 
+// i18n
+import i18n from "../../shared/i18n";
+import { useTranslation } from "react-i18next";
+
 export function Header() {
     const location = useLocation();
     const { user, logout } = useAuth();
     const { favoriteIds } = useFavorites();
+    const { t } = useTranslation();
 
     const hasFavorites = favoriteIds.length > 0;
 
@@ -39,17 +46,25 @@ export function Header() {
     }, []);
 
     const navLinks = [
-        { to: "/psychologists", label: "Каталог специалистов" },
-        { to: "/companies", label: "Компаниям" },
-        { to: "/psy", label: "Психологам" },
-        { to: "/influencers", label: "Инфлюенсерам" },
-        { to: "/contacts", label: "Контакты" },
+        { to: "/psychologists", label: t("header.nav.catalog") },
+        { to: "/companies", label: t("header.nav.companies") },
+        { to: "/psy", label: t("header.nav.psychologists") },
+        { to: "/influencers", label: t("header.nav.influencers") },
+        { to: "/contacts", label: t("header.nav.contacts") },
     ];
 
     const isActive = (to) =>
         to === "/" ? location.pathname === "/" : location.pathname.startsWith(to);
 
     const initials = user?.fullName?.trim()?.[0]?.toUpperCase() || "Ю";
+
+    // язык RU / UZ
+    const currentLang = i18n.language && i18n.language.startsWith("uz") ? "uz" : "ru";
+
+    const toggleLanguage = () => {
+        const next = currentLang === "ru" ? "uz" : "ru";
+        i18n.changeLanguage(next);
+    };
 
     return (
         <header className="bg-white">
@@ -78,9 +93,15 @@ export function Header() {
                                 </Link>
                             ))}
 
-                            {/* язык */}
-                            <button className="flex items-center gap-1 text-[13px] text-[#6D7685] hover:text-[#1F98FA]">
-                                <span>RU</span>
+                            {/* ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА RU / UZ */}
+                            <button
+                                type="button"
+                                onClick={toggleLanguage}
+                                className="flex items-center gap-1 rounded-full border border-transparent px-2 py-1 text-[13px] text-[#6D7685] hover:border-[#1F98FA] hover:text-[#1F98FA] transition-colors"
+                            >
+                                <span className="font-semibold">
+                                    {currentLang === "ru" ? "RU" : "UZ"}
+                                </span>
                                 <span className="text-[9px]">▼</span>
                             </button>
 
@@ -89,7 +110,7 @@ export function Header() {
                                 <Link
                                     to="/favorites"
                                     className="relative flex h-9 w-9 items-center justify-center rounded-full text-[#1F98FA] hover:bg-[#E8F4FF]"
-                                    title="Избранные психологи"
+                                    title={t("header.favorites.title")}
                                 >
                                     <Heart
                                         className={`h-4 w-4 ${hasFavorites ? "fill-[#1F98FA]" : ""
@@ -111,13 +132,13 @@ export function Header() {
                                     to="/auth/login"
                                     className="inline-flex items-center justify-center rounded-full border border-[#C7D2E2] px-4 py-2 text-[#071A34] hover:border-[#1F98FA]"
                                 >
-                                    Войти
+                                    {t("header.auth.login")}
                                 </Link>
                                 <Link
                                     to="/auth/register"
                                     className="inline-flex items-center justify-center rounded-full border border-[#1F98FA] bg-[#1F98FA] px-5 py-2 text-[13px] font-semibold text-white shadow-[0_10px_24px_rgba(31,152,250,0.55)] hover:bg-[#0f84e2]"
                                 >
-                                    Зарегистрироваться
+                                    {t("header.auth.register")}
                                 </Link>
                             </div>
                         ) : (
@@ -148,8 +169,8 @@ export function Header() {
                                         </span>
                                         <span className="text-[11px] text-[#9BA6B5]">
                                             {user.role === "psychologist"
-                                                ? "Психолог"
-                                                : "Клиент сервиса"}
+                                                ? t("header.role.psychologist")
+                                                : t("header.role.client")}
                                         </span>
                                     </div>
 
@@ -159,72 +180,67 @@ export function Header() {
                                         <ChevronDown className="h-4 w-4 text-[#9BA6B5]" />
                                     )}
                                 </button>
+
                                 {/* ДРОПДАУН АККАУНТА */}
                                 {menuOpen && (
                                     <div className="absolute right-0 top-[110%] z-30 w-[260px] rounded-2xl border border-[#E1E8F0] bg-white p-3 shadow-[0_18px_42px_rgba(67,142,229,0.25)]">
                                         <div className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-wide text-[#9BA6B5]">
-                                            Аккаунт
+                                            {t("header.account.title")}
                                         </div>
 
                                         <div className="space-y-1 text-[14px] text-[#071A34]">
-                                            {/* Личные вопросы → главная страница кабинета клиента */}
                                             <Link
                                                 to="/client"
                                                 onClick={() => setMenuOpen(false)}
                                                 className="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-[#F5F8FF]"
                                             >
                                                 <MessageCircle className="h-4 w-4 text-[#1F98FA]" />
-                                                <span>Личные вопросы</span>
+                                                <span>{t("header.account.personalQuestions")}</span>
                                             </Link>
 
-                                            {/* Выбор психолога → внутренняя страница кабинета */}
                                             <Link
                                                 to="/psychologists"
                                                 onClick={() => setMenuOpen(false)}
                                                 className="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-[#F5F8FF]"
                                             >
                                                 <UserCircle2 className="h-4 w-4 text-[#1F98FA]" />
-                                                <span>Выбор психолога</span>
+                                                <span>{t("header.account.choosePsychologist")}</span>
                                             </Link>
 
-                                            {/* Настройки */}
                                             <Link
                                                 to="/client/settings"
                                                 onClick={() => setMenuOpen(false)}
                                                 className="flex w-full items-center gap-3 rounded-xl px-3 py-2 hover:bg-[#F5F8FF]"
                                             >
                                                 <Settings className="h-4 w-4 text-[#1F98FA]" />
-                                                <span>Настройки</span>
+                                                <span>{t("header.account.settings")}</span>
                                             </Link>
 
-                                            {/* Оплата */}
                                             <Link
                                                 to="/client/billing"
                                                 onClick={() => setMenuOpen(false)}
                                                 className="flex w-full items-center gap-3 rounded-xl px-3 py-2 hover:bg-[#F5F8FF]"
                                             >
                                                 <CreditCard className="h-4 w-4 text-[#1F98FA]" />
-                                                <span>Оплата</span>
+                                                <span>{t("header.account.billing")}</span>
                                             </Link>
 
-                                            {/* Видеочат */}
                                             <Link
                                                 to="/client/videochat"
                                                 onClick={() => setMenuOpen(false)}
                                                 className="flex w-full items-center gap-3 rounded-xl px-3 py-2 hover:bg-[#F5F8FF]"
                                             >
                                                 <Video className="h-4 w-4 text-[#1F98FA]" />
-                                                <span>Видеочат</span>
+                                                <span>{t("header.account.videochat")}</span>
                                             </Link>
 
-                                            {/* Поддержка */}
                                             <Link
                                                 to="/client/support"
                                                 onClick={() => setMenuOpen(false)}
                                                 className="flex w-full items-center gap-3 rounded-xl px-3 py-2 hover:bg-[#F5F8FF]"
                                             >
                                                 <LifeBuoy className="h-4 w-4 text-[#1F98FA]" />
-                                                <span>Поддержка</span>
+                                                <span>{t("header.account.support")}</span>
                                             </Link>
 
                                             <div className="my-1 border-t border-[#E7EDF5]" />
@@ -238,7 +254,7 @@ export function Header() {
                                                 className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-[#FF4D3D] hover:bg-[#FFF4F2]"
                                             >
                                                 <LogOut className="h-4 w-4" />
-                                                <span>Выйти из аккаунта</span>
+                                                <span>{t("header.account.logout")}</span>
                                             </button>
                                         </div>
                                     </div>

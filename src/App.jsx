@@ -24,6 +24,7 @@ import { RegisterPage } from "./features/auth/RegisterPage";
 import PsychologistsListPage from "./features/psychologists/pages/PsychologistsListPage";
 import PsychologistDetailPage from "./features/psychologists/pages/PsychologistDetailPage";
 import FavoritePsychologistsPage from "./features/psychologists/pages/FavoritePsychologistsPage";
+import ContactsPage from "./pages/ContactsPage";
 
 // Кабинет клиента (client)
 import ClientLayout from "./features/profile/ClientLayout";
@@ -46,7 +47,7 @@ export default function App() {
             <Route path="/influencers" element={<InfluencersPage />} />
             <Route path="/companies" element={<CompaniesPage />} />
             <Route path="/psy" element={<ForPsychologistsPage />} />
-
+            <Route path="/contacts" element={<ContactsPage />} />
             {/* Тестовый экран для проверки подключения к API */}
             <Route path="/test-api" element={<TestApiPage />} />
 

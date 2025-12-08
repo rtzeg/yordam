@@ -1,6 +1,10 @@
 import { MainLayout } from "../components/layout/MainLayout";
 import supportImage from "../assets/images/4.svg";
+import { useTranslation } from "react-i18next";
+
 export default function CompaniesPage() {
+  const { t } = useTranslation();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // сюда потом воткнёте отправку на бэкенд / CRM
@@ -9,28 +13,34 @@ export default function CompaniesPage() {
 
   const segments = [
     {
-      title: "Психолог для IT-компании",
-      desc: "Помогаем специалистам справляться с выгоранием, перегрузками и постоянными дедлайнами, поддерживая продуктивность и вовлечённость.",
+      key: "it",
+      title: t("companies.segments.it.title"),
+      desc: t("companies.segments.it.desc"),
     },
     {
-      title: "Психолог для офиса",
-      desc: "Снижение конфликтов, поддержка здорового климата и помощь сотрудникам в сложных личных ситуациях.",
+      key: "office",
+      title: t("companies.segments.office.title"),
+      desc: t("companies.segments.office.desc"),
     },
     {
-      title: "Психолог для центра / учебного заведения",
-      desc: "Поддержка преподавателей, студентов и сотрудников, работа с эмоциональной нагрузкой и стрессом.",
+      key: "education",
+      title: t("companies.segments.education.title"),
+      desc: t("companies.segments.education.desc"),
     },
     {
-      title: "Психолог для киберспорта",
-      desc: "Подготовка к турнирам, работа с волнением, концентрацией и командной динамикой.",
+      key: "esports",
+      title: t("companies.segments.esports.title"),
+      desc: t("companies.segments.esports.desc"),
     },
     {
-      title: "Психолог для продуктивности",
-      desc: "Индивидуальные и групповые сессии, направленные на улучшение фокуса, планирования и эффективности работы.",
+      key: "productivity",
+      title: t("companies.segments.productivity.title"),
+      desc: t("companies.segments.productivity.desc"),
     },
     {
-      title: "Индивидуальные решения",
-      desc: "Поможем подобрать формат под специфику вашей компании и текущие задачи HR / руководства.",
+      key: "custom",
+      title: t("companies.segments.custom.title"),
+      desc: t("companies.segments.custom.desc"),
     },
   ];
 
@@ -41,17 +51,15 @@ export default function CompaniesPage() {
           {/* Хедер блока */}
           <section className="mb-10 lg:mb-14">
             <div className="inline-flex items-center rounded-full bg-[#1F98FA] px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-[#FFF] shadow-sm">
-              Решения для бизнеса
+              {t("companies.badge")}
             </div>
 
             <h1 className="mt-4 text-[26px] font-display text-[#1F98FA] leading-tight lg:text-[34px]">
-              Корпоративный психолог для вашей компании
+              {t("companies.title")}
             </h1>
 
             <p className="mt-3 max-w-[720px] text-[14px] leading-relaxed text-[#6D7685]">
-              Yordam помогает компаниям разных сфер — от IT до офлайн-центров —
-              внедрять психологическую поддержку сотрудников. Это снижает
-              выгорание, уменьшает текучку и повышает продуктивность команды.
+              {t("companies.intro")}
             </p>
           </section>
 
@@ -59,36 +67,28 @@ export default function CompaniesPage() {
           <section className="mb-10 grid gap-6 lg:grid-cols-3">
             <div className="rounded-2xl bg-white p-5 shadow-sm">
               <h2 className="text-[16px] font-display text-[#1F98FA]">
-                Сервис под компании
+                {t("companies.blocks.serviceForCompanies.title")}
               </h2>
               <p className="mt-2 text-[13px] leading-relaxed text-[#6D7685]">
-                Мы заточены под задачи бизнеса: гибкие форматы сессий, единая
-                отчётность, персональный менеджер и удобный подбор специалистов
-                под вашу отрасль.
+                {t("companies.blocks.serviceForCompanies.desc")}
               </p>
             </div>
 
             <div className="rounded-2xl bg-white p-5 shadow-sm">
               <h2 className="text-[16px] font-display text-[#1F98FA]">
-                Приведите своих психологов
+                {t("companies.blocks.ownPsychologists.title")}
               </h2>
               <p className="mt-2 text-[13px] leading-relaxed text-[#6D7685]">
-                Если у вас уже есть проверенные психологи, мы можем
-                интегрировать их в платформу Yordam и дать вашей команде
-                единое удобное пространство для записи и проведения сессий.
-                Для компаний с собственным пулом специалистов действуют
-                отдельные условия и скидки.
+                {t("companies.blocks.ownPsychologists.desc")}
               </p>
             </div>
 
             <div className="rounded-2xl bg-white p-5 shadow-sm">
               <h2 className="text-[16px] font-display text-[#1F98FA]">
-                Скидки при объёме
+                {t("companies.blocks.discounts.title")}
               </h2>
               <p className="mt-2 text-[13px] leading-relaxed text-[#6D7685]">
-                Для компаний, которые берут от <strong>12 и более сессий в месяц</strong>,
-                мы предлагаем пониженные тарифы и специальные корпоративные
-                пакеты: индивидуальные, командные и групповые встречи.
+                {t("companies.blocks.discounts.desc")}
               </p>
             </div>
           </section>
@@ -96,19 +96,16 @@ export default function CompaniesPage() {
           {/* Карточки направлений */}
           <section className="mb-10">
             <h2 className="mb-4 text-[24px] font-display text-[#1F98FA]">
-              Форматы корпоративного психолога
+              {t("companies.formatsTitle")}
             </h2>
-            <p className="mb-6 max-w-[720px] text-[1px] text-[#6D7685]">
-              Подбираем специалистов с опытом работы именно в вашей сфере
-              и выстраиваем понятный формат: индивидуальные консультации,
-              регулярные дни «корпоративного психолога», онлайн-поддержка
-              для удалённых команд.
+            <p className="mb-6 max-w-[720px] text-[13px] text-[#6D7685]">
+              {t("companies.formatsIntro")}
             </p>
 
             <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {segments.map((item) => (
                 <div
-                  key={item.title}
+                  key={item.key}
                   className="flex flex-col rounded-2xl bg-white p-5 shadow-sm"
                 >
                   <h3 className="text-[15px] font-display text-[#1F98FA]">
@@ -126,22 +123,21 @@ export default function CompaniesPage() {
           <section className="grid gap-8 lg:grid-cols-[1.2fr_1fr]">
             <div className="rounded-2xl bg-white p-6 shadow-sm">
               <h2 className="text-[18px] font-display text-[#1F98FA]">
-                Оставьте заявку на корпоративное сотрудничество
+                {t("companies.form.title")}
               </h2>
               <p className="mt-2 text-[13px] text-[#6D7685]">
-                Расскажите коротко о компании и запросе — мы подготовим
-                предложение и свяжемся с вами.
+                {t("companies.form.subtitle")}
               </p>
 
               <form onSubmit={handleSubmit} className="mt-6 space-y-4">
                 <div>
                   <label className="mb-1 block text-[12px] font-display text-[#1F98FA]">
-                    Название компании
+                    {t("companies.form.companyNameLabel")}
                   </label>
                   <input
                     type="text"
                     required
-                    placeholder="ООО «Пример», IT-компания, сеть центров и т.д."
+                    placeholder={t("companies.form.companyNamePlaceholder")}
                     className="w-full rounded-xl border border-[#D7E0ED] bg-[#F9FBFF] px-3 py-2 text-[13px] text-[#071A34] outline-none transition focus:border-[#1F98FA] focus:bg-white"
                   />
                 </div>
@@ -149,23 +145,25 @@ export default function CompaniesPage() {
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
                     <label className="mb-1 block text-[12px] font-display text-[#1F98FA]">
-                      Контактное лицо
+                      {t("companies.form.contactPersonLabel")}
                     </label>
                     <input
                       type="text"
                       required
-                      placeholder="Имя, роль (HR, руководитель и т.д.)"
+                      placeholder={t(
+                        "companies.form.contactPersonPlaceholder"
+                      )}
                       className="w-full rounded-xl border border-[#D7E0ED] bg-[#F9FBFF] px-3 py-2 text-[13px] text-[#071A34] outline-none transition focus:border-[#1F98FA] focus:bg-white"
                     />
                   </div>
                   <div>
                     <label className="mb-1 block text-[12px] font-display text-[#1F98FA]">
-                      Контакт для связи
+                      {t("companies.form.contactLabel")}
                     </label>
                     <input
                       type="text"
                       required
-                      placeholder="E-mail или телефон / Telegram"
+                      placeholder={t("companies.form.contactPlaceholder")}
                       className="w-full rounded-xl border border-[#D7E0ED] bg-[#F9FBFF] px-3 py-2 text-[13px] text-[#071A34] outline-none transition focus:border-[#1F98FA] focus:bg-white"
                     />
                   </div>
@@ -173,23 +171,27 @@ export default function CompaniesPage() {
 
                 <div>
                   <label className="mb-1 block text-[12px] font-display text-[#1F98FA]">
-                    Ориентировочное количество сессий в месяц
+                    {t("companies.form.sessionsLabel")}
                   </label>
                   <input
                     type="text"
-                    placeholder="Например: 12–20 индивидуальных + 2 групповые"
+                    placeholder={t(
+                      "companies.form.sessionsPlaceholder"
+                    )}
                     className="w-full rounded-xl border border-[#D7E0ED] bg-[#F9FBFF] px-3 py-2 text-[13px] text-[#071A34] outline-none transition focus:border-[#1F98FA] focus:bg-white"
                   />
                 </div>
 
                 <div>
                   <label className="mb-1 block text-[12px] font-display text-[#1F98FA]">
-                    Запрос компании
+                    {t("companies.form.requestLabel")}
                   </label>
                   <textarea
                     rows={4}
                     required
-                    placeholder="Кратко опишите задачи: поддержка команды, снижение выгорания, формат «коллективный психолог» и т.п."
+                    placeholder={t(
+                      "companies.form.requestPlaceholder"
+                    )}
                     className="w-full resize-none rounded-xl border border-[#D7E0ED] bg-[#F9FBFF] px-3 py-2 text-[13px] text-[#071A34] outline-none transition focus:border-[#1F98FA] focus:bg-white"
                   />
                 </div>
@@ -198,7 +200,7 @@ export default function CompaniesPage() {
                   type="submit"
                   className="mt-2 inline-flex items-center justify-center rounded-full border border-[#1F98FA] bg-[#1F98FA] px-6 py-2.5 text-[13px] font-semibold text-white shadow-[0_10px_24px_rgba(31,152,250,0.45)] hover:bg-[#0f84e2] transition"
                 >
-                  Отправить заявку
+                  {t("companies.form.submit")}
                 </button>
               </form>
             </div>
@@ -206,24 +208,20 @@ export default function CompaniesPage() {
             <div className="flex flex-col justify-between gap-4 rounded-2xl bg-[#071A34] p-6 text-white">
               <div>
                 <h2 className="text-[18px] font-semibold">
-                  Коллективный психолог для команды
+                  {t("companies.aside.title")}
                 </h2>
                 <p className="mt-2 text-[13px] text-[#E2ECFF]">
-                  Мы помогаем компаниям выстраивать системную поддержку:
-                  регулярные приёмы для сотрудников, дни открытых консультаций,
-                  анонимные обращения и сопровождение HR-команды.
+                  {t("companies.aside.text")}
                 </p>
                 <img
-                    src={supportImage}
-                    alt="Тёплая поддерживающая иллюстрация"
-                    className="max-h-[300px] w-[400px]"
-                  />
+                  src={supportImage}
+                  alt="Поддержка команды"
+                  className="max-h-[300px] w-[400px]"
+                />
               </div>
 
               <p className="text-[11px] text-[#A9B8D8]">
-                Для крупных компаний и объёмов от 12 сессий в месяц действуют
-                специальные корпоративные тарифы. Детали вы получите после
-                обработки заявки.
+                {t("companies.aside.note")}
               </p>
             </div>
           </section>

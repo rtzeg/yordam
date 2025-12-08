@@ -20,7 +20,11 @@ import {
     MessageCircle,
 } from "lucide-react";
 
+import { useTranslation } from "react-i18next";
+
 export function LandingPage() {
+    const { t } = useTranslation();
+
     // пока везде один и тот же аватар, потом поменяешь
     const experts = Array(6).fill(face);
 
@@ -55,13 +59,14 @@ export function LandingPage() {
                         {/* Центральный контент */}
                         <div className="relative z-[1] max-w-[640px] text-center">
                             <h1 className="font-display text-[32px] md:text-[40px] lg:text-[34px] leading-tight text-[#000000]">
-                                Психологическая помощь,
-                                <span className="block text-[#1F98FA]">онлайн</span>
+                                {t("landing.hero.titleMain")}
+                                <span className="block text-[#1F98FA]">
+                                    {t("landing.hero.titleAccent")}
+                                </span>
                             </h1>
 
                             <p className="mt-4 text-[16px] md:text-[18px] text-[#000000]">
-                                Онлайн-консультации с проверенными специалистами.
-                                Просто. Удобно. Надёжно.
+                                {t("landing.hero.subtitle")}
                             </p>
 
                             <div className="mt-8 flex justify-center">
@@ -76,7 +81,7 @@ export function LandingPage() {
                     hover:bg-[#0f84e2] transition
                   "
                                 >
-                                    Найти психолога
+                                    {t("landing.hero.button")}
                                     {/* Таблетка с ценой поверх кнопки */}
                                     <span
                                         className="
@@ -88,7 +93,7 @@ export function LandingPage() {
                       shadow-[0_10px_26px_rgba(31,152,250,0.4)]
                     "
                                     >
-                                        от 200 000 сум
+                                        {t("landing.hero.priceLabel")}
                                     </span>
                                 </button>
                             </div>
@@ -104,7 +109,10 @@ export function LandingPage() {
                     <div className="mb-8 md:mb-10 text-center">
                         <div className="relative inline-block">
                             <h2 className="font-heading text-[26px] font-display text-[#1F98FA] md:text-[32px]">
-                                Чем мы вам <span className="text-[#000000]">поможем</span>
+                                {t("landing.help.titleMain")}{" "}
+                                <span className="text-[#000000]">
+                                    {t("landing.help.titleAccent")}
+                                </span>
                             </h2>
 
                             {/* круг справа от текста */}
@@ -122,9 +130,7 @@ export function LandingPage() {
                         </div>
 
                         <p className="mt-3 max-w-[520px] mx-auto text-[18px] text-[#000000]">
-                            Психологи Yordam помогают справляться с тревогой, отношениями,
-                            кризисами и сложными жизненными ситуациями. Ниже — лишь часть
-                            запросов, с которыми можно прийти.
+                            {t("landing.help.text")}
                         </p>
                     </div>
 
@@ -134,14 +140,10 @@ export function LandingPage() {
                         <div className="relative overflow-hidden rounded-[32px] bg-white px-5 py-6 shadow-[0_18px_42px_rgba(0,0,0,0.08)] md:px-7 md:py-7">
                             <div className="relative z-[1] max-w-[260px]">
                                 <h3 className="font-heading text-[18px] font-display text-[#1F98FA]">
-                                    Снизить тревожность
-                                    <br />
-                                    и стресс
+                                    {t("landing.help.cards.anxiety.title")}
                                 </h3>
                                 <p className="mt-3 text-[13px] leading-relaxed text-[#000000]">
-                                    Вместе с психологом вы научитесь лучше понимать свои эмоции,
-                                    справляться с паникой, напряжением и постоянным чувством
-                                    тревоги.
+                                    {t("landing.help.cards.anxiety.text")}
                                 </p>
                             </div>
                             <img
@@ -156,14 +158,10 @@ export function LandingPage() {
                         <div className="relative overflow-hidden rounded-[32px] bg-white px-5 py-6 shadow-[0_18px_42px_rgba(0,0,0,0.08)] md:px-7 md:py-7">
                             <div className="relative z-[1] max-w-[260px]">
                                 <h3 className="font-heading text-[18px] font-display text-[#1F98FA]">
-                                    Поддержать ребёнка
-                                    <br />
-                                    или подростка
+                                    {t("landing.help.cards.kids.title")}
                                 </h3>
                                 <p className="mt-3 text-[13px] leading-relaxed text-[#000000]">
-                                    Специалисты помогают детям и подросткам справляться со
-                                    страхами, давлением, буллингом, сменой школы и другими
-                                    важными для них переживаниями.
+                                    {t("landing.help.cards.kids.text")}
                                 </p>
                             </div>
                             <img
@@ -178,13 +176,10 @@ export function LandingPage() {
                         <div className="relative overflow-hidden rounded-[32px] bg-white px-5 py-6 shadow-[0_18px_42px_rgba(0,0,0,0.08)] md:px-7 md:py-7">
                             <div className="relative z-[1] max-w-[280px]">
                                 <h3 className="font-heading text-[18px] font-display text-[#1F98FA]">
-                                    Улучшить отношения
-                                    <br />
-                                    с партнёром или семьёй
+                                    {t("landing.help.cards.relationships.title")}
                                 </h3>
                                 <p className="mt-3 text-[13px] leading-relaxed text-[#000000]">
-                                    Можно разобрать конфликты, научиться говорить о чувствах,
-                                    выстраивать границы и слышать друг друга без постоянных ссор.
+                                    {t("landing.help.cards.relationships.text")}
                                 </p>
                             </div>
                             <img
@@ -199,14 +194,10 @@ export function LandingPage() {
                         <div className="relative overflow-hidden rounded-[32px] bg-white px-5 py-6 shadow-[0_18px_42px_rgba(0,0,0,0.08)] md:px-7 md:py-7">
                             <div className="relative z-[1] max-w-[260px]">
                                 <h3 className="font-heading text-[18px] font-display text-[#1F98FA]">
-                                    Пережить расставание
-                                    <br />
-                                    или утрату
+                                    {t("landing.help.cards.loss.title")}
                                 </h3>
                                 <p className="mt-3 text-[13px] leading-relaxed text-[#000000]">
-                                    Психолог аккуратно поддержит в период потери, поможет
-                                    прожить сильные чувства, снизить чувство вины и постепенно
-                                    собирать жизнь заново.
+                                    {t("landing.help.cards.loss.text")}
                                 </p>
                             </div>
                             <img
@@ -224,11 +215,10 @@ export function LandingPage() {
             <section className="py-12 md:py-16">
                 <div className="mx-auto max-w-[1440px] px-4 lg:px-[72px] text-center">
                     <h2 className="text-[26px] md:text-[32px] font-display  text-[#1F98FA]">
-                        Как это работает
+                        {t("landing.howItWorks.title")}
                     </h2>
                     <p className="mt-3 max-w-[640px] mx-auto text-[18px] text-[#000000]">
-                        Начните свой путь к гармонии всего в несколько простых шагов.
-                        Мы сделали процесс максимально понятным и удобным.
+                        {t("landing.howItWorks.subtitle")}
                     </p>
 
                     {/* карточки шагов */}
@@ -239,11 +229,10 @@ export function LandingPage() {
                                 <ClipboardList className="h-5 w-5 text-[#1F98FA]" />
                             </div>
                             <h3 className="mb-2 font-display text-[16px] text-[#1F98FA]">
-                                Заполните анкету
+                                {t("landing.howItWorks.steps.step1.title")}
                             </h3>
                             <p className="text-[14px] leading-relaxed text-[#000000]">
-                                Ответьте на несколько вопросов о себе, чтобы мы могли быстрее
-                                подобрать подходящего психолога.
+                                {t("landing.howItWorks.steps.step1.text")}
                             </p>
                         </div>
 
@@ -253,11 +242,10 @@ export function LandingPage() {
                                 <Users className="h-5 w-5 text-[#1F98FA]" />
                             </div>
                             <h3 className="mb-2 font-display text-[16px] text-[#1F98FA]">
-                                Выберите психолога
+                                {t("landing.howItWorks.steps.step2.title")}
                             </h3>
                             <p className="text-[14px] leading-relaxed text-[#000000]">
-                                Мы покажем подходящих специалистов. Вы выбираете того, с кем
-                                хотите начать.
+                                {t("landing.howItWorks.steps.step2.text")}
                             </p>
                         </div>
 
@@ -267,11 +255,10 @@ export function LandingPage() {
                                 <CalendarDays className="h-5 w-5 text-[#1F98FA]" />
                             </div>
                             <h3 className="mb-2 font-display text-[16px] text-[#1F98FA]">
-                                Бронируйте дату
+                                {t("landing.howItWorks.steps.step3.title")}
                             </h3>
                             <p className="text-[14px] leading-relaxed text-[#000000]">
-                                Выберите удобное время и формат сессии. Всё онлайн, психолог
-                                всегда рядом.
+                                {t("landing.howItWorks.steps.step3.text")}
                             </p>
                         </div>
 
@@ -281,11 +268,10 @@ export function LandingPage() {
                                 <MessageCircle className="h-5 w-5 text-[#1F98FA]" />
                             </div>
                             <h3 className="mb-2 font-display text-[16px] text-[#1F98FA]">
-                                Начните сессию
+                                {t("landing.howItWorks.steps.step4.title")}
                             </h3>
                             <p className="text-[14px] leading-relaxed text-[#000000]">
-                                Проведите первую сессию, чтобы познакомиться с психологом и
-                                понять, комфортно ли вам продолжать работу.
+                                {t("landing.howItWorks.steps.step4.text")}
                             </p>
                         </div>
                     </div>
@@ -295,7 +281,7 @@ export function LandingPage() {
                             href="/psychologists"
                             className="inline-flex items-center justify-center rounded-full bg-[#1F98FA] px-8 py-3 text-[14px] font-semibold text-white shadow-[0_14px_30px_rgba(31,152,250,0.55)] hover:bg-[#0f84e2] transition"
                         >
-                            Попробовать сейчас
+                            {t("landing.howItWorks.cta")}
                         </a>
                     </div>
                 </div>
@@ -306,13 +292,11 @@ export function LandingPage() {
                 <div className="mx-auto max-w-[1440px] px-4 lg:px-[72px]">
                     <div className="mb-8 md:mb-10 text-center md:text-left">
                         <h2 className="font-heading text-[26px] md:text-[32px] font-display text-[#1F98FA] leading-tight">
-                            Только проверенные и отобранные специалисты
+                            {t("landing.verified.title")}
                         </h2>
 
                         <p className="mt-3 max-w-[520px] text-[18px] text-[#000000] mx-auto md:mx-0">
-                            На платформу попадают только специалисты с профильным
-                            образованием и проверенным опытом. Мы вручную отбираем
-                            психологов и следим за качеством работы.
+                            {t("landing.verified.text")}
                         </p>
                     </div>
 
@@ -343,7 +327,7 @@ export function LandingPage() {
                             href="/psychologists"
                             className="inline-flex items-center justify-center rounded-full bg-[#1F98FA] px-8 py-3 text-[14px] font-semibold text-white shadow-[0_14px_30px_rgba(31,152,250,0.55)] hover:bg-[#0f84e2] transition"
                         >
-                            Найти психолога
+                            {t("landing.verified.button")}
                         </a>
                     </div>
                 </div>

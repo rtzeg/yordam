@@ -6,43 +6,18 @@ import { Heart, ArrowLeft, ArrowRight } from "lucide-react";
 import { MainLayout } from "../../../components/layout/MainLayout.jsx";
 import { useFavorites } from "../../favorites/FavoritesContext.jsx";
 import { getPsychologistsList } from "../../../shared/api/api";
+import { useTranslation } from "react-i18next";
 
-function getYearsLabel(years = 0) {
-  if (years % 10 === 1 && years % 100 !== 11) return `${years} год`;
-  if ([2, 3, 4].includes(years % 10) && ![12, 13, 14].includes(years % 100)) {
-    return `${years} года`;
-  }
-  return `${years} лет`;
-}
-
+// Мок-отзывы: текст и роль берём из i18n по key
 const mockReviews = [
-  {
-    id: 1,
-    name: "Leslie Alexander",
-    role: "Клиент сервиса Yordam",
-    text: "Сервис помог найти своего специалиста. Сайт удобный, записаться на сессию пару кликов.",
-  },
-  {
-    id: 2,
-    name: "Jenny Wilson",
-    role: "Клиентка сервиса Yordam",
-    text: "Не верилось, что онлайн-терапия зайдёт. Но с вашим психологом получилось выстроить доверие.",
-  },
-  {
-    id: 3,
-    name: "Michael Smith",
-    role: "Клиент сервиса Yordam",
-    text: "Нравится, что напоминания о сессиях приходят вовремя, а оплату и документы удобно хранить в одном месте.",
-  },
-  {
-    id: 4,
-    name: "Emily Jones",
-    role: "Клиентка сервиса Yordam",
-    text: "Нашла специалиста, который понимает именно мой запрос. Формат и интерфейс очень комфортные.",
-  },
+  { id: 1, name: "Leslie Alexander", key: "r1" },
+  { id: 2, name: "Jenny Wilson", key: "r2" },
+  { id: 3, name: "Michael Smith", key: "r3" },
+  { id: 4, name: "Emily Jones", key: "r4" },
 ];
 
 export function PsychologistDetailPage() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const { favoriteIds, toggleFavorite } = useFavorites();
   const reviewsRef = useRef(null);
@@ -88,7 +63,9 @@ export function PsychologistDetailPage() {
     return (
       <MainLayout>
         <div className="w-full px-4 lg:px-12 xl:px-[72px] py-10">
-          <p className="text-[#071A34] text-[16px]">Загружаем специалиста...</p>
+          <p className="text-[#071A34] text-[16px]">
+            {t("psychDetail.loading")}
+          </p>
         </div>
       </MainLayout>
     );
@@ -98,9 +75,11 @@ export function PsychologistDetailPage() {
     return (
       <MainLayout>
         <div className="w-full px-4 lg:px-12 xl:px-[72px] py-10">
-          <p className="text-[16px] text-red-500 mb-3">Ошибка: {error}</p>
+          <p className="text-[16px] text-red-500 mb-3">
+            {t("psychDetail.error.prefix")} {error}
+          </p>
           <Link to="/psychologists" className="text-[#1F98FA] underline">
-            Вернуться к списку
+            {t("psychDetail.error.backLink")}
           </Link>
         </div>
       </MainLayout>
@@ -112,9 +91,9 @@ export function PsychologistDetailPage() {
       <MainLayout>
         <div className="w-full px-4 lg:px-12 xl:px-[72px] py-10">
           <p className="text-[#071A34] text-[16px]">
-            Специалист не найден.{" "}
+            {t("psychDetail.notFound.text")}{" "}
             <Link to="/psychologists" className="text-[#1F98FA] underline">
-              Вернуться к списку
+              {t("psychDetail.notFound.backLink")}
             </Link>
           </p>
         </div>
@@ -154,8 +133,11 @@ export function PsychologistDetailPage() {
 
   const priceText =
     pricePerHour != null
-      ? `${pricePerHour.toLocaleString("ru-RU")} ${currency}/час`
-      : "Цена уточняется";
+      ? t("psychDetail.header.pricePerHour", {
+        price: pricePerHour.toLocaleString("ru-RU"),
+        currency,
+      })
+      : t("psychDetail.header.priceTBD");
 
   const handleScrollLeft = () => {
     if (!reviewsRef.current) return;
@@ -171,16 +153,20 @@ export function PsychologistDetailPage() {
     <MainLayout>
       <div className="w-full px-4 lg:px-10 xl:px-12 py-12">
         <div className="mx-auto max-w-[1320px]">
+          {/* Хлебные крошки */}
           <div className="mb-5 flex flex-wrap items-center gap-1 text-[13px] text-[#9BA6B5]">
-            <Link to="/" className="hover:text-[#1F98FA] transition-colors">
-              Главная страница
+            <Link
+              to="/"
+              className="hover:text-[#1F98FA] transition-colors"
+            >
+              {t("psychDetail.breadcrumbs.home")}
             </Link>
             <span>›</span>
             <Link
               to="/psychologists"
               className="hover:text-[#1F98FA] transition-colors"
             >
-              Выбор специалиста
+              {t("psychDetail.breadcrumbs.list")}
             </Link>
             <span>›</span>
             <span className="text-[#071A34] truncate max-w-[260px]">
@@ -188,11 +174,14 @@ export function PsychologistDetailPage() {
             </span>
           </div>
 
+          {/* Заголовок страницы */}
           <h1 className="mb-8 font-display text-[32px] md:text-[38px] text-[#1F98FA] leading-tight">
-            Страница специалиста
+            {t("psychDetail.title")}
           </h1>
 
+          {/* Основной блок: фото + инфо */}
           <section className="rounded-[40px] bg-white px-7 py-8 md:px-10 md:py-10 shadow-[0_26px_70px_rgba(67,142,229,0.16)] flex flex-col lg:flex-row gap-10 lg:gap-14">
+            {/* Левая колонка: фото + кнопки */}
             <div className="w-full max-w-[280px] flex flex-col items-center lg:items-start gap-4">
               <div className="flex h-[240px] w-[240px] items-center justify-center rounded-[40px] bg-[#F3F7FF] overflow-hidden">
                 {photoUrl ? (
@@ -212,48 +201,57 @@ export function PsychologistDetailPage() {
                 type="button"
                 className="mt-2 w-full rounded-full bg-[#1F98FA] py-3.5 text-[14px] font-semibold text-white shadow-[0_16px_32px_rgba(31,152,250,0.55)] hover:bg-[#0f84e2] transition-colors"
               >
-                Забронировать время
+                {t("psychDetail.buttons.book")}
               </button>
 
               <button
                 type="button"
                 onClick={() => toggleFavorite(psychologist.id)}
-                className={`mt-1 flex w-full items-center justify-center gap-2 rounded-full border py-2.5 text-[13px] transition ${
-                  isFavorite
+                className={`mt-1 flex w-full items-center justify-center gap-2 rounded-full border py-2.5 text-[13px] transition ${isFavorite
                     ? "border-[#1F98FA] bg-[#E8F4FF] text-[#1F98FA]"
                     : "border-[#D6DEE9] bg-white text-[#071A34] hover:bg-[#F5F7FA]"
-                }`}
+                  }`}
               >
                 <Heart
-                  className={`h-4 w-4 ${
-                    isFavorite
+                  className={`h-4 w-4 ${isFavorite
                       ? "fill-[#1F98FA] text-[#1F98FA]"
                       : "text-[#1F98FA]"
-                  }`}
+                    }`}
                 />
                 <span>
-                  {isFavorite ? "В избранном" : "Добавить в избранное"}
+                  {isFavorite
+                    ? t("psychDetail.buttons.favoriteIn")
+                    : t("psychDetail.buttons.favoriteAdd")}
                 </span>
               </button>
             </div>
 
+            {/* Правая колонка: текст */}
             <div className="flex-1">
+              {/* Шапка: имя, опыт, цена */}
               <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                 <div className="max-w-[640px]">
                   <p className="flex items-center gap-2 text-[12px] text-[#9BA6B5]">
                     {verified && (
                       <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#1F98FA]" />
                     )}
-                    {verified ? "Проверен Yordam" : "Специалист Yordam"}
+                    {verified
+                      ? t("psychDetail.header.verified")
+                      : t("psychDetail.header.notVerified")}
                   </p>
                   <h2 className="mt-1 text-[24px] md:text-[26px] font-semibold text-[#071A34]">
                     {name}
                   </h2>
                   <p className="mt-1 text-[13px] text-[#6F7A89]">
-                    {age ? `${age} лет` : "Возраст не указан"} •{" "}
+                    {age
+                      ? t("psychDetail.header.age", { age })
+                      : t("psychDetail.header.ageNotSpecified")}
+                    {" • "}
                     {experienceYears
-                      ? `Опыт ${getYearsLabel(experienceYears)}`
-                      : "Опыт не указан"}
+                      ? t("psychDetail.header.experience", {
+                        years: experienceYears,
+                      })
+                      : t("psychDetail.header.experienceNotSpecified")}
                   </p>
                 </div>
 
@@ -262,24 +260,25 @@ export function PsychologistDetailPage() {
                     {priceText}
                   </div>
                   <p className="text-[11px] text-[#9BA6B5] mt-1">
-                    Стоимость сессии
+                    {t("psychDetail.header.priceNote")}
                   </p>
                 </div>
               </div>
 
+              {/* Обо мне */}
               <div className="mt-6">
                 <h3 className="mb-2 text-[14px] font-semibold text-[#071A34]">
-                  Обо мне
+                  {t("psychDetail.about.title")}
                 </h3>
                 <p className="text-[13px] leading-relaxed text-[#4B5563] max-w-[760px]">
-                  {about ||
-                    "Описание специалиста будет добавлено позже. Здесь можно рассказать о своём подходе, опыте и темах, с которыми вы работаете."}
+                  {about || t("psychDetail.about.fallback")}
                 </p>
               </div>
 
+              {/* Подход + тэги */}
               <div className="mt-6">
                 <h3 className="mb-2 text-[14px] font-semibold text-[#071A34]">
-                  Психологический подход к работе
+                  {t("psychDetail.approach.title")}
                 </h3>
 
                 <div className="flex flex-wrap gap-2">
@@ -304,14 +303,15 @@ export function PsychologistDetailPage() {
                 </div>
               </div>
 
+              {/* Образование */}
               <section className="mt-8 mb-4">
                 <h3 className="mb-3 text-[14px] font-semibold text-[#071A34]">
-                  Образование
+                  {t("psychDetail.education.title")}
                 </h3>
 
                 {education.length === 0 ? (
                   <p className="text-[13px] text-[#6F7A89]">
-                    Информация об образовании будет добавлена позже.
+                    {t("psychDetail.education.empty")}
                   </p>
                 ) : (
                   <div className="grid gap-5 md:grid-cols-2 text-[13px] text-[#4A5568]">
@@ -334,7 +334,7 @@ export function PsychologistDetailPage() {
                             rel="noreferrer"
                             className="mt-1 inline-block text-[12px] text-[#1F98FA] underline underline-offset-4"
                           >
-                            Ссылка на документ →
+                            {t("psychDetail.education.documentLink")}
                           </a>
                         )}
                       </div>
@@ -343,14 +343,15 @@ export function PsychologistDetailPage() {
                 )}
               </section>
 
+              {/* Сертификаты */}
               <section className="mt-6 mb-4">
                 <h3 className="mb-3 text-[14px] font-semibold text-[#071A34]">
-                  Сертификаты
+                  {t("psychDetail.certificates.title")}
                 </h3>
 
                 {certificates.length === 0 ? (
                   <p className="text-[13px] text-[#6F7A89]">
-                    Информация о сертификатах будет добавлена позже.
+                    {t("psychDetail.certificates.empty")}
                   </p>
                 ) : (
                   <div className="grid gap-5 md:grid-cols-2 text-[13px] text-[#4A5568]">
@@ -362,12 +363,16 @@ export function PsychologistDetailPage() {
                         </p>
                         {cert.issueDate && (
                           <p className="text-[12px] text-[#6F7A89]">
-                            Выдан: {cert.issueDate}
+                            {t("psychDetail.certificates.issued", {
+                              date: cert.issueDate,
+                            })}
                           </p>
                         )}
                         {cert.expiryDate && (
                           <p className="text-[12px] text-[#6F7A89]">
-                            Действителен до: {cert.expiryDate}
+                            {t("psychDetail.certificates.validUntil", {
+                              date: cert.expiryDate,
+                            })}
                           </p>
                         )}
                         {cert.documentUrl && (
@@ -377,7 +382,7 @@ export function PsychologistDetailPage() {
                             rel="noreferrer"
                             className="mt-1 inline-block text-[12px] text-[#1F98FA] underline underline-offset-4"
                           >
-                            Ссылка на документ →
+                            {t("psychDetail.certificates.documentLink")}
                           </a>
                         )}
                       </div>
@@ -388,10 +393,11 @@ export function PsychologistDetailPage() {
             </div>
           </section>
 
+          {/* Отзывы */}
           <section className="mt-12">
             <div className="mb-5 flex items-center justify-between">
               <h2 className="font-display text-[26px] md:text-[30px] text-[#1F98FA]">
-                Отзывы
+                {t("psychDetail.reviews.title")}
               </h2>
 
               <div className="flex gap-3">
@@ -427,7 +433,7 @@ export function PsychologistDetailPage() {
                     ))}
                   </div>
                   <p className="text-[13px] leading-relaxed text-[#4B5563]">
-                    {review.text}
+                    {t(`psychDetail.reviews.items.${review.key}.text`)}
                   </p>
 
                   <div className="mt-4 flex items-center gap-3">
@@ -442,7 +448,7 @@ export function PsychologistDetailPage() {
                         {review.name}
                       </p>
                       <p className="text-[11px] text-[#9BA6B5]">
-                        {review.role}
+                        {t(`psychDetail.reviews.items.${review.key}.role`)}
                       </p>
                     </div>
                   </div>

@@ -6,39 +6,13 @@ import { Search, ChevronDown } from "lucide-react";
 import { PsychologistCard } from "../components/PsychologistCard.jsx";
 import { MainLayout } from "../../../components/layout/MainLayout.jsx";
 import { getPsychologistsList } from "../../../shared/api/api";
+import { useTranslation } from "react-i18next";
 
-// Базовая конфигурация фильтров (ключ + заголовок)
-// Опции будем подставлять динамически, из данных
-const filterConfigBase = [
-  {
-    key: "therapyType",
-    label: "Вид терапии",
-  },
-  {
-    key: "approach",
-    label: "Психологический подход",
-  },
-  {
-    key: "experience",
-    label: "Опыт практики",
-  },
-  {
-    key: "time",
-    label: "Удобное время сессии",
-  },
-  {
-    key: "language",
-    label: "Язык консультирования",
-  },
-];
-
-const sortOptions = [
-  { key: "popular", label: "Самые просматриваемые" },
-  { key: "verified", label: "Проверенные" },
-  { key: "new", label: "Новички" },
-];
+const ANY_VALUE = "__any"; // внутреннее значение "любой / har qanday"
 
 export function PsychologistsListPage() {
+  const { t } = useTranslation();
+
   // данные с API
   const [allPsychologists, setAllPsychologists] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -68,7 +42,7 @@ export function PsychologistsListPage() {
       } catch (e) {
         if (!cancelled) {
           console.error(e);
-          setError(e?.message || "Ошибка загрузки данных");
+          setError(e?.message || t("psychologistsList.messages.loadError"));
         }
       } finally {
         if (!cancelled) {
@@ -82,9 +56,17 @@ export function PsychologistsListPage() {
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 2. Строим опции фильтров из реальных данных
+  // 2. Конфиг сортировки (подписи завязаны на i18n)
+  const sortOptions = [
+    { key: "popular", label: t("psychologistsList.sort.popular") },
+    { key: "verified", label: t("psychologistsList.sort.verified") },
+    { key: "new", label: t("psychologistsList.sort.new") },
+  ];
+
+  // 3. Строим опции фильтров из реальных данных
   const filterConfig = useMemo(() => {
     // уникальные значения из массива
     const unique = (arr) =>
@@ -92,46 +74,94 @@ export function PsychologistsListPage() {
         String(a).localeCompare(String(b), "ru")
       );
 
-    const therapyTypes = unique(
-      allPsychologists.map((p) => p.therapyType)
-    );
-    const approaches = unique(
-      allPsychologists.map((p) => p.approach)
-    );
-    const languages = unique(
-      allPsychologists.map((p) => p.language)
-    );
-    // если у тебя будет время/формат в API — аналогично
-    const times = unique(
-      allPsychologists.map((p) => p.time)
-    );
+    const therapyTypes = unique(allPsychologists.map((p) => p.therapyType));
+    const approaches = unique(allPsychologists.map((p) => p.approach));
+    const languages = unique(allPsychologists.map((p) => p.language));
+    const times = unique(allPsychologists.map((p) => p.time));
 
     return [
       {
-        ...filterConfigBase[0],
-        options: ["Любой", ...therapyTypes],
+        key: "therapyType",
+        label: t("psychologistsList.filters.therapyType.label"),
+        options: [
+          {
+            value: ANY_VALUE,
+            label: t("psychologistsList.filters.common.any"),
+          },
+          ...therapyTypes.map((val) => ({
+            value: val,
+            label: val,
+          })),
+        ],
       },
       {
-        ...filterConfigBase[1],
-        options: ["Любой", ...approaches],
+        key: "approach",
+        label: t("psychologistsList.filters.approach.label"),
+        options: [
+          {
+            value: ANY_VALUE,
+            label: t("psychologistsList.filters.common.any"),
+          },
+          ...approaches.map((val) => ({
+            value: val,
+            label: val,
+          })),
+        ],
       },
       {
-        ...filterConfigBase[2],
-        // опыт пока статичный, потому что API-структуру мы не знаем детально
-        options: ["Любой", "От 1 года", "От 3 лет", "От 5 лет"],
+        key: "experience",
+        label: t("psychologistsList.filters.experience.label"),
+        options: [
+          {
+            value: ANY_VALUE,
+            label: t("psychologistsList.filters.common.any"),
+          },
+          {
+            value: "from1",
+            label: t("psychologistsList.filters.experience.from1"),
+          },
+          {
+            value: "from3",
+            label: t("psychologistsList.filters.experience.from3"),
+          },
+          {
+            value: "from5",
+            label: t("psychologistsList.filters.experience.from5"),
+          },
+        ],
       },
       {
-        ...filterConfigBase[3],
-        options: ["Любое", ...(times.length ? times : [])],
+        key: "time",
+        label: t("psychologistsList.filters.time.label"),
+        options: [
+          {
+            value: ANY_VALUE,
+            label: t("psychologistsList.filters.time.anyTime"),
+          },
+          ...times.map((val) => ({
+            value: val,
+            label: val,
+          })),
+        ],
       },
       {
-        ...filterConfigBase[4],
-        options: ["Любой", ...languages],
+        key: "language",
+        label: t("psychologistsList.filters.language.label"),
+        options: [
+          {
+            value: ANY_VALUE,
+            label: t("psychologistsList.filters.common.any"),
+          },
+          ...languages.map((val) => ({
+            value: val,
+            label: val,
+          })),
+        ],
       },
     ];
-  }, [allPsychologists]);
+  }, [allPsychologists, t]);
 
-  // 3. Инициализируем filters и открытые секции, когда готова конфигурация
+  // 4. Инициализируем filters и открытые секции, когда готова конфигурация
   useEffect(() => {
     if (!filterConfig.length) return;
 
@@ -139,7 +169,7 @@ export function PsychologistsListPage() {
     const openSections = {};
 
     filterConfig.forEach((f) => {
-      initialFilters[f.key] = f.options[0]; // первый вариант: "Любой" / "Любое"
+      initialFilters[f.key] = f.options[0]?.value ?? ANY_VALUE;
       openSections[f.key] = true;
     });
 
@@ -155,21 +185,21 @@ export function PsychologistsListPage() {
     }));
   };
 
-  const handleFilterChange = (key, option) => {
-    setFilters((prev) => ({ ...prev, [key]: option }));
+  const handleFilterChange = (key, value) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
     setVisibleCount(6);
   };
 
   const handleResetFilters = () => {
     const reset = {};
     filterConfig.forEach((f) => {
-      reset[f.key] = f.options[0];
+      reset[f.key] = f.options[0]?.value ?? ANY_VALUE;
     });
     setFilters(reset);
     setVisibleCount(6);
   };
 
-  // 4. Фильтрация + сортировка
+  // 5. Фильтрация + сортировка
   const filteredAndSorted = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
 
@@ -195,7 +225,7 @@ export function PsychologistsListPage() {
       // Фильтр вид терапии
       if (
         filters.therapyType &&
-        filters.therapyType !== "Любой" &&
+        filters.therapyType !== ANY_VALUE &&
         p.therapyType !== filters.therapyType
       ) {
         return false;
@@ -204,7 +234,7 @@ export function PsychologistsListPage() {
       // Фильтр подхода
       if (
         filters.approach &&
-        filters.approach !== "Любой" &&
+        filters.approach !== ANY_VALUE &&
         p.approach !== filters.approach
       ) {
         return false;
@@ -213,7 +243,7 @@ export function PsychologistsListPage() {
       // Фильтр языка
       if (
         filters.language &&
-        filters.language !== "Любой" &&
+        filters.language !== ANY_VALUE &&
         p.language !== filters.language
       ) {
         return false;
@@ -222,18 +252,18 @@ export function PsychologistsListPage() {
       // Фильтр времени (если у тебя есть поле time в маппинге)
       if (
         filters.time &&
-        filters.time !== "Любое" &&
+        filters.time !== ANY_VALUE &&
         p.time !== filters.time
       ) {
         return false;
       }
 
       // Фильтр опыта
-      if (filters.experience && filters.experience !== "Любой") {
+      if (filters.experience && filters.experience !== ANY_VALUE) {
         let minYears = 0;
-        if (filters.experience.includes("1")) minYears = 1;
-        if (filters.experience.includes("3")) minYears = 3;
-        if (filters.experience.includes("5")) minYears = 5;
+        if (filters.experience === "from1") minYears = 1;
+        if (filters.experience === "from3") minYears = 3;
+        if (filters.experience === "from5") minYears = 5;
 
         if ((p.experienceYears || 0) < minYears) return false;
       }
@@ -263,14 +293,14 @@ export function PsychologistsListPage() {
 
   const currentSortLabel =
     sortOptions.find((o) => o.key === sortMode)?.label ||
-    "Самые просматриваемые";
+    t("psychologistsList.sort.popular");
 
   return (
     <MainLayout>
       <div className="w-full px-4 lg:px-12 xl:px-[72px] py-10">
         {/* Заголовок */}
         <h1 className="font-display text-[32px] md:text-[40px] font-bold text-[#1F98FA]">
-          Поиск специалиста
+          {t("psychologistsList.title")}
         </h1>
 
         {/* Верх: хлебные крошки, поиск, сортировка */}
@@ -280,10 +310,12 @@ export function PsychologistsListPage() {
               to="/"
               className="hover:text-[#1F98FA] transition-colors"
             >
-              Главная страница
+              {t("psychologistsList.breadcrumbs.home")}
             </Link>
             <span>›</span>
-            <span className="text-[#071A34]">Выбор специалиста</span>
+            <span className="text-[#071A34]">
+              {t("psychologistsList.breadcrumbs.current")}
+            </span>
           </div>
 
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -300,7 +332,7 @@ export function PsychologistsListPage() {
                     setSearchQuery(e.target.value);
                     setVisibleCount(6);
                   }}
-                  placeholder="Джон Дой, Нутрициолог, тревога..."
+                  placeholder={t("psychologistsList.search.placeholder")}
                   className="w-full rounded-full border border-[#D6DEE9] bg-white px-10 py-3 text-[14px] text-[#071A34] outline-none placeholder:text-[#B2BDCC] focus:border-[#1F98FA]"
                 />
               </div>
@@ -309,11 +341,11 @@ export function PsychologistsListPage() {
             {/* Найдено + сортировка */}
             <div className="mt-2 flex items-center justify-between md:mt-0 md:ml-6 md:w-auto">
               <div className="flex items-center gap-1 text-[13px] text-[#B2BDCC]">
-                <span>Найдено</span>
+                <span>{t("psychologistsList.found.prefix")}</span>
                 <span className="font-medium text-[#071A34]">
                   {totalFound}
                 </span>
-                <span>специалистов</span>
+                <span>{t("psychologistsList.found.suffix")}</span>
               </div>
 
               <div className="mx-4 hidden h-8 w-px bg-[#E0E6F0] md:block" />
@@ -363,20 +395,20 @@ export function PsychologistsListPage() {
           <aside className="w-full max-w-[260px] rounded-[32px] bg-white/70 px-6 py-6 shadow-[0_18px_38px_rgba(67,142,229,0.12)]">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-[20px] font-semibold text-[#071A34]">
-                Фильтры
+                {t("psychologistsList.filters.title")}
               </h2>
               <button
                 type="button"
                 onClick={handleResetFilters}
                 className="text-[12px] text-[#9BA6B5] hover:text-[#1F98FA]"
               >
-                Сбросить
+                {t("psychologistsList.filters.reset")}
               </button>
             </div>
 
             {loading && (
               <div className="py-4 text-[13px] text-[#6F7A89]">
-                Загружаем фильтры...
+                {t("psychologistsList.messages.loadingFilters")}
               </div>
             )}
 
@@ -405,18 +437,18 @@ export function PsychologistsListPage() {
                         <div className="mt-3 space-y-2">
                           {group.options.map((opt) => (
                             <button
-                              key={opt}
+                              key={opt.value}
                               type="button"
                               onClick={() =>
-                                handleFilterChange(group.key, opt)
+                                handleFilterChange(group.key, opt.value)
                               }
-                              className={`flex w-full items-center justify-between text-[13px] ${filters[group.key] === opt
+                              className={`flex w-full items-center justify-between text-[13px] ${filters[group.key] === opt.value
                                   ? "text-[#071A34] font-medium"
                                   : "text-[#6F7A89]"
                                 }`}
                             >
-                              <span>{opt}</span>
-                              {filters[group.key] === opt && (
+                              <span>{opt.label}</span>
+                              {filters[group.key] === opt.value && (
                                 <span className="text-[#1F98FA]">•</span>
                               )}
                             </button>
@@ -434,20 +466,19 @@ export function PsychologistsListPage() {
           <section className="flex-1">
             {loading && (
               <div className="rounded-[24px] bg-white/80 p-8 text-center text-[14px] text-[#6F7A89] shadow-sm">
-                Загружаем список специалистов...
+                {t("psychologistsList.messages.loadingList")}
               </div>
             )}
 
             {error && !loading && (
               <div className="rounded-[24px] bg-white/80 p-8 text-center text-[14px] text-red-500 shadow-sm">
-                Ошибка: {error}
+                {t("psychologistsList.messages.errorPrefix")} {error}
               </div>
             )}
 
             {!loading && !error && visiblePsychologists.length === 0 && (
               <div className="rounded-[24px] bg-white/80 p-8 text-center text-[14px] text-[#6F7A89] shadow-sm">
-                По вашему запросу пока ничего не найдено. Попробуйте изменить
-                фильтры или запрос.
+                {t("psychologistsList.messages.empty")}
               </div>
             )}
 
@@ -463,12 +494,10 @@ export function PsychologistsListPage() {
                   <div className="mt-8 flex justify-center">
                     <button
                       type="button"
-                      onClick={() =>
-                        setVisibleCount((prev) => prev + 6)
-                      }
+                      onClick={() => setVisibleCount((prev) => prev + 6)}
                       className="rounded-full border border-[#D6DEE9] bg-white px-8 py-3 text-[14px] text-[#6F7A89] hover:bg-[#F5F7FA]"
                     >
-                      Загрузить ещё
+                      {t("psychologistsList.loadMore")}
                     </button>
                   </div>
                 )}
