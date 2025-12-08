@@ -20,12 +20,13 @@ export function PsychologistCard({ psychologist }) {
     experienceYears,
     therapyType,
     approach,
-    topics = [],       // например: ["Тревога", "Отношения"]
-    tags = [],         // например: ["Гештальт", "Индивидуально"]
-    pricePerHour,      // 💰 вот отсюда берём цену
+    topics = [],
+    tags = [],
+    pricePerHour,
     currency = "сум",
     priceLabel = "сум/час",
     verified,
+    photoUrl,              // <<< новое поле
   } = psychologist;
 
   const { favoriteIds, toggleFavorite } = useFavorites();
@@ -40,20 +41,22 @@ export function PsychologistCard({ psychologist }) {
     .slice(0, 2)
     .toUpperCase();
 
-  // приводим цену к числу на всякий случай
-  const numericPrice =
-    typeof pricePerHour === "number"
-      ? pricePerHour
-      : pricePerHour
-      ? Number(String(pricePerHour).replace(/\s/g, ""))
-      : null;
-
   return (
     <article className="flex h-full w-full max-w-[360px] flex-col rounded-[32px] bg-white px-6 py-6 shadow-[0_18px_38px_rgba(67,142,229,0.16)]">
       {/* ШАПКА */}
       <header className="mb-4 flex items-start gap-4">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#1F98FA] text-[20px] font-semibold text-white">
-          {initials || "П"}
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#1F98FA] overflow-hidden">
+          {photoUrl ? (
+            <img
+              src={photoUrl}
+              alt={name}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <span className="text-[20px] font-semibold text-white">
+              {initials || "П"}
+            </span>
+          )}
         </div>
 
         <div className="flex-1">
@@ -74,16 +77,14 @@ export function PsychologistCard({ psychologist }) {
               type="button"
               onClick={() => toggleFavorite(id)}
               className={`flex h-8 w-8 items-center justify-center rounded-full border text-[#1F98FA] transition
-                ${
-                  isFavorite
-                    ? "border-[#1F98FA] bg-[#E8F4FF]"
-                    : "border-[#D6DEE9] bg-white hover:bg-[#F5F7FA]"
+                ${isFavorite
+                  ? "border-[#1F98FA] bg-[#E8F4FF]"
+                  : "border-[#D6DEE9] bg-white hover:bg-[#F5F7FA]"
                 }`}
             >
               <Heart
-                className={`h-4 w-4 ${
-                  isFavorite ? "fill-[#1F98FA] text-[#1F98FA]" : ""
-                }`}
+                className={`h-4 w-4 ${isFavorite ? "fill-[#1F98FA] text-[#1F98FA]" : ""
+                  }`}
               />
             </button>
           </div>
@@ -99,7 +100,6 @@ export function PsychologistCard({ psychologist }) {
 
       {/* ТЕЛО КАРТОЧКИ */}
       <div className="mb-4 space-y-2 text-[11px] text-[#6F7A89]">
-        {/* Формат / подход */}
         <div className="flex flex-wrap gap-2">
           {therapyType && (
             <span className="rounded-full bg-[#F3F7FF] px-3 py-1 text-[11px] text-[#071A34]">
@@ -113,7 +113,6 @@ export function PsychologistCard({ psychologist }) {
           )}
         </div>
 
-        {/* Темы / запросы */}
         {(topics.length > 0 || tags.length > 0) && (
           <div className="flex flex-wrap gap-2">
             {[...topics, ...tags].slice(0, 6).map((item) => (
@@ -143,9 +142,9 @@ export function PsychologistCard({ psychologist }) {
         </Link>
 
         <div className="text-right">
-          {numericPrice !== null && !Number.isNaN(numericPrice) && (
+          {pricePerHour != null && (
             <div className="text-[16px] font-semibold text-[#071A34]">
-              {numericPrice.toLocaleString("ru-RU")} {currency}
+              {pricePerHour.toLocaleString("ru-RU")} {currency}
             </div>
           )}
           <div className="text-[11px] text-[#9BA6B5]">{priceLabel}</div>

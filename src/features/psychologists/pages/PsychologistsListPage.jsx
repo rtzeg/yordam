@@ -1,12 +1,13 @@
 // src/features/psychologists/pages/PsychologistsListPage.jsx
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Search, ChevronDown } from "lucide-react";
 import { PsychologistCard } from "../components/PsychologistCard.jsx";
-import psychologistsMock from "../mockPsychologists.js";
 import { MainLayout } from "../../../components/layout/MainLayout.jsx";
 
+// ВАЖНО: та функция, которая реально есть в api.js
+import { getPsychologistsFromApi } from "../../../shared/api/api";
 
 const filterConfig = [
   {
@@ -67,6 +68,42 @@ export function PsychologistsListPage() {
   const [sortMenuOpen, setSortMenuOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(6);
 
+  // новые стейты для API
+  const [remoteList, setRemoteList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // грузим психологов из API один раз при монтировании
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      try {
+        setLoading(true);
+        const list = await getPsychologistsFromApi();
+        if (!cancelled) {
+          setRemoteList(list);
+          setError(null);
+        }
+      } catch (e) {
+        if (!cancelled) {
+          console.error(e);
+          setError(e.message || "Ошибка загрузки данных");
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    }
+
+    load();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const toggleSection = (key) => {
     setOpenFilterSections((prev) => ({
       ...prev,
@@ -95,7 +132,8 @@ export function PsychologistsListPage() {
   const filteredAndSorted = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
 
-    let list = psychologistsMock.filter((p) => {
+    // вместо psychologistsMock теперь используем remoteList
+    let list = remoteList.filter((p) => {
       // Поиск по имени, подходу, языку, тегам, темам, возрасту и опыту
       if (query) {
         const haystack = [
@@ -105,8 +143,8 @@ export function PsychologistsListPage() {
           p.language,
           (p.tags || []).join(" "),
           (p.topics || []).join(" "),
-          String(p.experienceYears),
-          String(p.age),
+          String(p.experienceYears ?? ""),
+          String(p.age ?? ""),
         ]
           .join(" ")
           .toLowerCase();
@@ -131,11 +169,7 @@ export function PsychologistsListPage() {
         return false;
       }
 
-      if (
-        filters.time &&
-        filters.time !== "Любое" &&
-        p.time !== filters.time
-      ) {
+      if (filters.time && filters.time !== "Любое" && p.time !== filters.time) {
         return false;
       }
 
@@ -153,7 +187,7 @@ export function PsychologistsListPage() {
         if (filters.experience.includes("3")) minYears = 3;
         if (filters.experience.includes("5")) minYears = 5;
 
-        if (p.experienceYears < minYears) return false;
+        if ((p.experienceYears || 0) < minYears) return false;
       }
 
       return true;
@@ -174,7 +208,7 @@ export function PsychologistsListPage() {
     }
 
     return list;
-  }, [searchQuery, filters, sortMode]);
+  }, [searchQuery, filters, sortMode, remoteList]);
 
   const totalFound = filteredAndSorted.length;
   const visiblePsychologists = filteredAndSorted.slice(0, visibleCount);
@@ -185,20 +219,14 @@ export function PsychologistsListPage() {
 
   return (
     <MainLayout>
-      {/* контейнер на всю ширину, без max-w, только паддинги */}
       <div className="w-full px-4 lg:px-12 xl:px-[72px] py-10">
-        {/* Заголовок */}
         <h1 className="font-display text-[32px] md:text-[40px] font-bold text-[#1F98FA]">
           Поиск специалиста
         </h1>
 
-        {/* Верх: хлебные крошки, поиск, сортировка */}
         <div className="mt-4 border-b border-[#46A9FF] pb-5">
           <div className="mb-3 flex items-center gap-1 text-[13px] text-[#9BA6B5]">
-            <Link
-              to="/"
-              className="hover:text-[#1F98FA] transition-colors"
-            >
+            <Link to="/" className="hover:text-[#1F98FA] transition-colors">
               Главная страница
             </Link>
             <span>›</span>
@@ -206,7 +234,6 @@ export function PsychologistsListPage() {
           </div>
 
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            {/* Поиск */}
             <div className="flex-1">
               <div className="relative">
                 <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#9BA6B5]">
@@ -225,7 +252,6 @@ export function PsychologistsListPage() {
               </div>
             </div>
 
-            {/* Найдено + фильтр сортировки */}
             <div className="mt-2 flex items-center justify-between md:mt-0 md:ml-6 md:w-auto">
               <div className="flex items-center gap-1 text-[13px] text-[#B2BDCC]">
                 <span>Найдено</span>
@@ -258,11 +284,10 @@ export function PsychologistsListPage() {
                           setSortMenuOpen(false);
                           setVisibleCount(6);
                         }}
-                        className={`flex w-full items-center justify-between px-4 py-3 text-[13px] text-left ${
-                          sortMode === opt.key
+                        className={`flex w-full items-center justify-between px-4 py-3 text-[13px] text-left ${sortMode === opt.key
                             ? "bg-[#ECF7FF] text-[#1F98FA]"
                             : "hover:bg-[#F5F7FA]"
-                        }`}
+                          }`}
                       >
                         <span>{opt.label}</span>
                         {sortMode === opt.key && (
@@ -277,9 +302,7 @@ export function PsychologistsListPage() {
           </div>
         </div>
 
-        {/* Контент: фильтры + карточки */}
         <div className="mt-8 flex flex-col gap-8 lg:flex-row">
-          {/* Левая колонка: фильтры */}
           <aside className="w-full max-w-[260px] rounded-[32px] bg-white/70 px-6 py-6 shadow-[0_18px_38px_rgba(67,142,229,0.12)]">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-[20px] font-semibold text-[#071A34]">
@@ -309,9 +332,8 @@ export function PsychologistsListPage() {
                         {group.label}
                       </span>
                       <ChevronDown
-                        className={`h-4 w-4 text-[#9BA6B5] transition-transform ${
-                          isOpen ? "rotate-180" : ""
-                        }`}
+                        className={`h-4 w-4 text-[#9BA6B5] transition-transform ${isOpen ? "rotate-180" : ""
+                          }`}
                       />
                     </button>
 
@@ -324,11 +346,10 @@ export function PsychologistsListPage() {
                             onClick={() =>
                               handleFilterChange(group.key, opt)
                             }
-                            className={`flex w-full items-center justify-between text-[13px] ${
-                              filters[group.key] === opt
+                            className={`flex w-full items-center justify-between text-[13px] ${filters[group.key] === opt
                                 ? "text-[#071A34] font-medium"
                                 : "text-[#6F7A89]"
-                            }`}
+                              }`}
                           >
                             <span>{opt}</span>
                             {filters[group.key] === opt && (
@@ -344,14 +365,27 @@ export function PsychologistsListPage() {
             </div>
           </aside>
 
-          {/* Правая колонка: карточки */}
           <section className="flex-1">
-            {visiblePsychologists.length === 0 ? (
+            {loading && (
+              <div className="rounded-[24px] bg-white/80 p-8 text-center text-[14px] text-[#6F7A89] shadow-sm">
+                Загружаем список специалистов...
+              </div>
+            )}
+
+            {!loading && error && (
+              <div className="rounded-[24px] bg-white/80 p-8 text-center text-[14px] text-[#DC2626] shadow-sm">
+                Ошибка: {error}
+              </div>
+            )}
+
+            {!loading && !error && visiblePsychologists.length === 0 && (
               <div className="rounded-[24px] bg-white/80 p-8 text-center text-[14px] text-[#6F7A89] shadow-sm">
                 По вашему запросу пока ничего не найдено. Попробуйте изменить
                 фильтры или запрос.
               </div>
-            ) : (
+            )}
+
+            {!loading && !error && visiblePsychologists.length > 0 && (
               <>
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3 justify-items-center xl:justify-items-start">
                   {visiblePsychologists.map((p) => (

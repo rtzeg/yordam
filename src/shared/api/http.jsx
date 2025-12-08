@@ -1,16 +1,20 @@
-// src/shared/http.jsx
+// src/shared/api/http.jsx
 import axios from "axios";
 
-const apiClient = axios.create({
-  baseURL: "/api", // это уйдёт в прокси
-  timeout: 15000,
+export const api = axios.create({
+  baseURL: "/api", 
+  headers: {
+    "Content-Type": "application/json",
+  },
+  withCredentials: false,
 });
 
-export async function fetchPsychologists() {
-  // Итоговый URL на фронте:
-  //   /api/ru/api/v1/yordam/psychologists
-  // Итоговый URL на бэке (после rewrite):
-  //   https://api.yordam.glob.uz/ru/api/v1/yordam/psychologists
-  const res = await apiClient.get("/ru/api/v1/yordam/psychologists/");
-  return res.data;
-}
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    console.error("API error:", error);
+    throw error;
+  }
+);
+
+export default api;

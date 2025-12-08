@@ -1,41 +1,54 @@
 // src/pages/TestApiPage.jsx
 import { useEffect, useState } from "react";
-import { fetchPsychologists } from "../shared/api/http";
+// ВАЖНО: тут именно getPsychologistsFromApi
+import { getPsychologistsFromApi } from "../shared/api/api";
 
 export function TestApiPage() {
-    const [data, setData] = useState(null);
-    const [error, setError] = useState("");
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
 
-    useEffect(() => {
-        (async () => {
-            try {
-                setError("");
-                const res = await fetchPsychologists();
-                setData(res);
-            } catch (e) {
-                console.error(e);
-                setError(
-                    e?.response
-                        ? `Ошибка: ${e.response.status} ${e.response.statusText}`
-                        : `Ошибка: ${e.message}`
-                );
-            }
-        })();
-    }, []);
+  useEffect(() => {
+    async function load() {
+      try {
+        const list = await getPsychologistsFromApi();
+        setData(list);
+      } catch (e) {
+        console.error(e);
+        setError(e.message || "Ошибка");
+      }
+    }
 
+    load();
+  }, []);
+
+  if (error) {
     return (
-        <div className="min-h-screen bg-[#E7F4FF] p-6 text-[#071A34]">
-            <h1 className="mb-4 text-2xl font-display">Тест API Yordam</h1>
-
-            {error && <p className="text-red-500 mb-4">{error}</p>}
-
-            {data && (
-                <pre className="max-h-[70vh] overflow-auto rounded-xl bg-slate-900 p-4 text-xs text-slate-100">
-                    {JSON.stringify(data, null, 2)}
-                </pre>
-            )}
-        </div>
+      <div className="min-h-screen bg-[#E6F3FF] p-8 font-display text-[#071A34]">
+        <h1 className="mb-4 text-2xl font-semibold">Test API Yordam</h1>
+        <p className="text-red-500">Ошибка: {error}</p>
+      </div>
     );
+  }
+
+  if (!data) {
+    return (
+      <div className="min-h-screen bg-[#E6F3FF] p-8 font-display text-[#071A34]">
+        <h1 className="mb-4 text-2xl font-semibold">Test API Yordam</h1>
+        <p>Загрузка...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#0B1220] p-4 text-[#E5E7EB]">
+      <h1 className="mb-4 text-2xl font-semibold text-[#38BDF8]">
+        Test API Yordam
+      </h1>
+      <pre className="max-h-[90vh] overflow-auto rounded-xl bg-[#020617] p-4 text-[12px] leading-relaxed">
+        {JSON.stringify(data, null, 2)}
+      </pre>
+    </div>
+  );
 }
 
 export default TestApiPage;
