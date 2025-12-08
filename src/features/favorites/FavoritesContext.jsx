@@ -1,5 +1,12 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { useAuth } from "../auth/AuthContext";
+// src/features/favorites/FavoritesContext.jsx
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { useAuth } from "../auth/AuthContext.jsx";
 
 const FavoritesContext = createContext(null);
 
@@ -7,20 +14,22 @@ function getStorageKey(user) {
   return user ? `psyuz_favorites_${user.id}` : "psyuz_favorites_guest";
 }
 
+function normalizeId(id) {
+  return String(id);
+}
+
 export function FavoritesProvider({ children }) {
   const { user } = useAuth();
   const storageKey = useMemo(() => getStorageKey(user), [user]);
-
   const [favoriteIds, setFavoriteIds] = useState([]);
 
-  // загрузка избранного из localStorage при смене пользователя
   useEffect(() => {
     try {
       const raw = localStorage.getItem(storageKey);
       if (raw) {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed)) {
-          setFavoriteIds(parsed);
+          setFavoriteIds(parsed.map((id) => normalizeId(id)));
         } else {
           setFavoriteIds([]);
         }
@@ -33,7 +42,6 @@ export function FavoritesProvider({ children }) {
     }
   }, [storageKey]);
 
-  // сохранение
   useEffect(() => {
     try {
       localStorage.setItem(storageKey, JSON.stringify(favoriteIds));
@@ -43,12 +51,19 @@ export function FavoritesProvider({ children }) {
   }, [favoriteIds, storageKey]);
 
   const toggleFavorite = (id) => {
+    const normId = normalizeId(id);
+
     setFavoriteIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+      prev.includes(normId)
+        ? prev.filter((x) => x !== normId)
+        : [...prev, normId]
     );
   };
 
-  const isFavorite = (id) => favoriteIds.includes(id);
+  const isFavorite = (id) => {
+    const normId = normalizeId(id);
+    return favoriteIds.includes(normId);
+  };
 
   return (
     <FavoritesContext.Provider
@@ -61,6 +76,8 @@ export function FavoritesProvider({ children }) {
 
 export function useFavorites() {
   const ctx = useContext(FavoritesContext);
-  if (!ctx) throw new Error("useFavorites must be used inside FavoritesProvider");
+  if (!ctx) {
+    throw new Error("useFavorites must be used inside FavoritesProvider");
+  }
   return ctx;
 }

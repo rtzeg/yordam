@@ -1,12 +1,11 @@
 // src/features/psychologists/pages/PsychologistDetailPage.jsx
-
-import { useMemo, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Heart, ArrowLeft, ArrowRight } from "lucide-react";
 
 import { MainLayout } from "../../../components/layout/MainLayout.jsx";
-import psychologistsMock from "../mockPsychologists.js";
 import { useFavorites } from "../../favorites/FavoritesContext.jsx";
+import { getPsychologistsList } from "../../../shared/api/api";
 
 function getYearsLabel(years = 0) {
   if (years % 10 === 1 && years % 100 !== 11) return `${years} год`;
@@ -16,7 +15,6 @@ function getYearsLabel(years = 0) {
   return `${years} лет`;
 }
 
-// моковые отзывы для блока «Отзывы»
 const mockReviews = [
   {
     id: 1,
@@ -49,10 +47,65 @@ export function PsychologistDetailPage() {
   const { favoriteIds, toggleFavorite } = useFavorites();
   const reviewsRef = useRef(null);
 
-  const psychologist = useMemo(
-    () => psychologistsMock.find((p) => String(p.id) === String(id)),
-    [id]
-  );
+  const [psychologist, setPsychologist] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const list = await getPsychologistsList();
+        const found = list.find((p) => String(p.id) === String(id));
+
+        if (!cancelled) {
+          setPsychologist(found || null);
+        }
+      } catch (e) {
+        if (!cancelled) {
+          console.error(e);
+          setError(e?.message || "Ошибка загрузки данных");
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    }
+
+    load();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [id]);
+
+  if (loading) {
+    return (
+      <MainLayout>
+        <div className="w-full px-4 lg:px-12 xl:px-[72px] py-10">
+          <p className="text-[#071A34] text-[16px]">Загружаем специалиста...</p>
+        </div>
+      </MainLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <MainLayout>
+        <div className="w-full px-4 lg:px-12 xl:px-[72px] py-10">
+          <p className="text-[16px] text-red-500 mb-3">Ошибка: {error}</p>
+          <Link to="/psychologists" className="text-[#1F98FA] underline">
+            Вернуться к списку
+          </Link>
+        </div>
+      </MainLayout>
+    );
+  }
 
   if (!psychologist) {
     return (
@@ -83,9 +136,12 @@ export function PsychologistDetailPage() {
     verified,
     education = [],
     certificates = [],
+    photoUrl,
   } = psychologist;
 
-  const isFavorite = favoriteIds.includes(psychologist.id);
+  const isFavorite =
+    favoriteIds.includes(String(psychologist.id)) ||
+    favoriteIds.includes(psychologist.id);
 
   const initials = name
     ?.trim()
@@ -113,10 +169,8 @@ export function PsychologistDetailPage() {
 
   return (
     <MainLayout>
-      {/* Чуть больше воздуха сверху/снизу и центрируем контент по max-width */}
       <div className="w-full px-4 lg:px-10 xl:px-12 py-12">
         <div className="mx-auto max-w-[1320px]">
-          {/* Хлебные крошки */}
           <div className="mb-5 flex flex-wrap items-center gap-1 text-[13px] text-[#9BA6B5]">
             <Link to="/" className="hover:text-[#1F98FA] transition-colors">
               Главная страница
@@ -134,19 +188,24 @@ export function PsychologistDetailPage() {
             </span>
           </div>
 
-          {/* Заголовок страницы */}
           <h1 className="mb-8 font-display text-[32px] md:text-[38px] text-[#1F98FA] leading-tight">
             Страница специалиста
           </h1>
 
-          {/* Основной блок профиля */}
           <section className="rounded-[40px] bg-white px-7 py-8 md:px-10 md:py-10 shadow-[0_26px_70px_rgba(67,142,229,0.16)] flex flex-col lg:flex-row gap-10 lg:gap-14">
-            {/* Левая колонка: аватар, действия */}
             <div className="w-full max-w-[280px] flex flex-col items-center lg:items-start gap-4">
               <div className="flex h-[240px] w-[240px] items-center justify-center rounded-[40px] bg-[#F3F7FF] overflow-hidden">
-                <div className="flex h-[190px] w-[190px] items-center justify-center rounded-full bg-[#1F98FA] text-[60px] font-semibold text-white">
-                  {initials || "П"}
-                </div>
+                {photoUrl ? (
+                  <img
+                    src={photoUrl}
+                    alt={name}
+                    className="h-[240px] w-[240px] object-cover"
+                  />
+                ) : (
+                  <div className="flex h-[190px] w-[190px] items-center justify-center rounded-full bg-[#1F98FA] text-[60px] font-semibold text-white">
+                    {initials || "П"}
+                  </div>
+                )}
               </div>
 
               <button
@@ -159,14 +218,18 @@ export function PsychologistDetailPage() {
               <button
                 type="button"
                 onClick={() => toggleFavorite(psychologist.id)}
-                className={`mt-1 flex w-full items-center justify-center gap-2 rounded-full border py-2.5 text-[13px] transition ${isFavorite
+                className={`mt-1 flex w-full items-center justify-center gap-2 rounded-full border py-2.5 text-[13px] transition ${
+                  isFavorite
                     ? "border-[#1F98FA] bg-[#E8F4FF] text-[#1F98FA]"
                     : "border-[#D6DEE9] bg-white text-[#071A34] hover:bg-[#F5F7FA]"
-                  }`}
+                }`}
               >
                 <Heart
-                  className={`h-4 w-4 ${isFavorite ? "fill-[#1F98FA] text-[#1F98FA]" : "text-[#1F98FA]"
-                    }`}
+                  className={`h-4 w-4 ${
+                    isFavorite
+                      ? "fill-[#1F98FA] text-[#1F98FA]"
+                      : "text-[#1F98FA]"
+                  }`}
                 />
                 <span>
                   {isFavorite ? "В избранном" : "Добавить в избранное"}
@@ -174,7 +237,6 @@ export function PsychologistDetailPage() {
               </button>
             </div>
 
-            {/* Правая колонка: информация */}
             <div className="flex-1">
               <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                 <div className="max-w-[640px]">
@@ -205,7 +267,6 @@ export function PsychologistDetailPage() {
                 </div>
               </div>
 
-              {/* Описание */}
               <div className="mt-6">
                 <h3 className="mb-2 text-[14px] font-semibold text-[#071A34]">
                   Обо мне
@@ -216,7 +277,6 @@ export function PsychologistDetailPage() {
                 </p>
               </div>
 
-              {/* Подход и форматы */}
               <div className="mt-6">
                 <h3 className="mb-2 text-[14px] font-semibold text-[#071A34]">
                   Психологический подход к работе
@@ -244,32 +304,90 @@ export function PsychologistDetailPage() {
                 </div>
               </div>
 
-              {/* Образование / Сертификаты */}
               <section className="mt-8 mb-4">
                 <h3 className="mb-3 text-[14px] font-semibold text-[#071A34]">
                   Образование
                 </h3>
-                <div className="grid gap-5 md:grid-cols-2 text-[13px] text-[#4A5568]">
-                  <div>
-                    <p>ФГБОУ ВО Амурская ГМА • 2019</p>
-                    <p>Лечебное дело, очная форма</p>
-                    <button className="mt-1 text-[12px] text-[#1F98FA] underline underline-offset-4">
-                      Ссылка на документ →
-                    </button>
+
+                {education.length === 0 ? (
+                  <p className="text-[13px] text-[#6F7A89]">
+                    Информация об образовании будет добавлена позже.
+                  </p>
+                ) : (
+                  <div className="grid gap-5 md:grid-cols-2 text-[13px] text-[#4A5568]">
+                    {education.map((edu) => (
+                      <div key={edu.id}>
+                        <p>
+                          {edu.institution}
+                          {edu.endYear && <> • {edu.endYear}</>}
+                        </p>
+                        {edu.degree && <p>{edu.degree}</p>}
+                        {edu.years && (
+                          <p className="text-[12px] text-[#6F7A89]">
+                            {edu.years}
+                          </p>
+                        )}
+                        {edu.documentUrl && (
+                          <a
+                            href={edu.documentUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="mt-1 inline-block text-[12px] text-[#1F98FA] underline underline-offset-4"
+                          >
+                            Ссылка на документ →
+                          </a>
+                        )}
+                      </div>
+                    ))}
                   </div>
-                  <div>
-                    <p>АНО ДПО “ПК Профи” • 2019</p>
-                    <p>Психиатрия, очная форма</p>
-                    <button className="mt-1 text-[12px] text-[#1F98FA] underline underline-offset-4">
-                      Ссылка на документ →
-                    </button>
+                )}
+              </section>
+
+              <section className="mt-6 mb-4">
+                <h3 className="mb-3 text-[14px] font-semibold text-[#071A34]">
+                  Сертификаты
+                </h3>
+
+                {certificates.length === 0 ? (
+                  <p className="text-[13px] text-[#6F7A89]">
+                    Информация о сертификатах будет добавлена позже.
+                  </p>
+                ) : (
+                  <div className="grid gap-5 md:grid-cols-2 text-[13px] text-[#4A5568]">
+                    {certificates.map((cert) => (
+                      <div key={cert.id}>
+                        <p>
+                          {cert.name}
+                          {cert.issuer && <> • {cert.issuer}</>}
+                        </p>
+                        {cert.issueDate && (
+                          <p className="text-[12px] text-[#6F7A89]">
+                            Выдан: {cert.issueDate}
+                          </p>
+                        )}
+                        {cert.expiryDate && (
+                          <p className="text-[12px] text-[#6F7A89]">
+                            Действителен до: {cert.expiryDate}
+                          </p>
+                        )}
+                        {cert.documentUrl && (
+                          <a
+                            href={cert.documentUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="mt-1 inline-block text-[12px] text-[#1F98FA] underline underline-offset-4"
+                          >
+                            Ссылка на документ →
+                          </a>
+                        )}
+                      </div>
+                    ))}
                   </div>
-                </div>
+                )}
               </section>
             </div>
           </section>
 
-          {/* Блок отзывов */}
           <section className="mt-12">
             <div className="mb-5 flex items-center justify-between">
               <h2 className="font-display text-[26px] md:text-[30px] text-[#1F98FA]">
