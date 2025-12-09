@@ -1,5 +1,6 @@
 // src/shared/api/api.js
 import { api } from "./http";
+import { getApiPrefix } from "../i18n/apiLang"; // вот это ты добавлял для /ru /uz /en
 
 // посчитать возраст по дате рождения "1993-11-05"
 function calcAge(dateStr) {
@@ -39,7 +40,9 @@ function pickMainPrice(prices = []) {
 }
 
 export async function getPsychologistsFromApi() {
-  const response = await api.get("/ru/api/v1/yordam/psychologists/");
+  const prefix = getApiPrefix(); // "/ru/api/v1" | "/uz/api/v1" | "/en/api/v1"
+
+  const response = await api.get(`${prefix}/yordam/psychologists/`);
   const data = response.data;
 
   const list = Array.isArray(data) ? data : data.results || [];
@@ -72,8 +75,7 @@ export async function getPsychologistsFromApi() {
 
       pricePerHour,
       currency,
-      priceLabel:
-        pricePerHour != null ? `${currency}/час` : null,
+      priceLabel: pricePerHour != null ? `${currency}/час` : null,
 
       verified: item.status === "published",
 
