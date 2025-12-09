@@ -1,7 +1,7 @@
 // src/pages/ForPsychologistsPage.jsx
 import { useState } from "react";
 import { MainLayout } from "../components/layout/MainLayout";
-import psyHero from "../assets/images/psy.png";
+import psyHero from "../assets/images/forpsy.svg";
 import {
     GraduationCap,
     BookOpenCheck,

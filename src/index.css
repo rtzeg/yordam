@@ -95,3 +95,59 @@ body {
     opacity: 1;
   }
 }
+
+/* Общий контейнер */
+.notfound-illustration {
+  width: 220px;
+}
+
+@media (min-width: 768px) {
+  .notfound-illustration {
+    width: 320px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .notfound-illustration {
+    width: 380px;
+  }
+}
+
+
+/* Анимация прорисовки контуров */
+.notfound-illustration path {
+  stroke: #191919;           /* контур */
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  /* магия "рисования" */
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: notfound-draw 1.8s ease-out forwards;
+}
+
+/* Можно слегка рандомизировать задержку для разных путей */
+.notfound-illustration path:nth-of-type(2n) {
+  animation-delay: 0.15s;
+}
+.notfound-illustration path:nth-of-type(3n) {
+  animation-delay: 0.3s;
+}
+
+@keyframes notfound-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.notfound-illustration path {
+  fill-opacity: 0;
+  animation: notfound-draw 1.4s ease-out forwards,
+             notfound-fill 0.4s ease-out forwards 1.4s;
+}
+
+@keyframes notfound-fill {
+  from { fill-opacity: 0; }
+  to   { fill-opacity: 1; }
+}

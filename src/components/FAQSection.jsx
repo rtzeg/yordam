@@ -1,43 +1,16 @@
+// src/components/FAQSection.jsx
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
-import roundFaq from "../assets/images/roundfaq.png"; // проверь путь к картинке
+import { useTranslation } from "react-i18next";
+import roundFaq from "../assets/images/roundfaq.png";
 
-const faqs = [
-  {
-    question: "Есть ли бесплатный пробный период?",
-    answer:
-      "Да, вы можете попробовать сервис бесплатно в течение 30 дней. При желании мы проведём для вас бесплатную персональную 30-минутную консультацию, чтобы помочь начать как можно быстрее.",
-  },
-  {
-    question: "Есть ли бесплатный пробный период?",
-    answer:
-      "Да, вы можете попробовать сервис бесплатно в течение 30 дней. При желании мы проведём для вас бесплатную персональную 30-минутную консультацию, чтобы помочь начать как можно быстрее.",
-  },
-  {
-    question: "Есть ли бесплатный пробный период?",
-    answer:
-      "Да, вы можете попробовать сервис бесплатно в течение 30 дней. При желании мы проведём для вас бесплатную персональную 30-минутную консультацию, чтобы помочь начать как можно быстрее.",
-  },
-  {
-    question: "Могу ли я изменить тариф позже?",
-    answer:
-      "Да, вы можете в любой момент перейти на другой тариф в настройках аккаунта.",
-  },
-  {
-    question: "Какая у вас политика отмены?",
-    answer:
-      "Вы можете отменить подписку в любое время. Она будет активна до конца оплаченного периода.",
-  },
-  {
-    question: "Как связаться с поддержкой?",
-    answer:
-      "Вы можете написать нам через раздел «Контакты» или по email support@example.com.",
-  },
-];
-
-// ИМЕНОВАННЫЙ export
 export function FAQSection() {
+  const { t } = useTranslation();
+
+  // t(..., { returnObjects: true }) чтобы получить массив объектов из i18n
+  const faqs = t("faqSection.items", { returnObjects: true }) || [];
+
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggle = (index) => {
@@ -48,19 +21,17 @@ export function FAQSection() {
     <section className="mx-auto max-w-[1296px] px-4 lg:px-0 py-16">
       {/* Заголовок с картинкой-овалом */}
       <div className="relative inline-block mb-10">
-        {/* Картинка-овал */}
         <img
           src={roundFaq}
           alt=""
           className="pointer-events-none select-none absolute -top-4 left-[85px] h-[72px] w-auto"
         />
 
-        {/* Текст поверх */}
         <span className="font-display text-[32px] md:text-[40px] font-bold text-[#1F98FA]">
-          Частые{" "}
+          {t("faqSection.title.part1")}{" "}
         </span>
         <span className="font-display text-[32px] md:text-[40px] font-bold text-[#000000] relative z-10">
-          вопросы
+          {t("faqSection.title.part2")}
         </span>
       </div>
 
@@ -82,11 +53,10 @@ export function FAQSection() {
               {/* Карточка */}
               <motion.div
                 layout
-                className={`relative overflow-hidden rounded-[20px] border bg-white transition-colors ${
-                  isOpen
+                className={`relative overflow-hidden rounded-[20px] border bg-white transition-colors ${isOpen
                     ? "border-transparent shadow-[0_0_40px_rgba(31,152,250,0.16)]"
                     : "border-[#E4EDF5] shadow-sm"
-                }`}
+                  }`}
               >
                 <button
                   type="button"
@@ -133,5 +103,4 @@ export function FAQSection() {
   );
 }
 
-// default-export на всякий случай, если где-то захочешь импортировать без фигурных скобок
 export default FAQSection;

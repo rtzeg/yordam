@@ -183,12 +183,12 @@ export function PsychologistDetailPage() {
           <section className="rounded-[40px] bg-white px-7 py-8 md:px-10 md:py-10 shadow-[0_26px_70px_rgba(67,142,229,0.16)] flex flex-col lg:flex-row gap-10 lg:gap-14">
             {/* Левая колонка: фото + кнопки */}
             <div className="w-full max-w-[280px] flex flex-col items-center lg:items-start gap-4">
-              <div className="flex h-[240px] w-[240px] items-center justify-center rounded-[40px] bg-[#F3F7FF] overflow-hidden">
+              <div className="flex h-[280px] w-[280px] items-center justify-center rounded-[40px] bg-[#F3F7FF] overflow-hidden">
                 {photoUrl ? (
                   <img
                     src={photoUrl}
                     alt={name}
-                    className="h-[240px] w-[240px] object-cover"
+                    className="h-[280px] w-[280px] object-cover"
                   />
                 ) : (
                   <div className="flex h-[190px] w-[190px] items-center justify-center rounded-full bg-[#1F98FA] text-[60px] font-semibold text-white">

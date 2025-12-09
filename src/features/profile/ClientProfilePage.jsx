@@ -1,6 +1,10 @@
+// src/features/profile/ClientProfilePage.jsx
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function ClientProfilePage() {
+    const { t } = useTranslation();
+
     const [birthDate, setBirthDate] = useState("");
     const [about, setAbout] = useState("");
     const [goal, setGoal] = useState("therapy");
@@ -10,9 +14,7 @@ export default function ClientProfilePage() {
 
     const toggleTopic = (value) => {
         setTopics((prev) =>
-            prev.includes(value)
-                ? prev.filter((v) => v !== value)
-                : [...prev, value]
+            prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
         );
     };
 
@@ -30,26 +32,28 @@ export default function ClientProfilePage() {
     };
 
     const topicOptions = [
-        { value: "relationships", label: "Отношения" },
-        { value: "self-esteem", label: "Самооценка" },
-        { value: "anxiety", label: "Тревога" },
-        { value: "burnout", label: "Выгорание" },
-        { value: "career", label: "Карьера / учёба" },
-        { value: "other", label: "Другое" },
+        { value: "relationships", label: t("clientProfilePage.topics.options.relationships") },
+        { value: "self-esteem", label: t("clientProfilePage.topics.options.selfEsteem") },
+        { value: "anxiety", label: t("clientProfilePage.topics.options.anxiety") },
+        { value: "burnout", label: t("clientProfilePage.topics.options.burnout") },
+        { value: "career", label: t("clientProfilePage.topics.options.career") },
+        { value: "other", label: t("clientProfilePage.topics.options.other") },
     ];
 
     return (
         <div className="rounded-3xl bg-white px-8 py-8 shadow-[0_24px_60px_rgba(2,45,98,0.08)]">
-            <h2 className="mb-2 text-2xl font-display text-[#071A34]">Личные вопросы</h2>
+            <h2 className="mb-2 text-2xl font-display text-[#071A34]">
+                {t("clientProfilePage.title")}
+            </h2>
             <p className="mb-6 text-sm text-slate-500">
-                Эти ответы помогут подобрать психолога и подготовиться к первой сессии.
+                {t("clientProfilePage.intro")}
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-8">
                 {/* Дата рождения */}
                 <div>
                     <label className="mb-2 block text-sm font-medium text-slate-700">
-                        Дата рождения
+                        {t("clientProfilePage.birthDate.label")}
                     </label>
                     <input
                         type="date"
@@ -62,12 +66,12 @@ export default function ClientProfilePage() {
                 {/* О себе */}
                 <div>
                     <label className="mb-2 block text-sm font-medium text-slate-700">
-                        Расскажите о себе
+                        {t("clientProfilePage.about.label")}
                     </label>
                     <textarea
                         value={about}
                         onChange={(e) => setAbout(e.target.value)}
-                        placeholder="Небольшой автопортрет..."
+                        placeholder={t("clientProfilePage.about.placeholder")}
                         rows={5}
                         className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none ring-sky-100 focus:bg-white focus:ring-2"
                     />
@@ -76,7 +80,7 @@ export default function ClientProfilePage() {
                 {/* Цель обращения */}
                 <section>
                     <h3 className="mb-2 text-sm font-semibold text-slate-800">
-                        С какой целью вы обратились к нам?
+                        {t("clientProfilePage.goal.title")}
                     </h3>
                     <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                         <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-700">
@@ -88,7 +92,7 @@ export default function ClientProfilePage() {
                                 onChange={() => setGoal("therapy")}
                                 className="h-4 w-4 accent-[#1F98FA]"
                             />
-                            Регулярная терапия
+                            {t("clientProfilePage.goal.options.therapy")}
                         </label>
                         <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-700">
                             <input
@@ -99,7 +103,7 @@ export default function ClientProfilePage() {
                                 onChange={() => setGoal("single")}
                                 className="h-4 w-4 accent-[#1F98FA]"
                             />
-                            Разовая консультация
+                            {t("clientProfilePage.goal.options.single")}
                         </label>
                         <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-700">
                             <input
@@ -110,7 +114,7 @@ export default function ClientProfilePage() {
                                 onChange={() => setGoal("diagnostic")}
                                 className="h-4 w-4 accent-[#1F98FA]"
                             />
-                            Диагностика / второе мнение
+                            {t("clientProfilePage.goal.options.diagnostic")}
                         </label>
                         <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-700">
                             <input
@@ -121,7 +125,7 @@ export default function ClientProfilePage() {
                                 onChange={() => setGoal("other")}
                                 className="h-4 w-4 accent-[#1F98FA]"
                             />
-                            Другое
+                            {t("clientProfilePage.goal.options.other")}
                         </label>
                     </div>
                 </section>
@@ -129,10 +133,10 @@ export default function ClientProfilePage() {
                 {/* Что беспокоит */}
                 <div>
                     <h3 className="mb-1 text-sm font-semibold text-slate-800">
-                        Что вас сейчас больше всего беспокоит?
+                        {t("clientProfilePage.mainConcern.title")}
                     </h3>
                     <p className="mb-2 text-xs text-slate-500">
-                        Постоянная тревога, сложности в отношениях, потеря мотивации и т.д.
+                        {t("clientProfilePage.mainConcern.hint")}
                     </p>
                     <textarea
                         value={mainConcern}
@@ -145,10 +149,10 @@ export default function ClientProfilePage() {
                 {/* Темы */}
                 <section>
                     <h3 className="mb-1 text-sm font-semibold text-slate-800">
-                        Темы, которые хотите обсудить
+                        {t("clientProfilePage.topics.title")}
                     </h3>
                     <p className="mb-2 text-xs text-slate-500">
-                        Можно выбрать несколько вариантов
+                        {t("clientProfilePage.topics.hint")}
                     </p>
                     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
                         {topicOptions.map((topic) => {
@@ -175,7 +179,7 @@ export default function ClientProfilePage() {
                 {/* Раньше обращались? */}
                 <section>
                     <h3 className="mb-2 text-sm font-semibold text-slate-800">
-                        Вы раньше обращались к психологу?
+                        {t("clientProfilePage.visitedBefore.title")}
                     </h3>
                     <div className="space-y-2">
                         <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-700">
@@ -187,7 +191,7 @@ export default function ClientProfilePage() {
                                 onChange={() => setVisitedBefore("no")}
                                 className="h-4 w-4 accent-[#1F98FA]"
                             />
-                            Нет, это впервые
+                            {t("clientProfilePage.visitedBefore.options.no")}
                         </label>
                         <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-700">
                             <input
@@ -198,7 +202,7 @@ export default function ClientProfilePage() {
                                 onChange={() => setVisitedBefore("yes-now")}
                                 className="h-4 w-4 accent-[#1F98FA]"
                             />
-                            Да, хожу сейчас
+                            {t("clientProfilePage.visitedBefore.options.yesNow")}
                         </label>
                         <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-700">
                             <input
@@ -209,7 +213,7 @@ export default function ClientProfilePage() {
                                 onChange={() => setVisitedBefore("yes-before")}
                                 className="h-4 w-4 accent-[#1F98FA]"
                             />
-                            Да, обращался(ась) раньше
+                            {t("clientProfilePage.visitedBefore.options.yesBefore")}
                         </label>
                     </div>
                 </section>
@@ -219,10 +223,11 @@ export default function ClientProfilePage() {
                         type="submit"
                         className="rounded-full bg-[#1F98FA] px-8 py-3 text-sm font-semibold text-white shadow-[0_14px_40px_rgba(31,152,250,0.45)] hover:bg-[#0f80d6] transition-colors"
                     >
-                        Далее
+                        {t("clientProfilePage.submit.next")}
                     </button>
                 </div>
             </form>
         </div>
     );
 }
+    

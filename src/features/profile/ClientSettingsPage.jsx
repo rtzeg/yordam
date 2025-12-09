@@ -1,10 +1,12 @@
 // src/features/profile/ClientSettingsPage.jsx
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useAuth } from "../auth/AuthContext";
+import { useTranslation } from "react-i18next";
 
 export function ClientSettingsPage() {
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   const [fullName, setFullName] = useState(user?.fullName || "");
   const [email, setEmail] = useState(user?.email || "");
@@ -18,6 +20,12 @@ export function ClientSettingsPage() {
   });
   const [passwordError, setPasswordError] = useState("");
   const [passwordSuccess, setPasswordSuccess] = useState(false);
+
+  // Аватар
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState("");
+  const [avatarError, setAvatarError] = useState("");
+  const fileInputRef = useRef(null);
 
   const handlePasswordFieldChange = (e) => {
     const { name, value } = e.target;
@@ -34,23 +42,27 @@ export function ClientSettingsPage() {
     const { currentPassword, newPassword, confirmPassword } = passwordData;
 
     if (!currentPassword || !newPassword || !confirmPassword) {
-      setPasswordError("Заполните все поля для смены пароля.");
+      setPasswordError(
+        t("clientSettingsPage.password.errors.fillAll")
+      );
       return;
     }
 
     if (newPassword.length < 8) {
-      setPasswordError("Новый пароль должен быть не короче 8 символов.");
+      setPasswordError(
+        t("clientSettingsPage.password.errors.tooShort")
+      );
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setPasswordError("Пароли не совпадают.");
+      setPasswordError(
+        t("clientSettingsPage.password.errors.mismatch")
+      );
       return;
     }
 
-    // TODO: здесь потом дергаешь бекенд для смены пароля
-    // await api.changePassword({ currentPassword, newPassword });
-
+    // TODO: запрос на смену пароля
     console.log("Payload для смены пароля:", { currentPassword, newPassword });
 
     setPasswordSuccess(true);
@@ -63,41 +75,99 @@ export function ClientSettingsPage() {
 
   const handleProfileSubmit = (e) => {
     e.preventDefault();
-    // TODO: тут запрос на обновление профиля (имя, уведомления, аватар и т.д.)
+
     console.log("Сохранение профиля", {
       fullName,
       email,
       notifyEmail,
       notifyPush,
+      avatarFile,
     });
+  };
+
+  const handleAvatarButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleAvatarChange = (e) => {
+    const file = e.target.files?.[0];
+    setAvatarError("");
+
+    if (!file) return;
+
+    const allowedTypes = ["image/jpeg", "image/png"];
+    if (!allowedTypes.includes(file.type)) {
+      setAvatarError(
+        t("clientSettingsPage.avatar.errorType")
+      );
+      return;
+    }
+
+    const maxSizeMB = 5;
+    if (file.size > maxSizeMB * 1024 * 1024) {
+      setAvatarError(
+        t("clientSettingsPage.avatar.errorSize", { max: maxSizeMB })
+      );
+      return;
+    }
+
+    setAvatarFile(file);
+    const previewUrl = URL.createObjectURL(file);
+    setAvatarPreview(previewUrl);
   };
 
   return (
     <div className="rounded-3xl bg-white px-8 py-8 shadow-[0_24px_60px_rgba(2,45,98,0.08)]">
       <h2 className="mb-1 text-2xl font-display text-[#071A34]">
-        Настройки аккаунта
+        {t("clientSettingsPage.title")}
       </h2>
       <p className="mb-8 text-sm text-[#6F7A89]">
-        Здесь вы можете обновить фото профиля, имя и настроить уведомления.
+        {t("clientSettingsPage.subtitle")}
       </p>
 
       <div className="flex flex-col gap-8 lg:flex-row">
         {/* Аватар слева */}
         <div className="flex w-full max-w-[260px] flex-col items-center lg:items-start">
-          <div className="mb-4 flex h-32 w-32 items-center justify-center rounded-full bg-[#F3F7FF] text-sm text-[#9BA6B5]">
-            Нет фото
+          <div className="mb-4 flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-[#F3F7FF] text-sm text-[#9BA6B5]">
+            {avatarPreview ? (
+              <img
+                src={avatarPreview}
+                alt={t("clientSettingsPage.avatar.noPhoto")}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              t("clientSettingsPage.avatar.noPhoto")
+            )}
           </div>
 
           <button
             type="button"
+            onClick={handleAvatarButtonClick}
             className="rounded-full border border-[#D6DEE9] px-4 py-2 text-[13px] font-medium text-[#071A34] hover:border-[#1F98FA]"
           >
-            Изменить фото
+            {t("clientSettingsPage.avatar.changePhoto")}
           </button>
 
+          {/* Скрытый инпут файла */}
+          <input
+            type="file"
+            ref={fileInputRef}
+            accept="image/jpeg,image/png"
+            className="hidden"
+            onChange={handleAvatarChange}
+          />
+
           <p className="mt-2 text-[11px] text-[#9BA6B5]">
-            JPG, PNG до 5 МБ. Картинка будет обрезана по кругу.
+            {t("clientSettingsPage.avatar.hint")}
           </p>
+
+          {avatarError && (
+            <p className="mt-1 text-[11px] text-[#FF4D3D]">
+              {avatarError}
+            </p>
+          )}
         </div>
 
         {/* Основная форма настроек */}
@@ -109,13 +179,13 @@ export function ClientSettingsPage() {
             {/* Личные данные */}
             <div>
               <h3 className="mb-3 text-sm font-semibold text-[#071A34]">
-                Личные данные
+                {t("clientSettingsPage.profile.sectionTitle")}
               </h3>
 
               <div className="space-y-4">
                 <div>
                   <label className="mb-1 block text-xs font-medium text-[#6F7A89]">
-                    Имя и фамилия
+                    {t("clientSettingsPage.profile.fullNameLabel")}
                   </label>
                   <input
                     type="text"
@@ -127,7 +197,7 @@ export function ClientSettingsPage() {
 
                 <div>
                   <label className="mb-1 block text-xs font-medium text-[#6F7A89]">
-                    Email
+                    {t("clientSettingsPage.profile.emailLabel")}
                   </label>
                   <input
                     type="email"
@@ -137,8 +207,7 @@ export function ClientSettingsPage() {
                     className="w-full cursor-not-allowed rounded-2xl border border-[#E1E7F0] bg-[#F7FAFF] px-4 py-3 text-sm text-[#071A34] opacity-80"
                   />
                   <p className="mt-1 text-[11px] text-[#9BA6B5]">
-                    Email используется для входа и уведомлений. Смена почты
-                    будет доступна позже.
+                    {t("clientSettingsPage.profile.emailHint")}
                   </p>
                 </div>
               </div>
@@ -147,7 +216,7 @@ export function ClientSettingsPage() {
             {/* Уведомления */}
             <div>
               <h3 className="mb-3 text-sm font-semibold text-[#071A34]">
-                Уведомления
+                {t("clientSettingsPage.notifications.sectionTitle")}
               </h3>
 
               <div className="space-y-2 text-sm text-[#071A34]">
@@ -158,7 +227,9 @@ export function ClientSettingsPage() {
                     checked={notifyEmail}
                     onChange={(e) => setNotifyEmail(e.target.checked)}
                   />
-                  <span>Получать письма о новых сессиях и напоминаниях</span>
+                  <span>
+                    {t("clientSettingsPage.notifications.emailLabel")}
+                  </span>
                 </label>
 
                 <label className="flex items-center gap-2">
@@ -168,7 +239,9 @@ export function ClientSettingsPage() {
                     checked={notifyPush}
                     onChange={(e) => setNotifyPush(e.target.checked)}
                   />
-                  <span>Пуш-уведомления о предстоящих встречах</span>
+                  <span>
+                    {t("clientSettingsPage.notifications.pushLabel")}
+                  </span>
                 </label>
               </div>
             </div>
@@ -177,7 +250,7 @@ export function ClientSettingsPage() {
               type="submit"
               className="mt-4 inline-flex items-center justify-center rounded-full bg-[#1F98FA] px-6 py-3 text-[14px] font-semibold text-white shadow-[0_14px_30px_rgba(31,152,250,0.55)] hover:bg-[#0f84e2] transition"
             >
-              Сохранить изменения
+              {t("clientSettingsPage.saveProfileButton")}
             </button>
           </form>
 
@@ -190,16 +263,15 @@ export function ClientSettingsPage() {
             className="space-y-4 md:max-w-[420px]"
           >
             <h3 className="text-sm font-semibold text-[#071A34]">
-              Смена пароля
+              {t("clientSettingsPage.password.sectionTitle")}
             </h3>
             <p className="text-[11px] text-[#6F7A89]">
-              Укажите текущий пароль и придумайте новый. После сохранения
-              вам нужно будет входить с новым паролем.
+              {t("clientSettingsPage.password.description")}
             </p>
 
             <div>
               <label className="mb-1 block text-xs font-medium text-[#6F7A89]">
-                Текущий пароль
+                {t("clientSettingsPage.password.currentLabel")}
               </label>
               <input
                 type="password"
@@ -213,7 +285,7 @@ export function ClientSettingsPage() {
             <div className="grid gap-4 md:grid-cols-2">
               <div>
                 <label className="mb-1 block text-xs font-medium text-[#6F7A89]">
-                  Новый пароль
+                  {t("clientSettingsPage.password.newLabel")}
                 </label>
                 <input
                   type="password"
@@ -226,7 +298,7 @@ export function ClientSettingsPage() {
 
               <div>
                 <label className="mb-1 block text-xs font-medium text-[#6F7A89]">
-                  Повторите новый пароль
+                  {t("clientSettingsPage.password.confirmLabel")}
                 </label>
                 <input
                   type="password"
@@ -239,12 +311,13 @@ export function ClientSettingsPage() {
             </div>
 
             {passwordError && (
-              <p className="text-[11px] text-[#FF4D3D]">{passwordError}</p>
+              <p className="text-[11px] text-[#FF4D3D]">
+                {passwordError}
+              </p>
             )}
             {passwordSuccess && (
               <p className="text-[11px] text-[#16A34A]">
-                Пароль обновлён (пока только на фронте). Подключи бекенд для
-                реальной смены.
+                {t("clientSettingsPage.password.success")}
               </p>
             )}
 
@@ -252,7 +325,7 @@ export function ClientSettingsPage() {
               type="submit"
               className="mt-1 inline-flex items-center justify-center rounded-full bg-[#071A34] px-6 py-3 text-[14px] font-semibold text-white hover:bg-[#0b254d] transition"
             >
-              Обновить пароль
+              {t("clientSettingsPage.password.submitButton")}
             </button>
           </form>
         </div>

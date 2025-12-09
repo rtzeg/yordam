@@ -1,20 +1,24 @@
 // src/features/profile/ClientLayout.jsx
 import { NavLink, Outlet } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 import { useAuth } from "../auth/AuthContext";
 import Header from "../../components/layout/Header";
 import { Footer } from "../../components/layout/Footer";
 
+// ключи из i18n: header.account.*
 const navItems = [
-  { to: "/client", label: "Личные вопросы", exact: true },          // <= exact / end
-  { to: "/psychologists", label: "Выбор психолога" },        // я бы вел сюда, а не на /psychologists
-  { to: "/client/settings", label: "Настройки" },
-  { to: "/client/billing", label: "Оплата" },
-  { to: "/client/videochat", label: "Видеочат" },
-  { to: "/client/support", label: "Поддержка" },
+  { to: "/client", key: "personalQuestions", exact: true },
+  { to: "/psychologists", key: "choosePsychologist" },
+  { to: "/client/settings", key: "settings" },
+  { to: "/client/billing", key: "billing" },
+  { to: "/client/videochat", key: "videochat" },
+  { to: "/client/support", key: "support" },
 ];
 
 export function ClientLayout() {
   const { logout } = useAuth();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -24,9 +28,9 @@ export function ClientLayout() {
           {/* ЛЕВАЯ КОЛОНКА */}
           <aside className="w-[240px] rounded-3xl bg-white px-5 py-6 shadow-[0_24px_60px_rgba(2,45,98,0.12)]">
             <h1 className="mb-6 text-2xl leading-tight font-display text-[#1F98FA]">
-              Личный
+              {t("header.account.title")}
               <br />
-              Кабинет
+              {t("header.role.client")}
             </h1>
 
             <nav className="space-y-1">
@@ -34,7 +38,7 @@ export function ClientLayout() {
                 <NavLink
                   key={item.to}
                   to={item.to}
-                  end={item.exact} // ВАЖНО: только для /client
+                  end={item.exact}
                   className={({ isActive }) =>
                     [
                       "flex items-center justify-between rounded-xl px-3 py-2 text-[14px] transition-colors",
@@ -44,7 +48,7 @@ export function ClientLayout() {
                     ].join(" ")
                   }
                 >
-                  <span>{item.label}</span>
+                  <span>{t(`header.account.${item.key}`)}</span>
                 </NavLink>
               ))}
             </nav>
@@ -54,11 +58,11 @@ export function ClientLayout() {
               className="mt-6 flex items-center gap-2 text-[14px] font-semibold text-[#FF4D2A]"
             >
               <span className="text-lg">⟵</span>
-              Выйти из аккаунта
+              {t("header.account.logout")}
             </button>
           </aside>
 
-
+          {/* ПРАВАЯ ЧАСТЬ */}
           <main className="flex-1">
             <Outlet />
           </main>

@@ -764,6 +764,185 @@ const resources = {
                     },
                 }
             },
+            notFoundPage: {
+                badge: "404 · Страница не найдена",
+                titleLine1: "Здесь пока пусто.",
+                titleLine2: "Вернёмся туда, где всё работает.",
+                description:
+                    "Страница могла быть удалена, переименована или никогда не существовала. Попробуйте вернуться на главную или открыть каталог специалистов.",
+                buttons: {
+                    home: "На главную",
+                    catalog: "Каталог специалистов",
+                },
+            },
+            profile: {
+                clientLayout: {
+                    title: "Личный кабинет",
+
+                    nav: {
+                        personalQuestions: "Личные вопросы",
+                        choosePsychologist: "Выбор психолога",
+                        settings: "Настройки",
+                        billing: "Оплата",
+                        videochat: "Видеочат",
+                        support: "Поддержка",
+                    },
+
+                    logout: {
+                        button: "Выйти из аккаунта",
+                        iconLabel: "Назад",
+                    },
+                },
+            },
+            clientProfilePage: {
+                title: "Личные вопросы",
+                intro:
+                    "Эти ответы помогут подобрать психолога и подготовиться к первой сессии.",
+
+                birthDate: {
+                    label: "Дата рождения",
+                },
+
+                about: {
+                    label: "Расскажите о себе",
+                    placeholder: "Небольшой автопортрет...",
+                },
+
+                goal: {
+                    title: "С какой целью вы обратились к нам?",
+                    options: {
+                        therapy: "Регулярная терапия",
+                        single: "Разовая консультация",
+                        diagnostic: "Диагностика / второе мнение",
+                        other: "Другое",
+                    },
+                },
+
+                mainConcern: {
+                    title: "Что вас сейчас больше всего беспокоит?",
+                    hint:
+                        "Постоянная тревога, сложности в отношениях, потеря мотивации и т.д.",
+                },
+
+                topics: {
+                    title: "Темы, которые хотите обсудить",
+                    hint: "Можно выбрать несколько вариантов",
+                    options: {
+                        relationships: "Отношения",
+                        selfEsteem: "Самооценка",
+                        anxiety: "Тревога",
+                        burnout: "Выгорание",
+                        career: "Карьера / учёба",
+                        other: "Другое",
+                    },
+                },
+                visitedBefore: {
+                    title: "Вы раньше обращались к психологу?",
+                    options: {
+                        no: "Нет, это впервые",
+                        yesNow: "Да, хожу сейчас",
+                        yesBefore: "Да, обращался(ась) раньше",
+                    },
+                },
+
+                submit: {
+                    next: "Далее",
+                },
+            },
+            clientSettingsPage: {
+                title: "Настройки аккаунта",
+                subtitle: "Здесь вы можете обновить фото профиля, имя и настроить уведомления.",
+
+                avatar: {
+                    noPhoto: "Нет фото",
+                    changePhoto: "Изменить фото",
+                    hint: "JPG, PNG до 5 МБ. Картинка будет обрезана по кругу.",
+                    errorType: "Поддерживаются только JPG и PNG.",
+                    errorSize: "Файл не должен превышать {{max}} МБ."
+                },
+
+                profile: {
+                    sectionTitle: "Личные данные",
+                    fullNameLabel: "Имя и фамилия",
+                    emailLabel: "Email",
+                    emailHint:
+                        "Email используется для входа и уведомлений. Смена почты будет доступна позже."
+                },
+
+                notifications: {
+                    sectionTitle: "Уведомления",
+                    emailLabel: "Получать письма о новых сессиях и напоминаниях",
+                    pushLabel: "Пуш-уведомления о предстоящих встречах"
+                },
+
+                saveProfileButton: "Сохранить изменения",
+
+                password: {
+                    sectionTitle: "Смена пароля",
+                    description:
+                        "Укажите текущий пароль и придумайте новый. После сохранения вам нужно будет входить с новым паролем.",
+
+                    currentLabel: "Текущий пароль",
+                    newLabel: "Новый пароль",
+                    confirmLabel: "Повторите новый пароль",
+
+                    errors: {
+                        fillAll: "Заполните все поля для смены пароля.",
+                        tooShort: "Новый пароль должен быть не короче 8 символов.",
+                        mismatch: "Пароли не совпадают."
+                    },
+
+                    success:
+                        "Пароль обновлён (пока только на фронте). Подключи бекенд для реальной смены.",
+
+                    submitButton: "Обновить пароль"
+                }
+            },
+            faqSection: {
+                heading: {
+                  blue: "Частые",
+                  black: "вопросы",
+                },
+              
+                items: [
+                  {
+                    id: "trial-1",
+                    question: "Есть ли бесплатный пробный период?",
+                    answer:
+                      "Да, вы можете попробовать сервис бесплатно в течение 30 дней. При желании мы проведём для вас бесплатную персональную 30-минутную консультацию, чтобы помочь начать как можно быстрее.",
+                  },
+                  {
+                    id: "trial-2",
+                    question: "Есть ли бесплатный пробный период?",
+                    answer:
+                      "Да, вы можете попробовать сервис бесплатно в течение 30 дней. При желании мы проведём для вас бесплатную персональную 30-минутную консультацию, чтобы помочь начать как можно быстрее.",
+                  },
+                  {
+                    id: "trial-3",
+                    question: "Есть ли бесплатный пробный период?",
+                    answer:
+                      "Да, вы можете попробовать сервис бесплатно в течение 30 дней. При желании мы проведём для вас бесплатную персональную 30-минутную консультацию, чтобы помочь начать как можно быстрее.",
+                  },
+                  {
+                    id: "plan-change",
+                    question: "Могу ли я изменить тариф позже?",
+                    answer:
+                      "Да, вы можете в любой момент перейти на другой тариф в настройках аккаунта.",
+                  },
+                  {
+                    id: "cancel-policy",
+                    question: "Какая у вас политика отмены?",
+                    answer:
+                      "Вы можете отменить подписку в любое время. Она будет активна до конца оплаченного периода.",
+                  },
+                  {
+                    id: "support",
+                    question: "Как связаться с поддержкой?",
+                    answer:
+                      "Вы можете написать нам через раздел «Контакты» или по email support@example.com.",
+                  },
+                ],
+              }
 
 
 
@@ -1529,7 +1708,193 @@ const resources = {
                             "Ro‘yxatdan o‘tishda xatolik yuz berdi. Keyinroq qayta urinib ko‘ring.",
                     },
                 },
-            }
+            },
+            notFoundPage: {
+                badge: "404 · Sahifa topilmadi",
+                titleLine1: "Bu yerda hozircha hech narsa yo‘q.",
+                titleLine2: "Hammasi ishlaydigan joyga qaytaylik.",
+                description:
+                    "Sahifa o‘chirilgan, nomi o‘zgargan yoki hech qachon mavjud bo‘lmagan bo‘lishi mumkin. Bosh sahifaga qaytib yoki mutaxassislar katalogini ochib ko‘ring.",
+                buttons: {
+                    home: "Bosh sahifaga",
+                    catalog: "Mutaxassislar katalogi",
+                },
+            },
+            profile: {
+                clientLayout: {
+                    title: "Shaxsiy kabinet",
+
+                    nav: {
+                        personalQuestions: "Shaxsiy savollar",
+                        choosePsychologist: "Psixolog tanlash",
+                        settings: "Sozlamalar",
+                        billing: "To‘lov",
+                        videochat: "Videochat",
+                        support: "Qo‘llab-quvvatlash",
+                    },
+
+                    logout: {
+                        button: "Akkauntdan chiqish",
+                        iconLabel: "Orqaga",
+                    },
+                },
+            },
+            clientProfilePage: {
+                title: "Shaxsiy savollar",
+                intro:
+                    "Bu javoblar sizga mos psixologni tanlashga va birinchi sessiyaga tayyorlanishga yordam beradi.",
+
+                birthDate: {
+                    label: "Tug‘ilgan sana",
+                },
+
+                about: {
+                    label: "O‘zingiz haqingizda qisqacha yozing",
+                    placeholder: "Qisqacha o‘zingiz haqida...",
+                },
+
+                goal: {
+                    title: "Bizga qanday maqsadda murojaat qildingiz?",
+                    options: {
+                        therapy: "Doimiy terapiya",
+                        single: "Bir martalik konsultatsiya",
+                        diagnostic: "Diagnostika / ikkinchi fikr",
+                        other: "Boshqa",
+                    },
+                },
+
+                mainConcern: {
+                    title: "Hozir sizni eng ko‘p nima bezovta qilmoqda?",
+                    hint:
+                        "Doimiy tashvish, munosabatlardagi qiyinchiliklar, motivatsiya yo‘qolishi va hokazo.",
+                },
+
+                topics: {
+                    title: "Muhokama qilmoqchi bo‘lgan mavzular",
+                    hint: "Bir nechta variantni tanlashingiz mumkin",
+                    options: {
+                        relationships: "Munosabatlar",
+                        selfEsteem: "O‘z-o‘zini baholash",
+                        anxiety: "Tashvish",
+                        burnout: "Charchash / burnout",
+                        career: "Karyera / o‘qish",
+                        other: "Boshqa",
+                    },
+                },
+
+                visitedBefore: {
+                    title: "Ilgari psixologga murojaat qilganmisiz?",
+                    options: {
+                        no: "Yo‘q, bu birinchi marta",
+                        yesNow: "Ha, hozir ham qatnashaman",
+                        yesBefore: "Ha, avval murojaat qilganman",
+                    },
+                },
+
+                submit: {
+                    next: "Keyingi",
+                },
+            },
+            clientSettingsPage: {
+                title: "Hisob sozlamalari",
+                subtitle:
+                    "Bu yerda profil rasmini, ismingizni va bildirishnomalarni sozlashingiz mumkin.",
+
+                avatar: {
+                    noPhoto: "Rasm yo‘q",
+                    changePhoto: "Rasmni o‘zgartirish",
+                    hint: "JPG, PNG 5 MB gacha. Rasm dumaloq shaklda kesiladi.",
+                    errorType: "Faqat JPG va PNG formatlari qo‘llab-quvvatlanadi.",
+                    errorSize: "Fayl hajmi {{max}} MB dan oshmasligi kerak."
+                },
+
+                profile: {
+                    sectionTitle: "Shaxsiy ma’lumotlar",
+                    fullNameLabel: "Ism va familiya",
+                    emailLabel: "Email",
+                    emailHint:
+                        "Email tizimga kirish va bildirishnomalar uchun ishlatiladi. Pochtani keyinroq o‘zgartirish mumkin bo‘ladi."
+                },
+
+                notifications: {
+                    sectionTitle: "Bildirishnomalar",
+                    emailLabel: "Yangi sessiyalar va eslatmalar haqida xat olish",
+                    pushLabel: "Bo‘ladigan uchrashuvlar haqida push-bildirishnomalar"
+                },
+
+                saveProfileButton: "O‘zgarishlarni saqlash",
+
+                password: {
+                    sectionTitle: "Parolni o‘zgartirish",
+                    description:
+                        "Joriy parolni kiriting va yangisini o‘ylab toping. Saqlagandan so‘ng tizimga yangi parol bilan kirasiz.",
+
+                    currentLabel: "Joriy parol",
+                    newLabel: "Yangi parol",
+                    confirmLabel: "Yangi parolni takrorlang",
+
+                    errors: {
+                        fillAll: "Parolni o‘zgartirish uchun barcha maydonlarni to‘ldiring.",
+                        tooShort: "Yangi parol kamida 8 ta belgidan iborat bo‘lishi kerak.",
+                        mismatch: "Parollar mos kelmayapti."
+                    },
+
+                    success:
+                        "Parol yangilandi (hozircha faqat frontda). Haqiqiy o‘zgartirish uchun backend ulashing.",
+
+                    submitButton: "Parolni yangilash"
+                }
+            },
+            faqSection: {
+                heading: {
+                  blue: "Ko‘p beriladigan",
+                  black: "savollar",
+                },
+              
+                items: [
+                  {
+                    id: "trial-1",
+                    question: "Bepul sinov muddati bormi?",
+                    answer:
+                      "Ha, siz xizmatni 30 kun davomida bepul sinab ko‘rishingiz mumkin. Istasangiz, boshlashni iloji boricha osonlashtirish uchun biz sizga 30 daqiqalik bepul shaxsiy konsultatsiya o‘tkazib beramiz.",
+                  },
+                  {
+                    id: "trial-2",
+                    question: "Bepul sinov muddati bormi?",
+                    answer:
+                      "Ha, siz xizmatni 30 kun davomida bepul sinab ko‘rishingiz mumkin. Istasangiz, boshlashni iloji boricha osonlashtirish uchun biz sizga 30 daqiqalik bepul shaxsiy konsultatsiya o‘tkazib beramiz.",
+                  },
+                  {
+                    id: "trial-3",
+                    question: "Bepul sinov muddati bormi?",
+                    answer:
+                      "Ha, siz xizmatni 30 kun davomida bepul sinab ko‘rishingiz mumkin. Istasangiz, boshlashni iloji boricha osonlashtirish uchun biz sizga 30 daqiqalik bepul shaxsiy konsultatsiya o‘tkazib beramiz.",
+                  },
+                  {
+                    id: "plan-change",
+                    question: "Tarifni keyinroq o‘zgartira olamanmi?",
+                    answer:
+                      "Ha, akkaunt sozlamalarida istalgan vaqtda boshqa tarifga o‘tishingiz mumkin.",
+                  },
+                  {
+                    id: "cancel-policy",
+                    question: "Bekor qilish siyosatingiz qanday?",
+                    answer:
+                      "Obunani istalgan vaqtda bekor qilishingiz mumkin. Bekor qilingandan so‘ng, u to‘langan davr oxirigacha faol bo‘lib qoladi.",
+                  },
+                  {
+                    id: "support",
+                    question: "Qo‘llab-quvvatlash xizmati bilan qanday bog‘lanaman?",
+                    answer:
+                      "Biz bilan “Kontaktlar” bo‘limi orqali yoki support@example.com elektron pochta manzili orqali bog‘lanishingiz mumkin.",
+                  },
+                ],
+              }
+              
+
+
+
+
 
 
 
