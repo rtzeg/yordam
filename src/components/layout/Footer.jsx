@@ -4,7 +4,7 @@ import cloud from "../../assets/images/cloud.png";
 import chatBubble from "../../assets/images/chat_bubble.png";
 import telegramIcon from "../../assets/images/telegram.svg";
 import whatsappIcon from "../../assets/images/whatsup.svg";
-import footerLogo from "../../assets/images/footerlogo.png";
+import footerLogo from "../../assets/images/logo.svg";
 
 import { useTranslation } from "react-i18next";
 

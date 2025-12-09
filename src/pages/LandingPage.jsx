@@ -70,7 +70,7 @@ export function LandingPage() {
                             </p>
 
                             <div className="mt-8 flex justify-center">
-                                <button
+                                <a href="psychologists">   <button
                                     type="button"
                                     className="
                     relative inline-flex items-center justify-center
@@ -95,7 +95,8 @@ export function LandingPage() {
                                     >
                                         {t("landing.hero.priceLabel")}
                                     </span>
-                                </button>
+                                </button></a>
+                             
                             </div>
                         </div>
                     </div>

@@ -28,10 +28,10 @@ export function FAQSection() {
         />
 
         <span className="font-display text-[32px] md:text-[40px] font-bold text-[#1F98FA]">
-          {t("faqSection.title.part1")}{" "}
+          {t("faqSection.heading.blue")}{" "}
         </span>
         <span className="font-display text-[32px] md:text-[40px] font-bold text-[#000000] relative z-10">
-          {t("faqSection.title.part2")}
+          {t("faqSection.heading.black")}
         </span>
       </div>
 

@@ -106,7 +106,7 @@ const resources = {
                 questionsTitleLine2: "вопросы по сервису?",
                 questionsText:
                     "Мы готовы предоставить вам проверенного специалиста, с которым вы можете обсудить все ваши вопросы.",
-                chatWithYordam: "Чат с Yordam",
+                chatWithYordam: "Чат с 365PSY",
                 telegramAria: "Написать в Telegram",
                 whatsappAria: "Написать в WhatsApp",
 
@@ -900,49 +900,49 @@ const resources = {
             },
             faqSection: {
                 heading: {
-                  blue: "Частые",
-                  black: "вопросы",
+                    blue: "Частые",
+                    black: "вопросы",
                 },
-              
+
                 items: [
-                  {
-                    id: "trial-1",
-                    question: "Есть ли бесплатный пробный период?",
-                    answer:
-                      "Да, вы можете попробовать сервис бесплатно в течение 30 дней. При желании мы проведём для вас бесплатную персональную 30-минутную консультацию, чтобы помочь начать как можно быстрее.",
-                  },
-                  {
-                    id: "trial-2",
-                    question: "Есть ли бесплатный пробный период?",
-                    answer:
-                      "Да, вы можете попробовать сервис бесплатно в течение 30 дней. При желании мы проведём для вас бесплатную персональную 30-минутную консультацию, чтобы помочь начать как можно быстрее.",
-                  },
-                  {
-                    id: "trial-3",
-                    question: "Есть ли бесплатный пробный период?",
-                    answer:
-                      "Да, вы можете попробовать сервис бесплатно в течение 30 дней. При желании мы проведём для вас бесплатную персональную 30-минутную консультацию, чтобы помочь начать как можно быстрее.",
-                  },
-                  {
-                    id: "plan-change",
-                    question: "Могу ли я изменить тариф позже?",
-                    answer:
-                      "Да, вы можете в любой момент перейти на другой тариф в настройках аккаунта.",
-                  },
-                  {
-                    id: "cancel-policy",
-                    question: "Какая у вас политика отмены?",
-                    answer:
-                      "Вы можете отменить подписку в любое время. Она будет активна до конца оплаченного периода.",
-                  },
-                  {
-                    id: "support",
-                    question: "Как связаться с поддержкой?",
-                    answer:
-                      "Вы можете написать нам через раздел «Контакты» или по email support@example.com.",
-                  },
+                    {
+                        id: "trial-1",
+                        question: "Есть ли бесплатный пробный период?",
+                        answer:
+                            "Да, вы можете попробовать сервис бесплатно в течение 30 дней. При желании мы проведём для вас бесплатную персональную 30-минутную консультацию, чтобы помочь начать как можно быстрее.",
+                    },
+                    {
+                        id: "trial-2",
+                        question: "Есть ли бесплатный пробный период?",
+                        answer:
+                            "Да, вы можете попробовать сервис бесплатно в течение 30 дней. При желании мы проведём для вас бесплатную персональную 30-минутную консультацию, чтобы помочь начать как можно быстрее.",
+                    },
+                    {
+                        id: "trial-3",
+                        question: "Есть ли бесплатный пробный период?",
+                        answer:
+                            "Да, вы можете попробовать сервис бесплатно в течение 30 дней. При желании мы проведём для вас бесплатную персональную 30-минутную консультацию, чтобы помочь начать как можно быстрее.",
+                    },
+                    {
+                        id: "plan-change",
+                        question: "Могу ли я изменить тариф позже?",
+                        answer:
+                            "Да, вы можете в любой момент перейти на другой тариф в настройках аккаунта.",
+                    },
+                    {
+                        id: "cancel-policy",
+                        question: "Какая у вас политика отмены?",
+                        answer:
+                            "Вы можете отменить подписку в любое время. Она будет активна до конца оплаченного периода.",
+                    },
+                    {
+                        id: "support",
+                        question: "Как связаться с поддержкой?",
+                        answer:
+                            "Вы можете написать нам через раздел «Контакты» или по email support@example.com.",
+                    },
                 ],
-              }
+            }
 
 
 
@@ -1020,7 +1020,7 @@ const resources = {
             // ⬇⬇⬇ ХЕДЕР НА УЗБЕКСКОМ
             header: {
                 nav: {
-                    catalog: "Mutaxassislar katalogi",
+                    catalog: "Mutaxassislari",
                     companies: "Kompaniyalar uchun",
                     psychologists: "Psixologlar uchun",
                     influencers: "Influensyerlar uchun",
@@ -1053,7 +1053,7 @@ const resources = {
                 questionsTitleLine2: "savollaringiz qoldimi?",
                 questionsText:
                     "Biz sizga barcha savollaringizni muhokama qilishingiz mumkin bo‘lgan ishonchli mutaxassisni taklif qilishga tayyormiz.",
-                chatWithYordam: "Yordam bilan chat",
+                chatWithYordam: "365PSY bilan chat",
                 telegramAria: "Telegram orqali yozish",
                 whatsappAria: "WhatsApp orqali yozish",
 
@@ -1847,50 +1847,50 @@ const resources = {
             },
             faqSection: {
                 heading: {
-                  blue: "Ko‘p beriladigan",
-                  black: "savollar",
+                    blue: "Ko‘p beriladigan",
+                    black: "savollar",
                 },
-              
+
                 items: [
-                  {
-                    id: "trial-1",
-                    question: "Bepul sinov muddati bormi?",
-                    answer:
-                      "Ha, siz xizmatni 30 kun davomida bepul sinab ko‘rishingiz mumkin. Istasangiz, boshlashni iloji boricha osonlashtirish uchun biz sizga 30 daqiqalik bepul shaxsiy konsultatsiya o‘tkazib beramiz.",
-                  },
-                  {
-                    id: "trial-2",
-                    question: "Bepul sinov muddati bormi?",
-                    answer:
-                      "Ha, siz xizmatni 30 kun davomida bepul sinab ko‘rishingiz mumkin. Istasangiz, boshlashni iloji boricha osonlashtirish uchun biz sizga 30 daqiqalik bepul shaxsiy konsultatsiya o‘tkazib beramiz.",
-                  },
-                  {
-                    id: "trial-3",
-                    question: "Bepul sinov muddati bormi?",
-                    answer:
-                      "Ha, siz xizmatni 30 kun davomida bepul sinab ko‘rishingiz mumkin. Istasangiz, boshlashni iloji boricha osonlashtirish uchun biz sizga 30 daqiqalik bepul shaxsiy konsultatsiya o‘tkazib beramiz.",
-                  },
-                  {
-                    id: "plan-change",
-                    question: "Tarifni keyinroq o‘zgartira olamanmi?",
-                    answer:
-                      "Ha, akkaunt sozlamalarida istalgan vaqtda boshqa tarifga o‘tishingiz mumkin.",
-                  },
-                  {
-                    id: "cancel-policy",
-                    question: "Bekor qilish siyosatingiz qanday?",
-                    answer:
-                      "Obunani istalgan vaqtda bekor qilishingiz mumkin. Bekor qilingandan so‘ng, u to‘langan davr oxirigacha faol bo‘lib qoladi.",
-                  },
-                  {
-                    id: "support",
-                    question: "Qo‘llab-quvvatlash xizmati bilan qanday bog‘lanaman?",
-                    answer:
-                      "Biz bilan “Kontaktlar” bo‘limi orqali yoki support@example.com elektron pochta manzili orqali bog‘lanishingiz mumkin.",
-                  },
+                    {
+                        id: "trial-1",
+                        question: "Bepul sinov muddati bormi?",
+                        answer:
+                            "Ha, siz xizmatni 30 kun davomida bepul sinab ko‘rishingiz mumkin. Istasangiz, boshlashni iloji boricha osonlashtirish uchun biz sizga 30 daqiqalik bepul shaxsiy konsultatsiya o‘tkazib beramiz.",
+                    },
+                    {
+                        id: "trial-2",
+                        question: "Bepul sinov muddati bormi?",
+                        answer:
+                            "Ha, siz xizmatni 30 kun davomida bepul sinab ko‘rishingiz mumkin. Istasangiz, boshlashni iloji boricha osonlashtirish uchun biz sizga 30 daqiqalik bepul shaxsiy konsultatsiya o‘tkazib beramiz.",
+                    },
+                    {
+                        id: "trial-3",
+                        question: "Bepul sinov muddati bormi?",
+                        answer:
+                            "Ha, siz xizmatni 30 kun davomida bepul sinab ko‘rishingiz mumkin. Istasangiz, boshlashni iloji boricha osonlashtirish uchun biz sizga 30 daqiqalik bepul shaxsiy konsultatsiya o‘tkazib beramiz.",
+                    },
+                    {
+                        id: "plan-change",
+                        question: "Tarifni keyinroq o‘zgartira olamanmi?",
+                        answer:
+                            "Ha, akkaunt sozlamalarida istalgan vaqtda boshqa tarifga o‘tishingiz mumkin.",
+                    },
+                    {
+                        id: "cancel-policy",
+                        question: "Bekor qilish siyosatingiz qanday?",
+                        answer:
+                            "Obunani istalgan vaqtda bekor qilishingiz mumkin. Bekor qilingandan so‘ng, u to‘langan davr oxirigacha faol bo‘lib qoladi.",
+                    },
+                    {
+                        id: "support",
+                        question: "Qo‘llab-quvvatlash xizmati bilan qanday bog‘lanaman?",
+                        answer:
+                            "Biz bilan “Kontaktlar” bo‘limi orqali yoki support@example.com elektron pochta manzili orqali bog‘lanishingiz mumkin.",
+                    },
                 ],
-              }
-              
+            }
+
 
 
 
@@ -1907,6 +1907,950 @@ const resources = {
 
         },
     },
+    en: {
+        translation: {
+            common: {
+                verified: "Verified by Yordam",
+                specialist: "Yordam specialist",
+                matchesYourRequest: "Matches your request",
+                yearsOld: "{{age}} years old",
+                ageUnknown: "Age not specified",
+                experience: "Experience {{years}}",
+                experienceUnknown: "Experience not specified",
+                pricePerHour: "{{price}} {{currency}}/hour",
+                priceUnknown: "Price to be confirmed",
+            },
+
+            card: {
+                more: "More details",
+            },
+
+            listPage: {
+                title: "Find a specialist",
+                breadcrumbsRoot: "Home page",
+                breadcrumbsList: "Choose a specialist",
+                searchPlaceholder: "John Doe, nutritionist, anxiety...",
+                foundPrefix: "Found",
+                foundSuffix: "specialists",
+                sortPopular: "Most viewed",
+                sortVerified: "Verified",
+                sortNew: "New specialists",
+                filtersTitle: "Filters",
+                filtersReset: "Reset",
+                noResults:
+                    "Nothing found for your request yet. Try changing filters or search text.",
+                loadingList: "Loading list of specialists...",
+                loadingFilters: "Loading filters...",
+                loadMore: "Load more",
+            },
+
+            detailPage: {
+                title: "Specialist page",
+                aboutTitle: "About me",
+                approachTitle: "Approach to work",
+                educationTitle: "Education",
+                certificatesTitle: "Certificates",
+                educationEmpty: "Education information will be added later.",
+                certificatesEmpty: "Certificates information will be added later.",
+                aboutEmpty:
+                    "The specialist description will be added later. Here you can talk about your approach, experience and the topics you work with.",
+                priceLabel: "Session price",
+                bookButton: "Book a time",
+                addFavorite: "Add to favorites",
+                inFavorite: "In favorites",
+                notFound: "Specialist not found.",
+                backToList: "Back to list",
+                loading: "Loading specialist...",
+            },
+
+            favoritesPage: {
+                title: "Favorite psychologists",
+
+                breadcrumbs: {
+                    home: "Home page",
+                    favorites: "Favorite psychologists",
+                },
+
+                loading: "Loading your favorite specialists...",
+
+                error: {
+                    prefix: "Error:",
+                    default: "An error occurred while loading favorites.",
+                },
+
+                empty: {
+                    noFavorites:
+                        "You don’t have any favorite specialists yet. You can add a psychologist on the search page or profile page.",
+                    missingFromList:
+                        "You have added some specialists to favorites, but they are not found in the list now. Their status may have changed.",
+                },
+            },
+
+            header: {
+                nav: {
+                    catalog: "Specialists catalog",
+                    companies: "For companies",
+                    psychologists: "For psychologists",
+                    influencers: "For influencers",
+                    contacts: "Contacts",
+                },
+                auth: {
+                    login: "Log in",
+                    register: "Sign up",
+                },
+                account: {
+                    title: "Account",
+                    personalQuestions: "Personal questions",
+                    choosePsychologist: "Choose psychologist",
+                    settings: "Settings",
+                    billing: "Billing",
+                    videochat: "Video chat",
+                    support: "Support",
+                    logout: "Log out",
+                },
+                role: {
+                    psychologist: "Psychologist",
+                    client: "Service client",
+                },
+                favorites: {
+                    title: "Favorite psychologists",
+                },
+            },
+
+            footer: {
+                questionsTitleLine1: "Still have questions",
+                questionsTitleLine2: "about the service?",
+                questionsText:
+                    "We are ready to connect you with a verified specialist to discuss all your questions.",
+                chatWithYordam: "Chat with 365PSY",
+                telegramAria: "Write in Telegram",
+                whatsappAria: "Write in WhatsApp",
+
+                columnYordamTitle: "Yordam",
+                specialists: "Specialists",
+                influencers: "For influencers",
+                partners: "Partners",
+                companies: "For companies",
+
+                columnHelpTitle: "Help",
+                contacts: "Contacts",
+                techSupport: "Tech support",
+                workAsPsychologist: "Work as a psychologist",
+                privacyPolicy: "Privacy policy",
+
+                newsletterTitle: "Newsletter",
+                newsletterPlaceholder: "Enter your email",
+                newsletterButton: "Get more deals with newsletter",
+
+                copyright: "© 2025, All rights reserved by Yordam",
+            },
+
+            companies: {
+                badge: "Solutions for business",
+                title: "Corporate psychologist for your company",
+                intro:
+                    "Yordam helps companies in different fields – from IT to offline centers – implement psychological support for employees. This reduces burnout, lowers turnover and increases team productivity.",
+
+                blocks: {
+                    serviceForCompanies: {
+                        title: "Service tailored for companies",
+                        desc:
+                            "We are focused on business needs: flexible session formats, unified reporting, personal manager and convenient specialist selection for your industry.",
+                    },
+                    ownPsychologists: {
+                        title: "Bring your own psychologists",
+                        desc:
+                            "If you already have trusted psychologists, we can integrate them into the Yordam platform and give your team one convenient space for booking and sessions. There are special terms and discounts for companies with their own pool of specialists.",
+                    },
+                    discounts: {
+                        title: "Volume discounts",
+                        desc:
+                            "For companies that plan 12 or more sessions per month, we offer reduced rates and special corporate packages: individual, team and group sessions.",
+                    },
+                },
+
+                formatsTitle: "Corporate psychologist formats",
+                formatsIntro:
+                    "We select specialists experienced in your field and build a clear format: individual consultations, regular “company psychologist” days, online support for remote teams.",
+
+                segments: {
+                    it: {
+                        title: "Psychologist for IT company",
+                        desc:
+                            "We help specialists cope with burnout, overload and constant deadlines, supporting productivity and engagement.",
+                    },
+                    office: {
+                        title: "Psychologist for office",
+                        desc:
+                            "Reducing conflicts, maintaining a healthy climate and supporting employees in difficult personal situations.",
+                    },
+                    education: {
+                        title: "Psychologist for center / educational institution",
+                        desc:
+                            "Supporting teachers, students and staff, working with emotional load and stress.",
+                    },
+                    esports: {
+                        title: "Psychologist for esports",
+                        desc:
+                            "Preparing for tournaments, working with anxiety, focus and team dynamics.",
+                    },
+                    productivity: {
+                        title: "Psychologist for productivity",
+                        desc:
+                            "Individual and group sessions aimed at improving focus, planning and work efficiency.",
+                    },
+                    custom: {
+                        title: "Custom solutions",
+                        desc:
+                            "We help choose a format that fits your company specifics and HR / management tasks.",
+                    },
+                },
+
+                form: {
+                    title: "Leave a request for corporate cooperation",
+                    subtitle:
+                        "Briefly tell us about the company and your needs – we will prepare an offer and contact you.",
+                    companyNameLabel: "Company name",
+                    companyNamePlaceholder:
+                        "LLC “Example”, IT company, chain of centers, etc.",
+                    contactPersonLabel: "Contact person",
+                    contactPersonPlaceholder: "Name, role (HR, manager, etc.)",
+                    contactLabel: "Contact details",
+                    contactPlaceholder: "E-mail or phone / Telegram",
+                    sessionsLabel: "Approximate number of sessions per month",
+                    sessionsPlaceholder:
+                        "For example: 12–20 individual + 2 group sessions",
+                    requestLabel: "Company request",
+                    requestPlaceholder:
+                        "Briefly describe tasks: team support, burnout prevention, “corporate psychologist” format, etc.",
+                    submit: "Submit request",
+                },
+
+                aside: {
+                    title: "Corporate psychologist for the team",
+                    text:
+                        "We help companies build systematic support: regular appointments for employees, open consultation days, anonymous requests and HR team support.",
+                    note:
+                        "For large companies and 12+ sessions per month we offer special corporate tariffs. You will receive details after your request is processed.",
+                },
+            },
+
+            psyPage: {
+                hero: {
+                    badge: "remote work for psychologists",
+                    titleLine1: "Platform for",
+                    titleLine2: "practicing psychologists",
+                    text:
+                        "We take care of clients, organization and tech, while you focus on what you do best: supporting people. Transparent conditions, convenient online service and a team you can consult with.",
+                    imageAlt: "Psychologist with a cup of coffee",
+                },
+                cta: {
+                    button: "Start cooperation",
+                },
+                stats: {
+                    psychologists: {
+                        label: "Psychologists in the team",
+                        note: "joined the platform",
+                    },
+                    retention: {
+                        label: "Specialist retention",
+                        note: "stay with us for more than a year",
+                    },
+                    match: {
+                        label: "Clients find “their” specialist",
+                        note: "based on reviews and repeated sessions",
+                    },
+                    sessions: {
+                        label: "Sessions held",
+                        note: "on our platform",
+                    },
+                    since: {
+                        value: "since 2025",
+                        label: "In the market",
+                        note: "developing accessible psychological help",
+                    },
+                },
+                accordion: {
+                    title: "You do psychotherapy, we handle organization",
+                    subtitle:
+                        "We help build a steady flow of clients and a work schedule that fits your resources.",
+                    items: {
+                        traffic: {
+                            title:
+                                "You don’t worry where clients come from – we bring the traffic",
+                            text:
+                                "We handle marketing and requests: the platform helps clients find you by query, experience and specialization.",
+                        },
+                        operations: {
+                            title:
+                                "We take care of bookings, reminders and payments for you",
+                            text:
+                                "Booking, reminders and online payments work via Yordam. You don’t have to keep everything in your head or in notebooks.",
+                        },
+                        format: {
+                            title:
+                                "Work from anywhere in the world in a format that suits you",
+                            text:
+                                "You choose the format: video, audio or chat. All you need is stable internet and a schedule that works for you.",
+                        },
+                        brand: {
+                            title: "We help grow your personal brand and profile",
+                            text:
+                                "We help structure your profile, collect reviews and gently grow your professional brand without aggressive marketing.",
+                        },
+                        schedule: {
+                            title:
+                                "You work on the days and hours that fit your life",
+                            text:
+                                "You decide your schedule and number of sessions. The platform adapts to your resources, not the other way around.",
+                        },
+                        support: {
+                            title:
+                                "We support you so you don’t burn out and stay alone with the load",
+                            text:
+                                "The support team and other specialists on the platform create a space where you can discuss work difficulties and not carry everything alone.",
+                        },
+                    },
+                },
+                calculator: {
+                    title: "How much you can earn with Yordam",
+                    subtitle:
+                        "Approximate calculation. Real income depends on the number of sessions and the chosen tariff.",
+                    sessionsPerDay: "Sessions per day",
+                    daysPerWeek: "Days per week",
+                    sessionsLabel: "{{count}} sessions",
+                    daysLabel: "{{count}} days a week",
+                    notePrefix: "The calculation uses an approximate price of",
+                    noteSuffix:
+                        "per session. Actual figures depend on work format and tariff.",
+                    incomeLabel: "Estimated income",
+                    perMonth: "per month",
+                    perYear: "per year",
+                    footer:
+                        "These are approximate values for the chosen workload. We help maintain a stable flow of clients so you can plan both income and rest.",
+                },
+                requirements: {
+                    title: "Requirements for specialists",
+                    subtitle:
+                        "We work with practicing psychologists who share our values, treat clients with care and are ready to develop in online format.",
+                    items: {
+                        education: {
+                            title: "Education",
+                            text:
+                                "Higher education in psychology (bachelor’s, master’s, specialist) or a professional retraining diploma in psychology.",
+                        },
+                        extraEducation: {
+                            title: "Additional training",
+                            text:
+                                "Completed training program in one of the psychological approaches (for example CBT, Gestalt therapy, psychoanalysis, etc.).",
+                        },
+                        experience: {
+                            title: "Practical experience",
+                            text:
+                                "At least 2 years of experience in psychological counseling: online or offline, in private practice or organization.",
+                        },
+                        tech: {
+                            title: "Technical requirements",
+                            text:
+                                "Computer or phone with working camera and microphone, and stable internet for online sessions.",
+                        },
+                        ethics: {
+                            title: "Ethical standards",
+                            text:
+                                "Strict adherence to professional ethics, confidentiality and respectful attitude to every client.",
+                        },
+                        legal: {
+                            title: "Legal status",
+                            text:
+                                "Having (or being ready to obtain) the status of individual entrepreneur or legal entity in the Republic of Uzbekistan.",
+                        },
+                    },
+                },
+            },
+
+            influencersPage: {
+                hero: {
+                    badge: "Partnership with Yordam",
+                    title: "For influencers and content creators",
+                    text:
+                        "If you have an audience and share the value of psychological help, we are ready to discuss cooperation: special projects, integrations, promo codes for your audience and more.",
+                },
+                blocks: {
+                    why: {
+                        title: "What’s in it for you",
+                        text:
+                            "• Additional income through partner program.\n" +
+                            "• A valuable and useful offer for your audience.\n" +
+                            "• Joint projects, live streams and special content.",
+                    },
+                    formats: {
+                        title: "Formats of cooperation",
+                        text:
+                            "• Integrations in videos, stories and posts.\n" +
+                            "• Personal promo codes.\n" +
+                            "• Marathons, challenges and special projects.",
+                    },
+                    who: {
+                        title: "Who it’s for",
+                        text:
+                            "• Bloggers and opinion leaders.\n" +
+                            "• Authors in topics of psychology, self-development, sports, education and lifestyle.\n" +
+                            "• Those who value mental health.",
+                    },
+                },
+                form: {
+                    title: "Submit a cooperation request",
+                    subtitle:
+                        "Tell us about yourself and your audience – we’ll contact you and suggest a format.",
+                    fields: {
+                        name: {
+                            label: "How should we address you",
+                            placeholder: "Name or nickname",
+                        },
+                        contact: {
+                            label: "Contact for communication",
+                            placeholder: "E-mail, Telegram or Instagram",
+                        },
+                        platform: {
+                            label: "Platform",
+                            placeholder: "YouTube, Instagram, TikTok, etc.",
+                        },
+                        audienceSize: {
+                            label: "Approximate audience size",
+                            placeholder: "For example: 50,000 followers",
+                        },
+                        idea: {
+                            label: "Cooperation idea or format",
+                            placeholder: "Describe your expectations and integration format.",
+                        },
+                    },
+                    submit: "Submit request",
+                },
+                support: {
+                    title: "Support service development",
+                    text:
+                        "If the idea of mental health support is close to you, you can help the development of Yordam. Your support helps us grow the platform and create new formats of assistance.",
+                    imageAlt: "Warm supportive illustration",
+                    button: "Support the service",
+                    footerText:
+                        "For partnership questions, write to " +
+                        "partner@yordam.uz or in Telegram.",
+                },
+                bottomNote:
+                    "We carefully choose partners and formats of integrations. The most important thing is to keep user trust and quality of the service.",
+            },
+
+            contactsPage: {
+                hero: {
+                    badge: "Service contacts",
+                    title: "How to contact Yordam",
+                    text:
+                        "If you have questions about the service, cooperation or booking a psychologist, choose any convenient contact method. We try to respond as soon as possible.",
+                },
+                main: {
+                    title: "Main contacts",
+                    phone: {
+                        label: "Phone",
+                        number: "+998 90 000 00 00",
+                        note: "For service questions and booking specialists",
+                    },
+                    support: {
+                        label: "Support",
+                        note: "Technical issues, account access, payments",
+                    },
+                    partners: {
+                        label: "For partners",
+                        note: "Companies, influencers, HR, educational projects",
+                    },
+                    messengers: {
+                        label: "Messengers",
+                        note:
+                            "Write in any messenger that is convenient for you. Usually we respond during the day.",
+                    },
+                },
+                sideCard: {
+                    title: "We are always in touch",
+                    text:
+                        "If you’re not sure where to write, just choose any contact above – we will redirect you to the right person.",
+                    imageAlt: "Contacts section illustration",
+                    bottomNote:
+                        "Please do not send emergency medical or life-threatening requests to support. In such cases, contact emergency services immediately.",
+                },
+                map: {
+                    title: "We on the map",
+                    subtitle:
+                        "Samarkand, office address or Yordam presence point.",
+                },
+            },
+
+            landing: {
+                hero: {
+                    titleMain: "Psychological help,",
+                    titleAccent: "online",
+                    subtitle:
+                        "Online consultations with verified specialists. Simple. Convenient. Reliable.",
+                    button: "Find a psychologist",
+                    priceLabel: "from 200,000 UZS",
+                },
+                help: {
+                    titleMain: "How we can",
+                    titleAccent: "help you",
+                    text:
+                        "Yordam psychologists help with anxiety, relationships, crises and difficult life situations. " +
+                        "Below are just some of the reasons you can come with.",
+                    cards: {
+                        anxiety: {
+                            title: "Reduce anxiety and stress",
+                            text:
+                                "Together with a psychologist you will learn to understand your emotions better, " +
+                                "cope with panic, tension and constant anxiety.",
+                        },
+                        kids: {
+                            title: "Support a child or teenager",
+                            text:
+                                "Specialists help children and teenagers deal with fears, pressure, bullying, changing schools " +
+                                "and other experiences that are important for them.",
+                        },
+                        relationships: {
+                            title: "Improve family and partner relationships",
+                            text:
+                                "You can analyze conflicts, learn to talk about feelings, set boundaries " +
+                                "and hear each other without endless fights.",
+                        },
+                        loss: {
+                            title: "Go through breakup or loss",
+                            text:
+                                "A psychologist will gently support you during the period of loss, help you live through strong emotions, " +
+                                "reduce guilt and gradually rebuild your life.",
+                        },
+                    },
+                },
+                howItWorks: {
+                    title: "How it works",
+                    subtitle:
+                        "Start your path to inner balance in just a few simple steps. " +
+                        "We made the process as clear and convenient as possible.",
+                    steps: {
+                        step1: {
+                            title: "Fill out a short form",
+                            text:
+                                "Answer a few questions about yourself so we can help you faster find a suitable psychologist.",
+                        },
+                        step2: {
+                            title: "Choose a psychologist",
+                            text:
+                                "We will show specialists that match your request. You choose whom you want to start with.",
+                        },
+                        step3: {
+                            title: "Book a date",
+                            text:
+                                "Select a convenient time and session format. Everything is online, the psychologist is always nearby.",
+                        },
+                        step4: {
+                            title: "Start the session",
+                            text:
+                                "Have your first session to get acquainted and understand how comfortable you feel working together.",
+                        },
+                    },
+                    cta: "Try now",
+                },
+                verified: {
+                    title: "Only verified and selected specialists",
+                    text:
+                        "Only specialists with proper education and verified experience get on the platform. " +
+                        "We manually select psychologists and monitor the quality of their work.",
+                    button: "Find a psychologist",
+                },
+            },
+
+            psychologistsList: {
+                title: "Find a specialist",
+                breadcrumbs: {
+                    home: "Home page",
+                    current: "Choose a specialist",
+                },
+                search: {
+                    placeholder: "Name, approach, request…",
+                },
+                found: {
+                    prefix: "Found",
+                    suffix: "specialists",
+                },
+                sort: {
+                    popular: "Most viewed",
+                    verified: "Verified",
+                    new: "New specialists",
+                },
+                filters: {
+                    title: "Filters",
+                    reset: "Reset",
+                    common: {
+                        any: "Any",
+                    },
+                    therapyType: {
+                        label: "Type of therapy",
+                    },
+                    approach: {
+                        label: "Psychological approach",
+                    },
+                    experience: {
+                        label: "Practice experience",
+                        from1: "From 1 year",
+                        from3: "From 3 years",
+                        from5: "From 5 years",
+                    },
+                    time: {
+                        label: "Session time",
+                        anyTime: "Any time",
+                    },
+                    language: {
+                        label: "Consultation language",
+                    },
+                },
+                messages: {
+                    loadingFilters: "Loading filters…",
+                    loadingList: "Loading list of specialists…",
+                    empty:
+                        "Nothing found for your request yet. Try changing filters or search text.",
+                    loadError: "Error while loading data",
+                    errorPrefix: "Error:",
+                },
+                loadMore: "Load more",
+            },
+
+            psychDetail: {
+                loading: "Loading specialist...",
+                notFound: {
+                    text: "Specialist not found.",
+                    backLink: "Back to list",
+                },
+                error: {
+                    prefix: "Error:",
+                    backLink: "Back to list",
+                },
+                breadcrumbs: {
+                    home: "Home page",
+                    list: "Choose a specialist",
+                },
+                title: "Specialist page",
+                buttons: {
+                    book: "Book a time",
+                    favoriteAdd: "Add to favorites",
+                    favoriteIn: "In favorites",
+                },
+                header: {
+                    verified: "Verified by Yordam",
+                    notVerified: "Yordam specialist",
+                    age: "{{age}} years old",
+                    ageNotSpecified: "Age not specified",
+                    experience: "Experience {{years}} years",
+                    experienceNotSpecified: "Experience not specified",
+                    pricePerHour: "{{price}} {{currency}}/hour",
+                    priceTBD: "Price to be confirmed",
+                    priceNote: "Session price",
+                },
+                about: {
+                    title: "About me",
+                    fallback:
+                        "The specialist description will be added later. Here you can tell about your approach, experience and topics you work with.",
+                },
+                approach: {
+                    title: "Psychological approach to work",
+                },
+                education: {
+                    title: "Education",
+                    empty: "Education information will be added later.",
+                    documentLink: "Link to document →",
+                },
+                certificates: {
+                    title: "Certificates",
+                    empty: "Certificates information will be added later.",
+                    issued: "Issued: {{date}}",
+                    validUntil: "Valid until: {{date}}",
+                    documentLink: "Link to document →",
+                },
+                reviews: {
+                    title: "Reviews",
+                    items: {
+                        r1: {
+                            text:
+                                "The service helped me find my specialist. The site is convenient, booking a session takes just a few clicks.",
+                            role: "Yordam service client",
+                        },
+                        r2: {
+                            text:
+                                "I didn’t believe online therapy would work for me. But with your psychologist we built a trusting relationship.",
+                            role: "Yordam service client",
+                        },
+                        r3: {
+                            text:
+                                "I like that session reminders come on time, and payments and documents are stored in one place.",
+                            role: "Yordam service client",
+                        },
+                        r4: {
+                            text:
+                                "I found a specialist who understands my exact request. The format and interface are very comfortable.",
+                            role: "Yordam service client",
+                        },
+                    },
+                },
+            },
+
+            auth: {
+                login: {
+                    title: "Log in",
+                    subtitle: "Enter your email and password to continue.",
+                    fields: {
+                        email: {
+                            label: "Email",
+                            placeholder: "you@example.com",
+                        },
+                        password: {
+                            label: "Password",
+                            placeholder: "Your password",
+                        },
+                    },
+                    buttons: {
+                        submit: "Log in",
+                        submitLoading: "Logging in...",
+                    },
+                    or: "or",
+                    google: "Continue with Google",
+                    noAccount: {
+                        prefix: "Don’t have an account yet?",
+                        link: "Sign up",
+                    },
+                    error: {
+                        default:
+                            "Could not log in. Check your data and try again.",
+                    },
+                },
+                register: {
+                    title: "Sign up",
+                    subtitle: "Choose your role and fill in the details.",
+                    fields: {
+                        fullName: {
+                            label: "Full name",
+                            placeholder: "How should we address you",
+                        },
+                        email: {
+                            label: "Email",
+                            placeholder: "you@example.com",
+                        },
+                        password: {
+                            label: "Password",
+                            placeholder: "Create a password",
+                        },
+                        passwordRepeat: {
+                            label: "Repeat password",
+                            placeholder: "Repeat the password",
+                        },
+                    },
+                    buttons: {
+                        submit: "Sign up",
+                        submitLoading: "Signing up...",
+                    },
+                    or: "or",
+                    google: "Continue with Google",
+                    alreadyHave: {
+                        prefix: "Already have an account?",
+                        link: "Log in",
+                    },
+                    errors: {
+                        passwordMismatch: "Passwords do not match",
+                        default:
+                            "Could not complete registration. Please try again later.",
+                    },
+                },
+            },
+
+            notFoundPage: {
+                badge: "404 · Page not found",
+                titleLine1: "Nothing here yet.",
+                titleLine2: "Let’s go back where things work.",
+                description:
+                    "The page might have been removed, renamed or never existed. Try going back to the home page or open the specialists catalog.",
+                buttons: {
+                    home: "Back to home",
+                    catalog: "Specialists catalog",
+                },
+            },
+
+            profile: {
+                clientLayout: {
+                    title: "Personal account",
+
+                    nav: {
+                        personalQuestions: "Personal questions",
+                        choosePsychologist: "Choose psychologist",
+                        settings: "Settings",
+                        billing: "Billing",
+                        videochat: "Video chat",
+                        support: "Support",
+                    },
+
+                    logout: {
+                        button: "Log out",
+                        iconLabel: "Back",
+                    },
+                },
+            },
+
+            clientProfilePage: {
+                title: "Personal questions",
+                intro:
+                    "These answers will help match you with a psychologist and prepare for the first session.",
+
+                birthDate: {
+                    label: "Date of birth",
+                },
+
+                about: {
+                    label: "Tell us about yourself",
+                    placeholder: "Short self-portrait...",
+                },
+
+                goal: {
+                    title: "What is your goal in contacting us?",
+                    options: {
+                        therapy: "Regular therapy",
+                        single: "One-time consultation",
+                        diagnostic: "Diagnostics / second opinion",
+                        other: "Other",
+                    },
+                },
+
+                mainConcern: {
+                    title: "What worries you most right now?",
+                    hint:
+                        "Constant anxiety, relationship difficulties, loss of motivation, etc.",
+                },
+
+                topics: {
+                    title: "Topics you want to discuss",
+                    hint: "You can choose several options",
+                    options: {
+                        relationships: "Relationships",
+                        selfEsteem: "Self-esteem",
+                        anxiety: "Anxiety",
+                        burnout: "Burnout",
+                        career: "Career / studies",
+                        other: "Other",
+                    },
+                },
+
+                visitedBefore: {
+                    title: "Have you seen a psychologist before?",
+                    options: {
+                        no: "No, this is my first time",
+                        yesNow: "Yes, I’m seeing one now",
+                        yesBefore: "Yes, I saw one before",
+                    },
+                },
+
+                submit: {
+                    next: "Next",
+                },
+            },
+
+            clientSettingsPage: {
+                title: "Account settings",
+                subtitle:
+                    "Here you can update your profile photo, name and notifications.",
+
+                avatar: {
+                    noPhoto: "No photo",
+                    changePhoto: "Change photo",
+                    hint: "JPG, PNG up to 5 MB. The image will be cropped to a circle.",
+                    errorType: "Only JPG and PNG formats are supported.",
+                    errorSize: "File size must not exceed {{max}} MB.",
+                },
+
+                profile: {
+                    sectionTitle: "Personal data",
+                    fullNameLabel: "Name and surname",
+                    emailLabel: "Email",
+                    emailHint:
+                        "Email is used for login and notifications. Changing email will be available later.",
+                },
+
+                notifications: {
+                    sectionTitle: "Notifications",
+                    emailLabel: "Receive emails about new sessions and reminders",
+                    pushLabel: "Push notifications about upcoming sessions",
+                },
+
+                saveProfileButton: "Save changes",
+
+                password: {
+                    sectionTitle: "Change password",
+                    description:
+                        "Enter your current password and create a new one. After saving, you will log in with the new password.",
+
+                    currentLabel: "Current password",
+                    newLabel: "New password",
+                    confirmLabel: "Repeat new password",
+
+                    errors: {
+                        fillAll: "Fill in all fields to change the password.",
+                        tooShort: "The new password must be at least 8 characters long.",
+                        mismatch: "Passwords do not match.",
+                    },
+
+                    success:
+                        "Password updated (only on frontend for now). Connect backend for real change.",
+
+                    submitButton: "Update password",
+                },
+            },
+
+            faqSection: {
+                heading: {
+                    blue: "Frequently asked",
+                    black: "questions",
+                },
+
+                items: [
+                    {
+                        id: "trial-1",
+                        question: "Is there a free trial period?",
+                        answer:
+                            "Yes, you can try the service for free for 30 days. If you wish, we can provide a free 30-minute personal consultation to help you start as smoothly as possible.",
+                    },
+                    {
+                        id: "trial-2",
+                        question: "Is there a free trial period?",
+                        answer:
+                            "Yes, you can try the service for free for 30 days. If you wish, we can provide a free 30-minute personal consultation to help you start as smoothly as possible.",
+                    },
+                    {
+                        id: "trial-3",
+                        question: "Is there a free trial period?",
+                        answer:
+                            "Yes, you can try the service for free for 30 days. If you wish, we can provide a free 30-minute personal consultation to help you start as smoothly as possible.",
+                    },
+                    {
+                        id: "plan-change",
+                        question: "Can I change my plan later?",
+                        answer:
+                            "Yes, you can switch to another plan at any time in your account settings.",
+                    },
+                    {
+                        id: "cancel-policy",
+                        question: "What is your cancellation policy?",
+                        answer:
+                            "You can cancel your subscription at any time. It will remain active until the end of the paid period.",
+                    },
+                    {
+                        id: "support",
+                        question: "How can I contact support?",
+                        answer:
+                            "You can contact us through the “Contacts” section or via email at support@example.com.",
+                    },
+                ],
+            },
+        },
+    }
 };
 
 i18n
@@ -1915,7 +2859,7 @@ i18n
     .init({
         resources,
         fallbackLng: "ru",
-        supportedLngs: ["ru", "uz"],
+        supportedLngs: ["ru", "uz", "en"],
         interpolation: {
             escapeValue: false,
         },
