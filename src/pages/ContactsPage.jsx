@@ -9,7 +9,7 @@ export default function ContactsPage() {
     return (
         <MainLayout>
             <main className="bg-skySoft">
-                <div className="mx-auto max-w-[1200px] px-4 py-10 lg:px-[72px] lg:py-16">
+                <div className="mx-auto max-w-[1920px] px-4 py-10 lg:px-[72px] lg:py-16">
                     {/* ХЕДЕР СТРАНИЦЫ */}
                     <section className="mb-10 lg:mb-14">
                         <div className="inline-flex items-center rounded-full bg-white/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-[#1F98FA] shadow-sm">
@@ -152,7 +152,7 @@ export default function ContactsPage() {
                             {t("contactsPage.map.subtitle")}
                         </p>
 
-                        <div className="mt-4 h-[260px] w-full overflow-hidden rounded-2xl border border-[#D7E0ED]">
+                        <div className="mt-4 h-[340px] w-full overflow-hidden rounded-2xl border border-[#D7E0ED]">
                             <iframe
                                 title="Yordam location"
                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2998.614390177048!2d66.944996!3d39.654140!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMznCsDM5JzE1LjAiTiA2NsKwNTYnNDIuMCJF!5e0!3m2!1sru!2suz!4v1700000000000"

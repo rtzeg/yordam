@@ -47,7 +47,7 @@ export default function CompaniesPage() {
   return (
     <MainLayout>
       <main className="bg-skySoft">
-        <div className="mx-auto max-w-[1200px] px-4 py-10 lg:px-[72px] lg:py-16">
+        <div className="mx-auto max-w-[1640px] px-4 py-10 lg:px-[72px] lg:py-16">
           {/* Хедер блока */}
           <section className="mb-10 lg:mb-14">
             <div className="inline-flex items-center rounded-full bg-[#1F98FA] px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-[#FFF] shadow-sm">

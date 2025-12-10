@@ -18,14 +18,9 @@ export function FAQSection() {
   };
 
   return (
-    <section className="mx-auto max-w-[1296px] px-4 lg:px-0 py-16">
+    <section className="mx-auto max-w-[1800px] px-4 lg:px-0 py-16">
       {/* Заголовок с картинкой-овалом */}
       <div className="relative inline-block mb-10">
-        <img
-          src={roundFaq}
-          alt=""
-          className="pointer-events-none select-none absolute -top-4 left-[85px] h-[72px] w-auto"
-        />
 
         <span className="font-display text-[32px] md:text-[40px] font-bold text-[#1F98FA]">
           {t("faqSection.heading.blue")}{" "}

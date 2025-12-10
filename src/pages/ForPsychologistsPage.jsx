@@ -119,7 +119,7 @@ export default function ForPsychologistsPage() {
     return (
         <MainLayout>
             <main className="bg-skySoft">
-                <div className="mx-auto max-w-[1200px] px-4 pb-16 pt-8 lg:px-[72px] lg:pt-12">
+                <div className="mx-auto max-w-[1640px] px-4 pb-16 pt-8 lg:px-[72px] lg:pt-12">
                     {/* HERO */}
                     <section className="mb-14 flex flex-col items-center gap-10 lg:flex-row lg:items-stretch">
                         <div className="flex-1">
