@@ -2,13 +2,14 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Search, ChevronDown } from "lucide-react";
+import { Search, ChevronDown, ChevronUp } from "lucide-react";
+
 import { PsychologistCard } from "../components/PsychologistCard.jsx";
 import { MainLayout } from "../../../components/layout/MainLayout.jsx";
 import { getPsychologistsList } from "../../../shared/api/api";
 import { useTranslation } from "react-i18next";
 
-const ANY_VALUE = "__any"; // внутреннее значение "любой / har qanday"
+const ANY_VALUE = "__any";
 
 export function PsychologistsListPage() {
   const { t } = useTranslation();
@@ -26,7 +27,10 @@ export function PsychologistsListPage() {
   const [sortMenuOpen, setSortMenuOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(6);
 
-  // 1. Загружаем психологов с бэкенда
+  // модалка фильтров для мобилки
+  const [filtersModalOpen, setFiltersModalOpen] = useState(false);
+
+  // ===== 1. Загружаем психологов =====
   useEffect(() => {
     let cancelled = false;
 
@@ -37,12 +41,14 @@ export function PsychologistsListPage() {
 
         const list = await getPsychologistsList();
         if (!cancelled) {
-          setAllPsychologists(list);
+          setAllPsychologists(list || []);
         }
       } catch (e) {
         if (!cancelled) {
           console.error(e);
-          setError(e?.message || t("psychologistsList.messages.loadError"));
+          setError(
+            e?.message || t("psychologistsList.messages.loadError")
+          );
         }
       } finally {
         if (!cancelled) {
@@ -59,16 +65,15 @@ export function PsychologistsListPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 2. Конфиг сортировки (подписи завязаны на i18n)
+  // ===== 2. Сортировка =====
   const sortOptions = [
     { key: "popular", label: t("psychologistsList.sort.popular") },
     { key: "verified", label: t("psychologistsList.sort.verified") },
     { key: "new", label: t("psychologistsList.sort.new") },
   ];
 
-  // 3. Строим опции фильтров из реальных данных
+  // ===== 3. Конфиг фильтров на основе данных =====
   const filterConfig = useMemo(() => {
-    // уникальные значения из массива
     const unique = (arr) =>
       Array.from(new Set(arr.filter(Boolean))).sort((a, b) =>
         String(a).localeCompare(String(b), "ru")
@@ -161,7 +166,7 @@ export function PsychologistsListPage() {
     ];
   }, [allPsychologists, t]);
 
-  // 4. Инициализируем filters и открытые секции, когда готова конфигурация
+  // ===== 4. Инициализация фильтров и открытых секций =====
   useEffect(() => {
     if (!filterConfig.length) return;
 
@@ -199,186 +204,228 @@ export function PsychologistsListPage() {
     setVisibleCount(6);
   };
 
-  // 5. Фильтрация + сортировка
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    setVisibleCount(6);
+  };
+
+  const handleChangeSort = (key) => {
+    setSortMode(key);
+    setSortMenuOpen(false);
+    setVisibleCount(6);
+  };
+
+  // ===== 5. Фильтрация + сортировка =====
   const filteredAndSorted = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
 
     let list = allPsychologists.filter((p) => {
-      // Поиск по имени, подходу, языку, тегам, темам, возрасту и опыту
+      // поиск
       if (query) {
         const haystack = [
           p.name,
+          p.about,
           p.therapyType,
           p.approach,
           p.language,
-          (p.tags || []).join(" "),
-          (p.topics || []).join(" "),
-          String(p.experienceYears),
-          String(p.age),
         ]
+          .filter(Boolean)
           .join(" ")
           .toLowerCase();
 
         if (!haystack.includes(query)) return false;
       }
 
-      // Фильтр вид терапии
-      if (
-        filters.therapyType &&
-        filters.therapyType !== ANY_VALUE &&
-        p.therapyType !== filters.therapyType
-      ) {
-        return false;
-      }
+      // фильтры
+      for (const f of filterConfig) {
+        const val = filters[f.key];
+        if (!val || val === ANY_VALUE) continue;
 
-      // Фильтр подхода
-      if (
-        filters.approach &&
-        filters.approach !== ANY_VALUE &&
-        p.approach !== filters.approach
-      ) {
-        return false;
-      }
+        if (f.key === "therapyType" && p.therapyType !== val) return false;
+        if (f.key === "approach" && p.approach !== val) return false;
+        if (f.key === "language" && p.language !== val) return false;
+        if (f.key === "time" && p.time !== val) return false;
 
-      // Фильтр языка
-      if (
-        filters.language &&
-        filters.language !== ANY_VALUE &&
-        p.language !== filters.language
-      ) {
-        return false;
-      }
-
-      // Фильтр времени (если у тебя есть поле time в маппинге)
-      if (
-        filters.time &&
-        filters.time !== ANY_VALUE &&
-        p.time !== filters.time
-      ) {
-        return false;
-      }
-
-      // Фильтр опыта
-      if (filters.experience && filters.experience !== ANY_VALUE) {
-        let minYears = 0;
-        if (filters.experience === "from1") minYears = 1;
-        if (filters.experience === "from3") minYears = 3;
-        if (filters.experience === "from5") minYears = 5;
-
-        if ((p.experienceYears || 0) < minYears) return false;
+        if (f.key === "experience") {
+          const years = Number(p.experienceYears || 0);
+          if (val === "from1" && years < 1) return false;
+          if (val === "from3" && years < 3) return false;
+          if (val === "from5" && years < 5) return false;
+        }
       }
 
       return true;
     });
 
-    // Сортировка
-    if (sortMode === "popular") {
-      list = [...list].sort((a, b) => (b.views || 0) - (a.views || 0));
-    } else if (sortMode === "verified") {
+    // сортировка
+    if (sortMode === "verified") {
       list = [...list].sort((a, b) => {
-        if (a.verified === b.verified) return (b.views || 0) - (a.views || 0);
-        return a.verified ? -1 : 1;
+        const av = a.verified ? 1 : 0;
+        const bv = b.verified ? 1 : 0;
+        return bv - av;
       });
     } else if (sortMode === "new") {
-      list = [...list].sort(
-        (a, b) => (a.experienceYears || 0) - (b.experienceYears || 0)
-      );
+      list = [...list].sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
     }
 
     return list;
-  }, [allPsychologists, searchQuery, filters, sortMode]);
+  }, [allPsychologists, filters, filterConfig, searchQuery, sortMode]);
 
   const totalFound = filteredAndSorted.length;
-  const visiblePsychologists = filteredAndSorted.slice(0, visibleCount);
+  const visibleList = filteredAndSorted.slice(0, visibleCount);
+  const canLoadMore = visibleCount < totalFound;
 
-  const currentSortLabel =
-    sortOptions.find((o) => o.key === sortMode)?.label ||
-    t("psychologistsList.sort.popular");
+  // ===== 6. Общий контент фильтров (aside + модалка) =====
+  const renderFiltersContent = () => (
+    <>
+      <div className="mb-4 flex items-center justify-between">
+        <h3 className="text-[16px] font-semibold text-[#071A34]">
+          {t("psychologistsList.filters.title")}
+        </h3>
+
+        <button
+          type="button"
+          onClick={handleResetFilters}
+          className="text-[13px] text-[#1F98FA] hover:underline"
+        >
+          {t("psychologistsList.filters.reset")}
+        </button>
+      </div>
+
+      {loading && (
+        <p className="text-[13px] text-[#6F7A89]">
+          {t("psychologistsList.messages.loadingFilters") ??
+            t("psychologistsList.messages.loading")}
+        </p>
+      )}
+
+      {!loading && (
+        <div className="space-y-4">
+          {filterConfig.map((group) => {
+            const isOpen = openFilterSections[group.key];
+
+            return (
+              <div key={group.key} className="border-b border-[#E3ECF5] pb-3">
+                <button
+                  type="button"
+                  onClick={() => toggleSection(group.key)}
+                  className="flex w-full items-center justify-between text-left text-[14px] text-[#071A34]"
+                >
+                  <span>{group.label}</span>
+                  <ChevronDown
+                    className={`h-4 w-4 text-[#9BA6B5] transition-transform ${
+                      isOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                {isOpen && (
+                  <div className="mt-2 space-y-1">
+                    {group.options.map((opt) => (
+                      <button
+                        key={opt.value ?? "any"}
+                        type="button"
+                        onClick={() =>
+                          handleFilterChange(group.key, opt.value)
+                        }
+                        className={`flex w-full items-center justify-between rounded-lg px-2 py-1 text-[13px] ${
+                          filters[group.key] === opt.value
+                            ? "bg-[#ECF7FF] text-[#071A34] font-medium"
+                            : "text-[#6F7A89] hover:bg-[#F5F7FA]"
+                        }`}
+                      >
+                        <span>{opt.label}</span>
+                        {filters[group.key] === opt.value && (
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#1F98FA]" />
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </>
+  );
 
   return (
     <MainLayout>
-      <div className="w-full px-4 lg:px-12 xl:px-[72px] py-10">
-        {/* Заголовок */}
-        <h1 className="font-display text-[32px] md:text-[40px] font-bold text-[#1F98FA]">
-          {t("psychologistsList.title")}
-        </h1>
+      {/* ===== HERO / ШАПКА СПИСКА ===== */}
+      <section className="bg-[#E5F3FF]">
+        <div className="mx-auto max-w-[1920px] px-4 lg:px-[72px] py-8 md:py-10">
+          <div className="max-w-[720px]">
+            <h1 className="font-display text-[26px] md:text-[32px] text-[#1F98FA]">
+              {t("psychologistsList.title")}
+            </h1>
 
-        {/* Верх: хлебные крошки, поиск, сортировка */}
-        <div className="mt-4 border-b border-[#46A9FF] pb-5">
-          <div className="mb-3 flex items-center gap-1 text-[13px] text-[#9BA6B5]">
-            <Link
-              to="/"
-              className="hover:text-[#1F98FA] transition-colors"
-            >
-              {t("psychologistsList.breadcrumbs.home")}
-            </Link>
-            <span>›</span>
-            <span className="text-[#071A34]">
-              {t("psychologistsList.breadcrumbs.current")}
-            </span>
-          </div>
+            {/* Хлебные крошки */}
+            <div className="mt-4 text-[12px] text-[#8C9BB0]">
+              <Link to="/" className="hover:text-[#1F98FA]">
+                {t("psychologistsList.breadcrumbs.home")}
+              </Link>
+              <span className="mx-1">›</span>
+              <span>{t("psychologistsList.breadcrumbs.current")}</span>
+            </div>
 
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            {/* Поиск */}
-            <div className="flex-1">
+            {/* Поисковая строка */}
+            <div className="mt-4">
               <div className="relative">
-                <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#9BA6B5]">
-                  <Search className="h-4 w-4" />
-                </span>
+                <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#A0AEC0]" />
                 <input
                   type="text"
                   value={searchQuery}
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value);
-                    setVisibleCount(6);
-                  }}
+                  onChange={handleSearchChange}
                   placeholder={t("psychologistsList.search.placeholder")}
-                  className="w-full rounded-full border border-[#D6DEE9] bg-white px-10 py-3 text-[14px] text-[#071A34] outline-none placeholder:text-[#B2BDCC] focus:border-[#1F98FA]"
+                  className="w-full rounded-full bg:white bg-white px-10 py-2.5 text-[14px] text-[#071A34] shadow-sm outline-none placeholder:text-[#A0AEC0] focus:ring-2 focus:ring-[#1F98FA]"
                 />
               </div>
             </div>
 
-            {/* Найдено + сортировка */}
-            <div className="mt-2 flex items-center justify-between md:mt-0 md:ml-6 md:w-auto">
-              <div className="flex items-center gap-1 text-[13px] text-[#B2BDCC]">
-                <span>{t("psychologistsList.found.prefix")}</span>
-                <span className="font-medium text-[#071A34]">
-                  {totalFound}
-                </span>
-                <span>{t("psychologistsList.found.suffix")}</span>
-              </div>
+            {/* Найдено + сортировка / кнопка фильтров */}
+            <div className="mt-4 hidden items-center justify-between md:flex">
+              <p className="text-[13px] text-[#6F7A89]">
+                {t("psychologistsList.found.prefix")} {totalFound}{" "}
+                {t("psychologistsList.found.suffix")}
+              </p>
 
-              <div className="mx-4 hidden h-8 w-px bg-[#E0E6F0] md:block" />
-
+              {/* Сортировка */}
               <div className="relative">
                 <button
                   type="button"
-                  onClick={() => setSortMenuOpen((prev) => !prev)}
-                  className="inline-flex items-center gap-2 rounded-full bg-[#1F98FA] px-6 py-3 text-[14px] font-semibold text-white shadow-[0_12px_24px_rgba(31,152,250,0.45)] hover:bg-[#0f84e2] transition-colors"
+                  onClick={() => setSortMenuOpen((v) => !v)}
+                  className="rounded-full bg-white px-4 py-2 text-[13px] text-[#071A34] shadow-sm hover:bg-[#F3F6FB] flex items-center gap-2"
                 >
-                  {currentSortLabel}
-                  <ChevronDown className="h-4 w-4" />
+                  <span>
+                    {
+                      sortOptions.find((opt) => opt.key === sortMode)?.label ??
+                      ""
+                    }
+                  </span>
+                  {sortMenuOpen ? (
+                    <ChevronUp className="h-4 w-4 text-[#9BA6B5]" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4 text-[#9BA6B5]" />
+                  )}
                 </button>
 
                 {sortMenuOpen && (
-                  <div className="absolute right-0 z-20 mt-2 w-[220px] overflow-hidden rounded-2xl border border-[#D6DEE9] bg-white shadow-lg">
+                  <div className="absolute right-0 mt-2 w-[220px] rounded-2xl border border-[#E1E8F0] bg-white py-2 shadow-[0_12px_30px_rgba(15,35,52,0.16)] z-20">
                     {sortOptions.map((opt) => (
                       <button
                         key={opt.key}
                         type="button"
-                        onClick={() => {
-                          setSortMode(opt.key);
-                          setSortMenuOpen(false);
-                          setVisibleCount(6);
-                        }}
-                        className={`flex w-full items-center justify-between px-4 py-3 text-[13px] text-left ${sortMode === opt.key
-                            ? "bg-[#ECF7FF] text-[#1F98FA]"
-                            : "hover:bg-[#F5F7FA]"
-                          }`}
+                        onClick={() => handleChangeSort(opt.key)}
+                        className={`flex w-full items-center justify-between px-4 py-2 text-left text-[13px] ${
+                          sortMode === opt.key
+                            ? "bg-[#F0F7FF] text-[#1F98FA] font-semibold"
+                            : "text-[#071A34] hover:bg-[#F7FAFF]"
+                        }`}
                       >
                         <span>{opt.label}</span>
                         {sortMode === opt.key && (
-                          <span className="text-[16px]">•</span>
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#1F98FA]" />
                         )}
                       </button>
                     ))}
@@ -386,126 +433,117 @@ export function PsychologistsListPage() {
                 )}
               </div>
             </div>
+
+            {/* Мобилка: найдено + кнопка фильтров */}
+            <div className="mt-4 flex items-center justify-between md:hidden">
+              <p className="text-[12px] text-[#6F7A89]">
+                {t("psychologistsList.found.prefix")} {totalFound}{" "}
+                {t("psychologistsList.found.suffix")}
+              </p>
+
+              <button
+                type="button"
+                onClick={() => setFiltersModalOpen(true)}
+                className="rounded-full bg-[#1F98FA] px-4 py-2 text-[13px] font-semibold text:white text-white shadow-[0_10px_22px_rgba(31,152,250,0.45)]"
+              >
+                {t("psychologistsList.filters.title")}
+              </button>
+            </div>
           </div>
         </div>
+      </section>
 
-        {/* Контент */}
-        <div className="mt-8 flex flex-col gap-8 lg:flex-row">
-          {/* Левая колонка: фильтры */}
-          <aside className="w-full max-w-[260px] rounded-[32px] bg-white/70 px-6 py-6 shadow-[0_18px_38px_rgba(67,142,229,0.12)]">
+      {/* ===== КОНТЕНТ: ФИЛЬТРЫ + СПИСОК ===== */}
+      <section className="bg-[#F7FBFF] py-8 md:py-12">
+        <div className="mx-auto max-w-[1920px] px-4 lg:px-[72px]">
+          {error && (
+            <div className="mb-4 rounded-2xl bg-[#FFECEC] px-4 py-3 text-[13px] text-[#B00020]">
+              {error}
+            </div>
+          )}
+
+          <div className="mt-2 flex flex-col gap-6 md:mt-0 md:flex-row">
+            {/* Фильтры слева (только md+) */}
+            <aside className="hidden w-full max-w-[320px] md:block">
+              <div className="rounded-[32px] bg-white p-5 shadow-[0_18px_42px_rgba(0,0,0,0.06)]">
+                {renderFiltersContent()}
+              </div>
+            </aside>
+
+            {/* Список психологов */}
+            <div className="flex-1">
+              {loading && !allPsychologists.length && (
+                <p className="text-[14px] text-[#6F7A89]">
+                  {t("psychologistsList.messages.loading")}
+                </p>
+              )}
+
+              {!loading && !visibleList.length && (
+                <p className="text-[14px] text-[#6F7A89]">
+                  {t("psychologistsList.messages.empty")}
+                </p>
+              )}
+
+              <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                {visibleList.map((psy) => (
+                  <PsychologistCard key={psy.id} psychologist={psy} />
+                ))}
+              </div>
+
+              {canLoadMore && (
+                <div className="mt-8 flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setVisibleCount((prev) => prev + 6)
+                    }
+                    className="rounded-full bg-white px-6 py-2 text-[14px] font-semibold text-[#1F98FA] shadow-[0_10px_22px_rgba(15,23,52,0.18)] hover:bg-[#F3F6FB] transition"
+                  >
+                    {t("psychologistsList.loadMore")}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== Мобильная модалка фильтров ===== */}
+      {filtersModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-end md:hidden">
+          {/* фон */}
+          <button
+            type="button"
+            className="absolute inset-0 bg-[rgba(15,23,42,0.45)]"
+            onClick={() => setFiltersModalOpen(false)}
+          />
+
+          <div className="relative z-10 w-full max-h-[80vh] rounded-t-3xl bg-white p-5 shadow-[0_-12px_30px_rgba(15,23,52,0.35)] overflow-y-auto">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-[20px] font-semibold text-[#071A34]">
+              <h2 className="text-[16px] font-semibold text-[#071A34]">
                 {t("psychologistsList.filters.title")}
               </h2>
               <button
                 type="button"
-                onClick={handleResetFilters}
-                className="text-[12px] text-[#9BA6B5] hover:text-[#1F98FA]"
+                onClick={() => setFiltersModalOpen(false)}
+                className="text-[20px] leading-none text-[#9BA6B5]"
               >
-                {t("psychologistsList.filters.reset")}
+                ×
               </button>
             </div>
 
-            {loading && (
-              <div className="py-4 text-[13px] text-[#6F7A89]">
-                {t("psychologistsList.messages.loadingFilters")}
-              </div>
-            )}
+            {renderFiltersContent()}
 
-            {!loading && (
-              <div className="space-y-5">
-                {filterConfig.map((group) => {
-                  const isOpen = openFilterSections[group.key];
-
-                  return (
-                    <div key={group.key} className="border-b border-[#EDF1F7] pb-4">
-                      <button
-                        type="button"
-                        onClick={() => toggleSection(group.key)}
-                        className="flex w-full items-center justify-between text-left"
-                      >
-                        <span className="text-[13px] font-semibold text-[#071A34]">
-                          {group.label}
-                        </span>
-                        <ChevronDown
-                          className={`h-4 w-4 text-[#9BA6B5] transition-transform ${isOpen ? "rotate-180" : ""
-                            }`}
-                        />
-                      </button>
-
-                      {isOpen && (
-                        <div className="mt-3 space-y-2">
-                          {group.options.map((opt) => (
-                            <button
-                              key={opt.value}
-                              type="button"
-                              onClick={() =>
-                                handleFilterChange(group.key, opt.value)
-                              }
-                              className={`flex w-full items-center justify-between text-[13px] ${filters[group.key] === opt.value
-                                  ? "text-[#071A34] font-medium"
-                                  : "text-[#6F7A89]"
-                                }`}
-                            >
-                              <span>{opt.label}</span>
-                              {filters[group.key] === opt.value && (
-                                <span className="text-[#1F98FA]">•</span>
-                              )}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </aside>
-
-          {/* Правая колонка: карточки */}
-          <section className="flex-1">
-            {loading && (
-              <div className="rounded-[24px] bg-white/80 p-8 text-center text-[14px] text-[#6F7A89] shadow-sm">
-                {t("psychologistsList.messages.loadingList")}
-              </div>
-            )}
-
-            {error && !loading && (
-              <div className="rounded-[24px] bg-white/80 p-8 text-center text-[14px] text-red-500 shadow-sm">
-                {t("psychologistsList.messages.errorPrefix")} {error}
-              </div>
-            )}
-
-            {!loading && !error && visiblePsychologists.length === 0 && (
-              <div className="rounded-[24px] bg-white/80 p-8 text-center text-[14px] text-[#6F7A89] shadow-sm">
-                {t("psychologistsList.messages.empty")}
-              </div>
-            )}
-
-            {!loading && !error && visiblePsychologists.length > 0 && (
-              <>
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3 justify-items-center xl:justify-items-start">
-                  {visiblePsychologists.map((p) => (
-                    <PsychologistCard key={p.id} psychologist={p} />
-                  ))}
-                </div>
-
-                {visibleCount < totalFound && (
-                  <div className="mt-8 flex justify-center">
-                    <button
-                      type="button"
-                      onClick={() => setVisibleCount((prev) => prev + 6)}
-                      className="rounded-full border border-[#D6DEE9] bg-white px-8 py-3 text-[14px] text-[#6F7A89] hover:bg-[#F5F7FA]"
-                    >
-                      {t("psychologistsList.loadMore")}
-                    </button>
-                  </div>
-                )}
-              </>
-            )}
-          </section>
+            <button
+              type="button"
+              onClick={() => setFiltersModalOpen(false)}
+              className="mt-5 w-full rounded-full bg-[#1F98FA] px-6 py-3 text-[14px] font-semibold text-white shadow-[0_12px_24px_rgba(31,152,250,0.5)] hover:bg-[#0f84e2] transition-colors"
+            >
+              {t("psychologistsList.filters.apply") ?? "Применить"}
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </MainLayout>
   );
 }
