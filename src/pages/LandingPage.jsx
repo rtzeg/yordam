@@ -8,7 +8,7 @@ import m1 from "../assets/images/m1.svg";
 import m2 from "../assets/images/m2.svg";
 import m3 from "../assets/images/m3.svg";
 import m4 from "../assets/images/m4.svg";
-import roundFaq from "../assets/images/roundfaq.png";
+
 import face from "../assets/images/face.svg";
 
 import {
