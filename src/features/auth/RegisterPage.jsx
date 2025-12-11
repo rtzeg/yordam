@@ -1,4 +1,3 @@
-// src/features/auth/RegisterPage.jsx
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";

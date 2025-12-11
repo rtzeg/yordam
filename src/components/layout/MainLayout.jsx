@@ -1,6 +1,5 @@
-// src/components/layout/MainLayout.jsx
-import Header from "./Header";          // у тебя Header по default-export
-import { Footer } from "./Footer";      // если Footer у тебя по-другому экспортируется — поправь
+import Header from "./Header";          
+import { Footer } from "./Footer";  
 
 export function MainLayout({ children }) {
     return (

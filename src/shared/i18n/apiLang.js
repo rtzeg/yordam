@@ -1,4 +1,3 @@
-// src/shared/i18n/apiLang.js
 import i18n from "./index";
 
 export function getBaseLang() {
@@ -13,6 +12,5 @@ export function getBaseLang() {
 
 export function getApiPrefix() {
   const lang = getBaseLang();
-  // /ru/api/v1  /uz/api/v1  /en/api/v1
   return `/${lang}/api/v1`;
 }

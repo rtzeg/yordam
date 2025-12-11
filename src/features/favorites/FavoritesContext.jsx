@@ -1,4 +1,3 @@
-// src/features/favorites/FavoritesContext.jsx
 import {
   createContext,
   useContext,

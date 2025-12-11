@@ -1,5 +1,3 @@
-// src/components/layout/Footer.jsx
-
 import cloud from "../../assets/images/cloud.png";
 import chatBubble from "../../assets/images/chat_bubble.png";
 import telegramIcon from "../../assets/images/telegram.svg";

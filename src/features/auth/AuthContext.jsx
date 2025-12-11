@@ -1,4 +1,3 @@
-// src/features/auth/AuthContext.jsx
 import { createContext, useContext, useEffect, useState } from "react";
 
 const STORAGE_KEY = "psyuz_auth_user";
@@ -7,7 +6,6 @@ const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
-  // поднимаем пользователя из localStorage при первом рендере
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -34,7 +32,7 @@ export function AuthProvider({ children }) {
       id: "local-" + Date.now(),
       fullName: email.split("@")[0] || "Пользователь",
       email,
-      role, // "client" | "psychologist"
+      role, 
       // profile можно будет потом дополнить настройками
     };
 

@@ -1,4 +1,3 @@
-// src/features/psychologists/pages/PsychologistDetailPage.jsx
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Heart, ArrowLeft, ArrowRight } from "lucide-react";

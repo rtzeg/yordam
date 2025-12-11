@@ -1,6 +1,6 @@
 // src/features/auth/RequireAuth.jsx
 import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "./AuthContext"; // ← вот этого импорта не хватало
+import { useAuth } from "./AuthContext";
 
 /**
  * Обёртка для роутов, которые требуют авторизации.
@@ -25,11 +25,5 @@ export function RequireAuth({ children, role }) {
         );
     }
 
-    // Если ограничение по роли есть и оно не совпало — шлём на /forbidden
-    if (role && user?.role !== role) {
-        return <Navigate to="/forbidden" replace />;
-    }
-
-    // Всё норм — рендерим детей
     return children;
 }

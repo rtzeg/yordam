@@ -1,14 +1,12 @@
-// src/components/FAQSection.jsx
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import roundFaq from "../assets/images/roundfaq.png";
+
 
 export function FAQSection() {
   const { t } = useTranslation();
 
-  // t(..., { returnObjects: true }) чтобы получить массив объектов из i18n
   const faqs = t("faqSection.items", { returnObjects: true }) || [];
 
   const [openIndex, setOpenIndex] = useState(null);

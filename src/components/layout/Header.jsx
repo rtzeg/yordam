@@ -1,7 +1,7 @@
 // src/components/layout/Header.jsx
 
 import { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import {
     ChevronDown,
     ChevronUp,
@@ -28,6 +28,28 @@ import { useTranslation } from "react-i18next";
 import flagRu from "../../assets/images/ru.png";
 import flagUz from "../../assets/images/uz.png";
 import flagEn from "../../assets/images/en.png";
+function HeaderNavItem({ to, label }) {
+    return (
+        <NavLink to={to} end={to === "/"}>
+            {({ isActive }) => (
+                <div
+                    className={`relative inline-flex items-center px-3 py-1 text-[13px] font-medium transition-colors group
+                    ${isActive ? "text-[#071A34]" : "text-[#6D7685] hover:text-[#071A34]"}`}
+                >
+                    <span>{label}</span>
+                    <span
+                        className={`
+                                    pointer-events-none absolute -bottom-1 left-0 h-[2px] w-full rounded-full bg-[#1F98FA]
+                                    origin-left transition-transform duration-500 ease-in-out
+                                    ${isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}
+                                `}
+                    />
+
+                </div>
+            )}
+        </NavLink>
+    );
+}
 
 export function Header() {
     const location = useLocation();
@@ -129,14 +151,11 @@ export function Header() {
                         {/* Десктоп-меню */}
                         <div className="hidden items-center gap-6 text-[13px] text-[#6D7685] lg:flex">
                             {navLinks.map((link) => (
-                                <Link
+                                <HeaderNavItem
                                     key={link.to}
                                     to={link.to}
-                                    className={`nav-link ${isActive(link.to) ? "text-[#071A34]" : ""
-                                        }`}
-                                >
-                                    {link.label}
-                                </Link>
+                                    label={link.label}
+                                />
                             ))}
 
                             {/* DROPDOWN ЯЗЫКОВ (десктоп) */}
@@ -169,8 +188,8 @@ export function Header() {
                                                     type="button"
                                                     onClick={() => changeLanguage(lang.code)}
                                                     className={`flex w-full items-center gap-2 px-3 py-2 text-left text-[13px] ${active
-                                                            ? "bg-[#F0F7FF] text-[#1F98FA] font-semibold"
-                                                            : "text-[#071A34] hover:bg-[#F7FAFF]"
+                                                        ? "bg-[#F0F7FF] text-[#1F98FA] font-semibold"
+                                                        : "text-[#071A34] hover:bg-[#F7FAFF]"
                                                         }`}
                                                 >
                                                     <img
@@ -276,7 +295,9 @@ export function Header() {
                                                     className="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-[#F5F8FF]"
                                                 >
                                                     <MessageCircle className="h-4 w-4 text-[#1F98FA]" />
-                                                    <span>{t("header.account.personalQuestions")}</span>
+                                                    <span>
+                                                        {t("header.account.personalQuestions")}
+                                                    </span>
                                                 </Link>
 
                                                 <Link
@@ -285,7 +306,9 @@ export function Header() {
                                                     className="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-[#F5F8FF]"
                                                 >
                                                     <UserCircle2 className="h-4 w-4 text-[#1F98FA]" />
-                                                    <span>{t("header.account.choosePsychologist")}</span>
+                                                    <span>
+                                                        {t("header.account.choosePsychologist")}
+                                                    </span>
                                                 </Link>
 
                                                 <Link
@@ -385,8 +408,8 @@ export function Header() {
                                         key={link.to}
                                         to={link.to}
                                         className={`rounded-xl px-3 py-2 ${isActive(link.to)
-                                                ? "bg-[#F0F7FF] text-[#1F98FA] font-semibold"
-                                                : "hover:bg-[#F7FAFF]"
+                                            ? "bg-[#F0F7FF] text-[#1F98FA] font-semibold"
+                                            : "hover:bg-[#F7FAFF]"
                                             }`}
                                     >
                                         {link.label}
@@ -403,8 +426,8 @@ export function Header() {
                                                 type="button"
                                                 onClick={() => changeLanguage(lang.code)}
                                                 className={`flex flex-1 items-center justify-center gap-1 rounded-full border px-2 py-1 text-[13px] ${active
-                                                        ? "border-[#1F98FA] bg-[#F0F7FF] text-[#1F98FA] font-semibold"
-                                                        : "border-[#D0D9E5] text-[#071A34]"
+                                                    ? "border-[#1F98FA] bg-[#F0F7FF] text-[#1F98FA] font-semibold"
+                                                    : "border-[#D0D9E5] text-[#071A34]"
                                                     }`}
                                             >
                                                 <img

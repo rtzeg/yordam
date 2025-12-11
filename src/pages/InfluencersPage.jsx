@@ -1,4 +1,3 @@
-// src/pages/InfluencersPage.jsx
 import { MainLayout } from "../components/layout/MainLayout";
 import supportImage from "../assets/images/5.svg";
 import { useTranslation } from "react-i18next";
@@ -161,7 +160,7 @@ export default function InfluencersPage() {
                   <img
                     src={supportImage}
                     alt={t("influencersPage.support.imageAlt")}
-                    className="max-h-[300px] w-[400px]"
+                    className="mt-6 max-h-[300px] w-[400px] mx-auto"
                   />
                 </div>
               </div>

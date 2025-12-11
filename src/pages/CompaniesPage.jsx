@@ -216,7 +216,7 @@ export default function CompaniesPage() {
                 <img
                   src={supportImage}
                   alt="Поддержка команды"
-                  className="max-h-[300px] w-[400px]"
+                  className="max-h-[300px] w-[400px] mx-auto  "
                 />
               </div>
 

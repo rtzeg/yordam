@@ -1,6 +1,5 @@
-// src/shared/api/api.js
 import { api } from "./http";
-import { getApiPrefix } from "../i18n/apiLang"; // вот это ты добавлял для /ru /uz /en
+import { getApiPrefix } from "../i18n/apiLang"; 
 
 // посчитать возраст по дате рождения "1993-11-05"
 function calcAge(dateStr) {

@@ -1,4 +1,3 @@
-// src/App.jsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { AuthProvider } from "./features/auth/AuthContext";
@@ -7,20 +6,17 @@ import { FavoritesProvider } from "./features/favorites/FavoritesContext";
 
 // Общие страницы
 import { LandingPage } from "./pages/LandingPage";
-import { ForbiddenPage } from "./pages/ForbiddenPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import InfluencersPage from "./pages/InfluencersPage";
 import CompaniesPage from "./pages/CompaniesPage";
 import ForPsychologistsPage from "./pages/ForPsychologistsPage";
 
-// Тест API (страница, где дергаем Swagger-эндпоинт)
-import TestApiPage from "./pages/TestApiPage";
 
 // Auth
 import { LoginPage } from "./features/auth/LoginPage";
 import { RegisterPage } from "./features/auth/RegisterPage";
 
-// Психологи (каталог + профиль + избранное)
+// Психологи (каталог + профиль + избранное + контакты)
 import PsychologistsListPage from "./features/psychologists/pages/PsychologistsListPage";
 import PsychologistDetailPage from "./features/psychologists/pages/PsychologistDetailPage";
 import FavoritePsychologistsPage from "./features/psychologists/pages/FavoritePsychologistsPage";
@@ -48,9 +44,6 @@ export default function App() {
             <Route path="/companies" element={<CompaniesPage />} />
             <Route path="/psy" element={<ForPsychologistsPage />} />
             <Route path="/contacts" element={<ContactsPage />} />
-            {/* Тестовый экран для проверки подключения к API */}
-            <Route path="/test-api" element={<TestApiPage />} />
-
             {/* Страница конкретного психолога */}
             <Route
               path="/psychologists/:id"
@@ -70,7 +63,6 @@ export default function App() {
             {/* Auth */}
             <Route path="/auth/login" element={<LoginPage />} />
             <Route path="/auth/register" element={<RegisterPage />} />
-            <Route path="/forbidden" element={<ForbiddenPage />} />
 
             {/* Кабинет клиента (роль client) */}
             <Route

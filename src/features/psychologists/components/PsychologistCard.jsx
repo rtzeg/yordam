@@ -1,5 +1,3 @@
-// src/features/psychologists/components/PsychologistCard.jsx
-
 import { Link } from "react-router-dom";
 import { Heart, CheckCircle2, CircleHelp } from "lucide-react";
 import { useFavorites } from "../../favorites/FavoritesContext.jsx";

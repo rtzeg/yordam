@@ -1,6 +1,5 @@
-// src/pages/ContactsPage.jsx
 import { MainLayout } from "../components/layout/MainLayout";
-import contactsImage from "../assets/images/6.svg"; // или другую картинку
+import contactsImage from "../assets/images/6.svg"; 
 import { useTranslation } from "react-i18next";
 
 export default function ContactsPage() {

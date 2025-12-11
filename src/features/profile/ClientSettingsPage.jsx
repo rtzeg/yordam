@@ -1,5 +1,3 @@
-// src/features/profile/ClientSettingsPage.jsx
-
 import { useState, useRef } from "react";
 import { useAuth } from "../auth/AuthContext";
 import { useTranslation } from "react-i18next";

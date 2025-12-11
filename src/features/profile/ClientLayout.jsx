@@ -1,4 +1,3 @@
-// src/features/profile/ClientLayout.jsx
 import { NavLink, Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -6,7 +5,7 @@ import { useAuth } from "../auth/AuthContext";
 import Header from "../../components/layout/Header";
 import { Footer } from "../../components/layout/Footer";
 
-// ключи из i18n: header.account.*
+
 const navItems = [
   { to: "/client", key: "personalQuestions", exact: true },
   { to: "/psychologists", key: "choosePsychologist" },

@@ -1,4 +1,3 @@
-// src/pages/NotFoundPage.jsx
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { MainLayout } from "../components/layout/MainLayout";

@@ -1,4 +1,3 @@
-// src/shared/api/http.jsx
 import axios from "axios";
 
 export const api = axios.create({

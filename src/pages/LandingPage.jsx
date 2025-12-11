@@ -34,22 +34,22 @@ export function LandingPage() {
                 <div className="mx-auto max-w-[1920px] px-4 lg:px-[72px]">
                     <div
                         className="
-        relative flex flex-col items-center justify-center
-        gap-6
-        py-10 sm:py-12 md:py-16 lg:py-20
-        min-h-[520px] md:min-h-[620px] lg:min-h-[700px]
-      "
+                                    relative flex flex-col items-center justify-center
+                                    gap-6
+                                    py-10 sm:py-12 md:py-16 lg:py-20
+                                    min-h-[520px] md:min-h-[520px] lg:min-h-[520px]
+                                    "
                     >
                         {/* Левый персонаж — только на больших экранах */}
                         <img
                             src={heroMan}
                             alt="Психолог"
                             className="
-          pointer-events-none select-none
-          hidden lg:block
-          absolute bottom-0 left-[-40px]
-          h-[420px]
-        "
+                                        pointer-events-none select-none
+                                        hidden lg:block
+                                        absolute bottom-0 left-[-40px]
+                                        h-[420px]
+                                      "
                         />
 
                         {/* Центральный контент */}
@@ -153,7 +153,7 @@ export function LandingPage() {
                     <div className="grid gap-5 md:grid-cols-2">
                         {/* Карточка 1 */}
                         <div className="relative overflow-hidden rounded-[32px] bg-white px-5 py-6 shadow-[0_18px_42px_rgba(0,0,0,0.08)] md:px-7 md:py-7">
-                            <div className="relative z-[1] max-w-[260px]">
+                            <div className="relative z-[1] max-w-[260px] pr-6">
                                 <h3 className="font-heading text-[18px] font-display text-[#1F98FA]">
                                     {t("landing.help.cards.anxiety.title")}
                                 </h3>
@@ -165,13 +165,17 @@ export function LandingPage() {
                                 src={m1}
                                 alt=""
                                 aria-hidden="true"
-                                className="pointer-events-none absolute right-[-40px] top-1/2 h-[260px] -translate-y-1/2 opacity-70"
+                                className="
+                                pointer-events-none absolute right-[-40px] top-1/2 
+                                h-[180px] md:h-[240px] 
+                                -translate-y-1/2 opacity-70
+                                "
                             />
                         </div>
 
                         {/* Карточка 2 */}
                         <div className="relative overflow-hidden rounded-[32px] bg-white px-5 py-6 shadow-[0_18px_42px_rgba(0,0,0,0.08)] md:px-7 md:py-7">
-                            <div className="relative z-[1] max-w-[260px]">
+                            <div className="relative z-[1] max-w-[260px] pr-6">
                                 <h3 className="font-heading text-[18px] font-display text-[#1F98FA]">
                                     {t("landing.help.cards.kids.title")}
                                 </h3>
@@ -183,13 +187,18 @@ export function LandingPage() {
                                 src={m2}
                                 alt=""
                                 aria-hidden="true"
-                                className="pointer-events-none absolute right-[-40px] top-1/2 h-[200px] -translate-y-1/2 opacity-70"
+                                className="
+                                pointer-events-none absolute right-[-40px] top-1/2 
+                                h-[180px] md:h-[240px] 
+                                -translate-y-1/2 opacity-70
+                              "
+
                             />
                         </div>
 
                         {/* Карточка 3 */}
                         <div className="relative overflow-hidden rounded-[32px] bg-white px-5 py-6 shadow-[0_18px_42px_rgba(0,0,0,0.08)] md:px-7 md:py-7">
-                            <div className="relative z-[1] max-w-[280px]">
+                            <div className="relative z-[1] max-w-[260px] pr-6">
                                 <h3 className="font-heading text-[18px] font-display text-[#1F98FA]">
                                     {t("landing.help.cards.relationships.title")}
                                 </h3>
@@ -201,13 +210,18 @@ export function LandingPage() {
                                 src={m3}
                                 alt=""
                                 aria-hidden="true"
-                                className="pointer-events-none absolute right-[-60px] top-1/2 h-[250px] -translate-y-1/2 opacity-70"
+                                className="
+                                pointer-events-none absolute right-[-40px] top-1/2 
+                                h-[180px] md:h-[240px] 
+                                -translate-y-1/2 opacity-70
+                              "
+
                             />
                         </div>
 
                         {/* Карточка 4 */}
                         <div className="relative overflow-hidden rounded-[32px] bg-white px-5 py-6 shadow-[0_18px_42px_rgba(0,0,0,0.08)] md:px-7 md:py-7">
-                            <div className="relative z-[1] max-w-[260px]">
+                            <div className="relative z-[1] max-w-[260px] pr-6">
                                 <h3 className="font-heading text-[18px] font-display text-[#1F98FA]">
                                     {t("landing.help.cards.loss.title")}
                                 </h3>
@@ -219,7 +233,12 @@ export function LandingPage() {
                                 src={m4}
                                 alt=""
                                 aria-hidden="true"
-                                className="pointer-events-none absolute right-[-20px] top-1/2 h-[260px] -translate-y-1/2 opacity-70"
+                                className="
+                                pointer-events-none absolute right-[-40px] top-1/2 
+                                h-[180px] md:h-[240px] 
+                                -translate-y-1/2 opacity-70
+                              "
+
                             />
                         </div>
                     </div>
