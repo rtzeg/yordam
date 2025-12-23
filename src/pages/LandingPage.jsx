@@ -39,7 +39,6 @@ export function LandingPage() {
         .slice(0, 160);
 
     useSeo({
-        title: seoTitle || "365psy — подбор психолога онлайн",
         description:
             seoDescription ||
             "365psy — сервис подбора психолога онлайн. Каталог специалистов, подходы, опыт и запись на консультации.",
@@ -47,7 +46,12 @@ export function LandingPage() {
         lang: i18n?.resolvedLanguage || i18n?.language || "ru",
         robots: "index,follow",
         ogType: "website",
+        ogImage: `${siteUrl}/og-image.jpg`,
+        ogImageWidth: "1200",
+        ogImageHeight: "630",
+        ogImageAlt: "365psy — подбор психолога онлайн",
     });
+
     // пока везде один и тот же аватар, потом поменяешь
     const experts = Array(6).fill(face);
 
