@@ -1,6 +1,7 @@
 import { MainLayout } from "../components/layout/MainLayout";
 import { FAQSection } from "/src/components/FAQSection.jsx";
 
+import { useSeo } from "../shared/seo/useSeo";
 import heroMan from "../assets/images/psy.svg";
 import heroWoman from "../assets/images/woman.svg";
 
@@ -21,8 +22,32 @@ import {
 import { useTranslation } from "react-i18next";
 
 export function LandingPage() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
+    const siteUrl =
+        import.meta.env.VITE_SITE_URL ||
+        (typeof window !== "undefined" ? window.location.origin : "https://365psy.app");
+
+    const titleMain = (t("landing.hero.titleMain") || "").trim();
+    const titleAccent = (t("landing.hero.titleAccent") || "").trim();
+
+    const seoTitle = `${titleMain} ${titleAccent} | 365psy`.trim();
+
+    // meta description лучше держать до ~160 символов
+    const seoDescription = (t("landing.hero.subtitle") || "")
+        .trim()
+        .slice(0, 160);
+
+    useSeo({
+        title: seoTitle || "365psy — подбор психолога онлайн",
+        description:
+            seoDescription ||
+            "365psy — сервис подбора психолога онлайн. Каталог специалистов, подходы, опыт и запись на консультации.",
+        canonicalUrl: `${siteUrl}/`,
+        lang: i18n?.resolvedLanguage || i18n?.language || "ru",
+        robots: "index,follow",
+        ogType: "website",
+    });
     // пока везде один и тот же аватар, потом поменяешь
     const experts = Array(6).fill(face);
 
