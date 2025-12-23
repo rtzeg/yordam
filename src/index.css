@@ -42,7 +42,9 @@
 
 @font-face {
   font-family: "BezierSans";
-  src: url("./assets/fonts/BezierSans-Bold.ttf") format("truetype");
+  src:
+    url("./assets/fonts/BezierSans-Bold.woff2") format("woff2"),
+    url("./assets/fonts/BezierSans-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
