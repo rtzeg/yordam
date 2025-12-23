@@ -68,6 +68,9 @@ export function LandingPage() {
                         {/* Левый персонаж — только на больших экранах */}
                         <img
                             src={heroMan}
+                            fetchpriority="high"
+                            loading="eager"
+                            decoding="async"
                             alt="Психолог"
                             className="
                                         pointer-events-none select-none
