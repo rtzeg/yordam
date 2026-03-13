@@ -1,22 +1,37 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
+import { useTranslation } from "react-i18next";
 import { useAuth } from "./AuthContext";
 import { MainLayout } from "../../components/layout/MainLayout";
-import { useTranslation } from "react-i18next";
 
 export function LoginPage() {
-  const { t } = useTranslation();
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const role = "client";
+  const resolveRedirectPath = () => {
+    if (
+      location.state?.from?.pathname &&
+      location.state.from.pathname !== "/auth/login"
+    ) {
+      return location.state.from.pathname;
+    }
+
+    if (
+      typeof location.state?.from === "string" &&
+      location.state.from !== "/auth/login"
+    ) {
+      return location.state.from;
+    }
+
+    return "/client";
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,39 +40,27 @@ export function LoginPage() {
     try {
       setLoading(true);
 
-      await login({
-        role,
-        email,
+      const result = await login({
+        email: email.trim(),
         password,
       });
 
-      const from =
-        location.state?.from?.pathname &&
-          location.state.from.pathname !== "/auth/login"
-          ? location.state.from.pathname
-          : "/";
+      console.log("LOGIN RESPONSE:", result);
 
-      navigate(from, { replace: true });
+      navigate(resolveRedirectPath(), { replace: true });
     } catch (err) {
-      console.error(err);
-      setError(
-        err?.message || t("auth.login.error.default")
-      );
+      console.error("LOGIN PAGE ERROR:", err);
+      setError(err?.message || t("auth.login.errors.default"));
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleGoogleAuth = () => {
-    // сюда потом прилетит реальная ссылка / SDK от бэкенда
-    console.log("Google login clicked");
   };
 
   return (
     <MainLayout>
       <main className="bg-skySoft min-h-[calc(100vh-80px)]">
         <div className="mx-auto flex max-w-[1200px] justify-center px-4 py-10 lg:px-[72px] lg:py-16">
-          <div className="w-full max-w-[420px] rounded-[32px] bg-white p-6 shadow-[0_18px_52px_rgba(67,142,229,0.18)] lg:p-8">
+          <div className="w-full max-w-[520px] rounded-[32px] bg-white p-6 shadow-[0_18px_52px_rgba(67,142,229,0.18)] lg:p-8">
             <h1 className="text-[22px] font-bold text-[#071A34] lg:text-[24px]">
               {t("auth.login.title")}
             </h1>
@@ -66,7 +69,7 @@ export function LoginPage() {
             </p>
 
             {error && (
-              <div className="mb-4 rounded-xl bg-[#FFECEC] px-3 py-2 text-[13px] text-[#D12C2C]">
+              <div className="mb-4 mt-4 rounded-xl bg-[#FFECEC] px-3 py-2 text-[13px] text-[#D12C2C]">
                 {error}
               </div>
             )}
@@ -103,31 +106,13 @@ export function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="mt-2 inline-flex w-full items-center justify-center rounded-full border border-[#1F98FA] bg-[#1F98FA] px-6 py-2.5 text-[13px] font-semibold text-white shadow-[0_10px_24px_rgba(31,152,250,0.45)] hover:bg-[#0f84e2] transition disabled:opacity-60"
+                className="mt-2 inline-flex w-full items-center justify-center rounded-full border border-[#1F98FA] bg-[#1F98FA] px-6 py-2.5 text-[13px] font-semibold text-white shadow-[0_10px_24px_rgba(31,152,250,0.45)] transition hover:bg-[#0f84e2] disabled:opacity-60"
               >
                 {loading
                   ? t("auth.login.buttons.submitLoading")
                   : t("auth.login.buttons.submit")}
               </button>
             </form>
-
-            {/* Разделитель */}
-            <div className="my-5 flex items-center gap-3">
-              <div className="h-px flex-1 bg-[#E1E8F0]" />
-              <span className="text-[11px] text-[#9BA6B5]">
-                {t("auth.login.or")}
-              </span>
-              <div className="h-px flex-1 bg-[#E1E8F0]" />
-            </div>
-
-            {/* Google-кнопка */}
-            <button
-              type="button"
-              onClick={handleGoogleAuth}
-              className="flex w-full items-center justify-center gap-2 rounded-full border border-[#D7E0ED] bg-white px-6 py-2.5 text-[13px] font-medium text-[#071A34] hover:border-[#1F98FA] hover:bg-[#F5F8FF] transition"
-            >
-              <span>{t("auth.login.google")}</span>
-            </button>
 
             <div className="mt-5 text-center text-[12px] text-[#6D7685]">
               {t("auth.login.noAccount.prefix")}{" "}

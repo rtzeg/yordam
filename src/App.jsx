@@ -11,18 +11,18 @@ import InfluencersPage from "./pages/InfluencersPage";
 import CompaniesPage from "./pages/CompaniesPage";
 import ForPsychologistsPage from "./pages/ForPsychologistsPage";
 
-
 // Auth
 import { LoginPage } from "./features/auth/LoginPage";
-import { RegisterPage } from "./features/auth/RegisterPage";
+import RegisterPage from "./features/auth/RegisterPage";
+import RegisterConfirmPage from "./features/auth/RegisterConfirmPage";
 
-// Психологи (каталог + профиль + избранное + контакты)
+// Психологи
 import PsychologistsListPage from "./features/psychologists/pages/PsychologistsListPage";
 import PsychologistDetailPage from "./features/psychologists/pages/PsychologistDetailPage";
 import FavoritePsychologistsPage from "./features/psychologists/pages/FavoritePsychologistsPage";
 import ContactsPage from "./pages/ContactsPage";
 
-// Кабинет клиента (client)
+// Кабинет клиента
 import ClientLayout from "./features/profile/ClientLayout";
 import ClientProfilePage from "./features/profile/ClientProfilePage";
 import ClientPsychologistsPage from "./features/profile/ClientPsychologistsPage";
@@ -37,20 +37,14 @@ export default function App() {
       <FavoritesProvider>
         <BrowserRouter>
           <Routes>
-            {/* Публичные страницы */}
             <Route path="/" element={<LandingPage />} />
             <Route path="/psychologists" element={<PsychologistsListPage />} />
             <Route path="/influencers" element={<InfluencersPage />} />
             <Route path="/companies" element={<CompaniesPage />} />
             <Route path="/psy" element={<ForPsychologistsPage />} />
             <Route path="/contacts" element={<ContactsPage />} />
-            {/* Страница конкретного психолога */}
-            <Route
-              path="/psychologists/:id"
-              element={<PsychologistDetailPage />}
-            />
+            <Route path="/psychologists/:id" element={<PsychologistDetailPage />} />
 
-            {/* Страница избранного (для залогиненных) */}
             <Route
               path="/favorites"
               element={
@@ -60,11 +54,10 @@ export default function App() {
               }
             />
 
-            {/* Auth */}
             <Route path="/auth/login" element={<LoginPage />} />
+            <Route path="/auth/register/confirm" element={<RegisterConfirmPage />} />
             <Route path="/auth/register" element={<RegisterPage />} />
 
-            {/* Кабинет клиента (роль client) */}
             <Route
               path="/client"
               element={
@@ -74,17 +67,13 @@ export default function App() {
               }
             >
               <Route index element={<ClientProfilePage />} />
-              <Route
-                path="psychologists"
-                element={<ClientPsychologistsPage />}
-              />
+              <Route path="psychologists" element={<ClientPsychologistsPage />} />
               <Route path="settings" element={<ClientSettingsPage />} />
               <Route path="billing" element={<ClientBillingPage />} />
               <Route path="videochat" element={<ClientVideoChatPage />} />
               <Route path="support" element={<ClientSupportPage />} />
             </Route>
 
-            {/* 404 */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>

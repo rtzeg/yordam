@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
+import { loadGoogleScript } from "../../shared/lib/google";
 import { useAuth } from "./AuthContext";
 import { MainLayout } from "../../components/layout/MainLayout";
 
+const PENDING_REGISTRATION_KEY = "yordam_pending_registration";
+const VERIFICATION_TIMER_SECONDS = 60;
+
 export function RegisterPage() {
-  const { register } = useAuth();
+  const { register, googleLogin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
@@ -18,11 +21,32 @@ export function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const role = "client";
+  const resolveRedirectPath = () => {
+    if (
+      location.state?.from?.pathname &&
+      location.state.from.pathname !== "/auth/login"
+    ) {
+      return location.state.from.pathname;
+    }
+
+    if (
+      typeof location.state?.from === "string" &&
+      location.state.from !== "/auth/login"
+    ) {
+      return location.state.from;
+    }
+
+    return "/";
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    if (!fullName.trim() || !email.trim() || !password || !passwordRepeat) {
+      setError("Заполните все поля");
+      return;
+    }
 
     if (password !== passwordRepeat) {
       setError(t("auth.register.errors.passwordMismatch"));
@@ -32,32 +56,81 @@ export function RegisterPage() {
     try {
       setLoading(true);
 
-      await register({
-        role,
-        fullName,
-        email,
+      const result = await register({
+        fullName: fullName.trim(),
+        email: email.trim(),
         password,
+        passwordRepeat,
       });
 
-      const from =
-        location.state?.from?.pathname &&
-          location.state.from.pathname !== "/auth/login"
-          ? location.state.from.pathname
-          : "/";
+      console.log("REGISTER START RESPONSE:", result);
 
-      navigate(from, { replace: true });
-    } catch (err) {
-      console.error(err);
-      setError(
-        err?.message || t("auth.register.errors.default")
+      sessionStorage.setItem(
+        PENDING_REGISTRATION_KEY,
+        JSON.stringify({
+          fullName: fullName.trim(),
+          email: email.trim(),
+          password,
+          redirectTo: resolveRedirectPath(),
+          timerStartedAt: Date.now(),
+          timerSeconds: VERIFICATION_TIMER_SECONDS,
+        })
       );
+
+      navigate("/auth/register/confirm", { replace: true });
+    } catch (err) {
+      console.error("REGISTER PAGE ERROR:", err);
+      setError(err?.message || t("auth.register.errors.default"));
     } finally {
       setLoading(false);
     }
   };
 
-  const handleGoogleAuth = () => {
-    console.log("Google auth clicked");
+  const handleGoogleAuth = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const google = await loadGoogleScript();
+      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+      if (!clientId) {
+        throw new Error("Не задан VITE_GOOGLE_CLIENT_ID");
+      }
+
+      google.accounts.id.initialize({
+        client_id: clientId,
+        callback: async (response) => {
+          try {
+            if (!response?.credential) {
+              throw new Error("Google credential не получен");
+            }
+
+            await googleLogin(response.credential);
+            navigate(resolveRedirectPath(), { replace: true });
+          } catch (err) {
+            console.error(err);
+            setError(err?.message || "Ошибка входа через Google");
+          } finally {
+            setLoading(false);
+          }
+        },
+      });
+
+      google.accounts.id.prompt((notification) => {
+        const notDisplayed = notification?.isNotDisplayed?.();
+        const skipped = notification?.isSkippedMoment?.();
+        const dismissed = notification?.isDismissedMoment?.();
+
+        if (notDisplayed || skipped || dismissed) {
+          setLoading(false);
+        }
+      });
+    } catch (err) {
+      console.error(err);
+      setError(err?.message || "Не удалось запустить Google авторизацию");
+      setLoading(false);
+    }
   };
 
   return (
@@ -89,9 +162,7 @@ export function RegisterPage() {
                   onChange={(e) => setFullName(e.target.value)}
                   required
                   className="w-full rounded-xl border border-[#D7E0ED] bg-[#F9FBFF] px-3 py-2 text-[13px] text-[#071A34] outline-none transition focus:border-[#1F98FA] focus:bg-white"
-                  placeholder={t(
-                    "auth.register.fields.fullName.placeholder"
-                  )}
+                  placeholder={t("auth.register.fields.fullName.placeholder")}
                 />
               </div>
 
@@ -105,9 +176,7 @@ export function RegisterPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   className="w-full rounded-xl border border-[#D7E0ED] bg-[#F9FBFF] px-3 py-2 text-[13px] text-[#071A34] outline-none transition focus:border-[#1F98FA] focus:bg-white"
-                  placeholder={t(
-                    "auth.register.fields.email.placeholder"
-                  )}
+                  placeholder={t("auth.register.fields.email.placeholder")}
                 />
               </div>
 
@@ -121,9 +190,7 @@ export function RegisterPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   className="w-full rounded-xl border border-[#D7E0ED] bg-[#F9FBFF] px-3 py-2 text-[13px] text-[#071A34] outline-none transition focus:border-[#1F98FA] focus:bg-white"
-                  placeholder={t(
-                    "auth.register.fields.password.placeholder"
-                  )}
+                  placeholder={t("auth.register.fields.password.placeholder")}
                 />
               </div>
 
@@ -137,16 +204,14 @@ export function RegisterPage() {
                   onChange={(e) => setPasswordRepeat(e.target.value)}
                   required
                   className="w-full rounded-xl border border-[#D7E0ED] bg-[#F9FBFF] px-3 py-2 text-[13px] text-[#071A34] outline-none transition focus:border-[#1F98FA] focus:bg-white"
-                  placeholder={t(
-                    "auth.register.fields.passwordRepeat.placeholder"
-                  )}
+                  placeholder={t("auth.register.fields.passwordRepeat.placeholder")}
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="mt-2 inline-flex w-full items-center justify-center rounded-full border border-[#1F98FA] bg-[#1F98FA] px-6 py-2.5 text-[13px] font-semibold text-white shadow-[0_10px_24px_rgba(31,152,250,0.45)] hover:bg-[#0f84e2] transition disabled:opacity-60"
+                className="mt-2 inline-flex w-full items-center justify-center rounded-full border border-[#1F98FA] bg-[#1F98FA] px-6 py-2.5 text-[13px] font-semibold text-white shadow-[0_10px_24px_rgba(31,152,250,0.45)] transition hover:bg-[#0f84e2] disabled:opacity-60"
               >
                 {loading
                   ? t("auth.register.buttons.submitLoading")
@@ -165,7 +230,8 @@ export function RegisterPage() {
             <button
               type="button"
               onClick={handleGoogleAuth}
-              className="flex w-full items-center justify-center gap-2 rounded-full border border-[#D7E0ED] bg-white px-6 py-2.5 text-[13px] font-medium text-[#071A34] hover:border-[#1F98FA] hover:bg-[#F5F8FF] transition"
+              disabled={loading}
+              className="flex w-full items-center justify-center gap-2 rounded-full border border-[#D7E0ED] bg-white px-6 py-2.5 text-[13px] font-medium text-[#071A34] transition hover:border-[#1F98FA] hover:bg-[#F5F8FF] disabled:opacity-60"
             >
               <span>{t("auth.register.google")}</span>
             </button>

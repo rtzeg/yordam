@@ -1,7 +1,6 @@
 import { api } from "./http";
-import { getApiPrefix } from "../i18n/apiLang"; 
+import { getApiPrefix } from "../i18n/apiLang";
 
-// посчитать возраст по дате рождения "1993-11-05"
 function calcAge(dateStr) {
   if (!dateStr) return null;
 
@@ -22,7 +21,6 @@ function calcAge(dateStr) {
   return age;
 }
 
-// выбрать основную цену из массива prices
 function pickMainPrice(prices = []) {
   if (!Array.isArray(prices) || prices.length === 0) return null;
 
@@ -39,7 +37,7 @@ function pickMainPrice(prices = []) {
 }
 
 export async function getPsychologistsFromApi() {
-  const prefix = getApiPrefix(); // "/ru/api/v1" | "/uz/api/v1" | "/en/api/v1"
+  const prefix = getApiPrefix();
 
   const response = await api.get(`${prefix}/yordam/psychologists/`);
   const data = response.data;
@@ -59,31 +57,23 @@ export async function getPsychologistsFromApi() {
     return {
       id: item.id,
       name: item.full_name,
-
       about: item.biography || "",
       dateOfBirth: item.date_of_birth || null,
       age: calcAge(item.date_of_birth),
-
       experienceYears: item.experience_years ?? 0,
-
       therapyType: item.modalities?.[0]?.name || null,
       approach: item.approaches?.[0]?.name || null,
-
       topics: [],
       tags: [],
-
       pricePerHour,
       currency,
       priceLabel: pricePerHour != null ? `${currency}/час` : null,
-
       verified: item.status === "published",
-
       photoUrl:
         item.picture?.medium ||
         item.picture?.large ||
         item.picture?.thumbnail ||
         null,
-
       education: (item.educations || []).map((e) => ({
         id: e.id,
         institution: e.institution,
@@ -96,7 +86,6 @@ export async function getPsychologistsFromApi() {
             : null,
         documentUrl: e.document || null,
       })),
-
       certificates: (item.certificates || []).map((c) => ({
         id: c.id,
         name: c.name,
