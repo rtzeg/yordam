@@ -9,7 +9,7 @@ export async function startRegisterRequest({ fullName, email, password }) {
     {
       username: email,
       password,
-      // name: fullName,
+      name: fullName,
     },
     {
       headers: {
@@ -62,19 +62,31 @@ export async function loginRequest({ email, password }) {
 export async function updateMeRequest({ name, dateOfBirth, gender, picture }) {
   const prefix = getApiPrefix();
 
-  const payload = {
-    name,
-    date_of_birth: dateOfBirth,
-    gender,
-  };
+  const formData = new FormData();
 
-  if (picture) {
-    payload.picture = picture;
+  if (name !== undefined && name !== null && name !== "") {
+    formData.append("name", name);
   }
 
-  const response = await api.patch(`${prefix}/users/users/me/`, payload, {
+  if (
+    dateOfBirth !== undefined &&
+    dateOfBirth !== null &&
+    dateOfBirth !== ""
+  ) {
+    formData.append("date_of_birth", dateOfBirth);
+  }
+
+  if (gender !== undefined && gender !== null && gender !== "") {
+    formData.append("gender", gender);
+  }
+
+  if (picture instanceof File) {
+    formData.append("picture", picture);
+  }
+
+  const response = await api.patch(`${prefix}/users/users/me/`, formData, {
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "multipart/form-data",
     },
   });
 
