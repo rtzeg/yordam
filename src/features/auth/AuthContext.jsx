@@ -1,8 +1,9 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import {
   startRegisterRequest,
   confirmRegisterRequest,
   loginRequest,
+  updateMeRequest,
   googleAuth,
 } from "../../shared/api/auth";
 
@@ -10,6 +11,16 @@ const STORAGE_KEY = "psyuz_auth_user";
 const TOKENS_KEY = "psyuz_auth_tokens";
 
 const AuthContext = createContext(null);
+
+export function isProfileCompleted(user) {
+  const profile = user?.profile || user || {};
+
+  return Boolean(
+    (profile.name || user?.fullName) &&
+      profile.date_of_birth &&
+      profile.gender
+  );
+}
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
@@ -21,6 +32,7 @@ export function AuthProvider({ children }) {
       return null;
     }
   });
+
   const [tokens, setTokens] = useState(() => {
     try {
       const rawTokens = localStorage.getItem(TOKENS_KEY);
@@ -71,7 +83,7 @@ export function AuthProvider({ children }) {
         tokens: null,
       });
 
-      return data;
+      return normalizedUser;
     } catch (error) {
       console.error("LOGIN ERROR:", error);
       console.error("LOGIN RESPONSE:", error?.response);
@@ -91,10 +103,7 @@ export function AuthProvider({ children }) {
       throw new Error(message);
     }
   };
-  /**
-   * register = старт регистрации
-   * Отправляет данные на бэк, чтобы тот выдал/отправил verification code.
-   */
+
   const register = async ({ fullName, email, password, passwordRepeat }) => {
     if (!fullName || !email || !password || !passwordRepeat) {
       throw new Error("Заполните все поля");
@@ -124,18 +133,14 @@ export function AuthProvider({ children }) {
         responseData?.message ||
         responseData?.error ||
         responseData?.non_field_errors?.[0] ||
-        responseData?.code?.[0] ||
         responseData?.username?.[0] ||
-        `Ошибка подтверждения (status: ${error?.response?.status || "unknown"})`;
+        responseData?.password?.[0] ||
+        `Ошибка регистрации (status: ${error?.response?.status || "unknown"})`;
 
       throw new Error(message);
     }
   };
 
-  /**
-   * confirmRegisterCode = подтверждение кода.
-   * Только после него считаем регистрацию завершённой.
-   */
   const confirmRegisterCode = async ({ email, code }) => {
     if (!email || !code) {
       throw new Error("Email и код обязательны");
@@ -161,8 +166,57 @@ export function AuthProvider({ children }) {
         responseData?.error ||
         responseData?.non_field_errors?.[0] ||
         responseData?.code?.[0] ||
-        responseData?.email?.[0] ||
+        responseData?.username?.[0] ||
         `Ошибка подтверждения (status: ${error?.response?.status || "unknown"})`;
+
+      throw new Error(message);
+    }
+  };
+
+  const saveProfileSettings = async ({ name, dateOfBirth, gender, picture }) => {
+    try {
+      const data = await updateMeRequest({
+        name,
+        dateOfBirth,
+        gender,
+        picture,
+      });
+
+      const updatedUser = {
+        ...(user || {}),
+        id: data?.uid || data?.id || user?.id,
+        fullName: data?.name || name || user?.fullName || "Пользователь",
+        email: data?.email || user?.email || "",
+        username: data?.username || user?.username || "",
+        role: data?.role || user?.role || "client",
+        profile: {
+          ...(user?.profile || {}),
+          ...data,
+        },
+      };
+
+      saveAuth({
+        user: updatedUser,
+        tokens,
+      });
+
+      return updatedUser;
+    } catch (error) {
+      console.error("UPDATE PROFILE ERROR:", error);
+      console.error("UPDATE PROFILE RESPONSE:", error?.response);
+      console.error("UPDATE PROFILE DATA:", error?.response?.data);
+
+      const responseData = error?.response?.data;
+
+      const message =
+        responseData?.detail ||
+        responseData?.message ||
+        responseData?.error ||
+        responseData?.non_field_errors?.[0] ||
+        responseData?.name?.[0] ||
+        responseData?.date_of_birth?.[0] ||
+        responseData?.gender?.[0] ||
+        `Ошибка сохранения профиля (status: ${error?.response?.status || "unknown"})`;
 
       throw new Error(message);
     }
@@ -196,22 +250,22 @@ export function AuthProvider({ children }) {
 
       const normalizedUser = backendUser
         ? {
-          id: backendUser.id,
-          fullName:
-            backendUser.full_name ||
-            backendUser.fullName ||
-            backendUser.name ||
-            "Пользователь",
-          email: backendUser.email || "",
-          role: backendUser.role || "client",
-          profile: backendUser,
-        }
+            id: backendUser.id,
+            fullName:
+              backendUser.full_name ||
+              backendUser.fullName ||
+              backendUser.name ||
+              "Пользователь",
+            email: backendUser.email || "",
+            role: backendUser.role || "client",
+            profile: backendUser,
+          }
         : {
-          id: "google-" + Date.now(),
-          fullName: "Пользователь",
-          email: "",
-          role: "client",
-        };
+            id: "google-" + Date.now(),
+            fullName: "Пользователь",
+            email: "",
+            role: "client",
+          };
 
       saveAuth({
         user: normalizedUser,
@@ -268,6 +322,7 @@ export function AuthProvider({ children }) {
         login,
         register,
         confirmRegisterCode,
+        saveProfileSettings,
         googleLogin,
         logout,
         updateProfile,

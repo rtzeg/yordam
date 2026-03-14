@@ -1,15 +1,21 @@
-import { useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../auth/AuthContext";
 import { useTranslation } from "react-i18next";
 
 export function ClientSettingsPage() {
-  const { user } = useAuth();
+  const { user, saveProfileSettings } = useAuth();
   const { t } = useTranslation();
 
-  const [fullName, setFullName] = useState(user?.fullName || "");
-  const [email, setEmail] = useState(user?.email || "");
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [gender, setGender] = useState("");
   const [notifyEmail, setNotifyEmail] = useState(true);
   const [notifyPush, setNotifyPush] = useState(false);
+
+  const [profileLoading, setProfileLoading] = useState(false);
+  const [profileError, setProfileError] = useState("");
+  const [profileSuccess, setProfileSuccess] = useState(false);
 
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
@@ -19,11 +25,19 @@ export function ClientSettingsPage() {
   const [passwordError, setPasswordError] = useState("");
   const [passwordSuccess, setPasswordSuccess] = useState(false);
 
-  // Аватар
   const [avatarFile, setAvatarFile] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState("");
   const [avatarError, setAvatarError] = useState("");
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    if (!user) return;
+
+    setFullName(user?.profile?.name || user?.fullName || "");
+    setEmail(user?.profile?.email || user?.email || "");
+    setDateOfBirth(user?.profile?.date_of_birth || "");
+    setGender(user?.profile?.gender || "");
+  }, [user]);
 
   const handlePasswordFieldChange = (e) => {
     const { name, value } = e.target;
@@ -40,27 +54,20 @@ export function ClientSettingsPage() {
     const { currentPassword, newPassword, confirmPassword } = passwordData;
 
     if (!currentPassword || !newPassword || !confirmPassword) {
-      setPasswordError(
-        t("clientSettingsPage.password.errors.fillAll")
-      );
+      setPasswordError(t("clientSettingsPage.password.errors.fillAll"));
       return;
     }
 
     if (newPassword.length < 8) {
-      setPasswordError(
-        t("clientSettingsPage.password.errors.tooShort")
-      );
+      setPasswordError(t("clientSettingsPage.password.errors.tooShort"));
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setPasswordError(
-        t("clientSettingsPage.password.errors.mismatch")
-      );
+      setPasswordError(t("clientSettingsPage.password.errors.mismatch"));
       return;
     }
 
-    // TODO: запрос на смену пароля
     console.log("Payload для смены пароля:", { currentPassword, newPassword });
 
     setPasswordSuccess(true);
@@ -71,16 +78,41 @@ export function ClientSettingsPage() {
     });
   };
 
-  const handleProfileSubmit = (e) => {
+  const handleProfileSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("Сохранение профиля", {
-      fullName,
-      email,
-      notifyEmail,
-      notifyPush,
-      avatarFile,
-    });
+    setProfileError("");
+    setProfileSuccess(false);
+
+    try {
+      setProfileLoading(true);
+
+      await saveProfileSettings({
+        name: fullName,
+        dateOfBirth,
+        gender,
+        // picture пока не шлем, пока не подтвержден формат на бэке
+      });
+
+      console.log("Сохранение профиля", {
+        fullName,
+        email,
+        dateOfBirth,
+        gender,
+        notifyEmail,
+        notifyPush,
+        avatarFile,
+      });
+
+      setProfileSuccess(true);
+    } catch (err) {
+      console.error("PROFILE SAVE ERROR:", err);
+      setProfileError(
+        err?.message || t("clientSettingsPage.saveProfileError")
+      );
+    } finally {
+      setProfileLoading(false);
+    }
   };
 
   const handleAvatarButtonClick = () => {
@@ -97,9 +129,7 @@ export function ClientSettingsPage() {
 
     const allowedTypes = ["image/jpeg", "image/png"];
     if (!allowedTypes.includes(file.type)) {
-      setAvatarError(
-        t("clientSettingsPage.avatar.errorType")
-      );
+      setAvatarError(t("clientSettingsPage.avatar.errorType"));
       return;
     }
 
@@ -126,7 +156,6 @@ export function ClientSettingsPage() {
       </p>
 
       <div className="flex flex-col gap-8 lg:flex-row">
-        {/* Аватар слева */}
         <div className="flex w-full max-w-[260px] flex-col items-center lg:items-start">
           <div className="mb-4 flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-[#F3F7FF] text-sm text-[#9BA6B5]">
             {avatarPreview ? (
@@ -148,7 +177,6 @@ export function ClientSettingsPage() {
             {t("clientSettingsPage.avatar.changePhoto")}
           </button>
 
-          {/* Скрытый инпут файла */}
           <input
             type="file"
             ref={fileInputRef}
@@ -158,7 +186,7 @@ export function ClientSettingsPage() {
           />
 
           <p className="mt-2 text-[11px] text-[#9BA6B5]">
-            {t("clientSettingsPage.avatar.hint")}
+            {t("clientSettingsPage.avatar.uploadHint")}
           </p>
 
           {avatarError && (
@@ -168,13 +196,11 @@ export function ClientSettingsPage() {
           )}
         </div>
 
-        {/* Основная форма настроек */}
         <div className="flex-1">
           <form
             onSubmit={handleProfileSubmit}
             className="space-y-6 md:max-w-[520px]"
           >
-            {/* Личные данные */}
             <div>
               <h3 className="mb-3 text-sm font-semibold text-[#071A34]">
                 {t("clientSettingsPage.profile.sectionTitle")}
@@ -208,10 +234,42 @@ export function ClientSettingsPage() {
                     {t("clientSettingsPage.profile.emailHint")}
                   </p>
                 </div>
+
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-[#6F7A89]">
+                    {t("clientSettingsPage.profile.birthDateLabel")}
+                  </label>
+                  <input
+                    type="date"
+                    value={dateOfBirth}
+                    onChange={(e) => setDateOfBirth(e.target.value)}
+                    className="w-full rounded-2xl border border-[#E1E7F0] bg-[#F7FAFF] px-4 py-3 text-sm text-[#071A34] outline-none focus:border-[#1F98FA]"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-[#6F7A89]">
+                    {t("clientSettingsPage.profile.genderLabel")}
+                  </label>
+                  <select
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
+                    className="w-full rounded-2xl border border-[#E1E7F0] bg-[#F7FAFF] px-4 py-3 text-sm text-[#071A34] outline-none focus:border-[#1F98FA]"
+                  >
+                    <option value="">
+                      {t("clientSettingsPage.profile.genderPlaceholder")}
+                    </option>
+                    <option value="M">
+                      {t("clientSettingsPage.profile.genderMale")}
+                    </option>
+                    <option value="F">
+                      {t("clientSettingsPage.profile.genderFemale")}
+                    </option>
+                  </select>
+                </div>
               </div>
             </div>
 
-            {/* Уведомления */}
             <div>
               <h3 className="mb-3 text-sm font-semibold text-[#071A34]">
                 {t("clientSettingsPage.notifications.sectionTitle")}
@@ -244,18 +302,31 @@ export function ClientSettingsPage() {
               </div>
             </div>
 
+            {profileError && (
+              <p className="text-[11px] text-[#FF4D3D]">
+                {profileError}
+              </p>
+            )}
+
+            {profileSuccess && (
+              <p className="text-[11px] text-[#16A34A]">
+                {t("clientSettingsPage.saveProfileSuccess")}
+              </p>
+            )}
+
             <button
               type="submit"
-              className="mt-4 inline-flex items-center justify-center rounded-full bg-[#1F98FA] px-6 py-3 text-[14px] font-semibold text-white shadow-[0_14px_30px_rgba(31,152,250,0.55)] hover:bg-[#0f84e2] transition"
+              disabled={profileLoading}
+              className="mt-4 inline-flex items-center justify-center rounded-full bg-[#1F98FA] px-6 py-3 text-[14px] font-semibold text-white shadow-[0_14px_30px_rgba(31,152,250,0.55)] transition hover:bg-[#0f84e2] disabled:opacity-60"
             >
-              {t("clientSettingsPage.saveProfileButton")}
+              {profileLoading
+                ? t("clientSettingsPage.saveProfileLoading")
+                : t("clientSettingsPage.saveProfileButton")}
             </button>
           </form>
 
-          {/* Разделитель */}
           <div className="my-8 h-px w-full bg-[#EDF1F7]" />
 
-          {/* Смена пароля */}
           <form
             onSubmit={handlePasswordSubmit}
             className="space-y-4 md:max-w-[420px]"
@@ -321,7 +392,7 @@ export function ClientSettingsPage() {
 
             <button
               type="submit"
-              className="mt-1 inline-flex items-center justify-center rounded-full bg-[#071A34] px-6 py-3 text-[14px] font-semibold text-white hover:bg-[#0b254d] transition"
+              className="mt-1 inline-flex items-center justify-center rounded-full bg-[#071A34] px-6 py-3 text-[14px] font-semibold text-white transition hover:bg-[#0b254d]"
             >
               {t("clientSettingsPage.password.submitButton")}
             </button>

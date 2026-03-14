@@ -25,7 +25,7 @@ function clearPendingRegistration() {
 
 export function RegisterConfirmPage() {
   const navigate = useNavigate();
-  const { register, confirmRegisterCode } = useAuth();
+  const { register, confirmRegisterCode, login } = useAuth();
 
   const [pending, setPending] = useState(() => getPendingRegistration());
   const [code, setCode] = useState("");
@@ -74,7 +74,6 @@ export function RegisterConfirmPage() {
 
     const [name, domain] = pending.email.split("@");
     if (!name || !domain) return pending.email;
-
     if (name.length <= 2) return pending.email;
 
     return `${name.slice(0, 2)}***@${domain}`;
@@ -100,19 +99,18 @@ export function RegisterConfirmPage() {
 
       console.log("REGISTER CONFIRM RESPONSE:", result);
 
+      await login({
+        email: pending.email,
+        password: pending.password,
+      });
+
       clearPendingRegistration();
 
       setSuccess("Аккаунт успешно подтверждён");
 
       setTimeout(() => {
-        navigate("/auth/login", {
-          replace: true,
-          state: {
-            registered: true,
-            email: pending.email,
-          },
-        });
-      }, 1000);
+        navigate("/client/settings", { replace: true });
+      }, 800);
     } catch (err) {
       console.error("REGISTER CONFIRM PAGE ERROR:", err);
       setError(err?.message || "Не удалось подтвердить код");
@@ -204,7 +202,7 @@ export function RegisterConfirmPage() {
                 {secondsLeft > 0 ? (
                   <>Отправить код повторно можно через {secondsLeft} сек.</>
                 ) : (
-                  <>Можно запросить новый код.</>
+                  <>Не получили код? Можно отправить ещё раз.</>
                 )}
               </div>
 
@@ -216,14 +214,16 @@ export function RegisterConfirmPage() {
                 {loading ? "Подтверждаем..." : "Подтвердить код"}
               </button>
 
-              <button
-                type="button"
-                onClick={handleResendCode}
-                disabled={resending || secondsLeft > 0}
-                className="inline-flex w-full items-center justify-center rounded-full border border-[#D7E0ED] bg-white px-6 py-2.5 text-[13px] font-medium text-[#071A34] transition hover:border-[#1F98FA] hover:bg-[#F5F8FF] disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {resending ? "Отправляем..." : "Отправить код повторно"}
-              </button>
+              {secondsLeft === 0 && (
+                <button
+                  type="button"
+                  onClick={handleResendCode}
+                  disabled={resending}
+                  className="inline-flex w-full items-center justify-center rounded-full border border-[#D7E0ED] bg-white px-6 py-2.5 text-[13px] font-medium text-[#071A34] transition hover:border-[#1F98FA] hover:bg-[#F5F8FF] disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {resending ? "Отправляем..." : "Отправить ещё раз"}
+                </button>
+              )}
             </form>
 
             <div className="mt-5 text-center text-[12px] text-[#6D7685]">

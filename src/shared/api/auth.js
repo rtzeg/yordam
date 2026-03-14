@@ -9,7 +9,7 @@ export async function startRegisterRequest({ fullName, email, password }) {
     {
       username: email,
       password,
-      // позже можно добавить:
+      // позже:
       // name: fullName,
     },
     {
@@ -56,6 +56,28 @@ export async function loginRequest({ email, password }) {
       },
     }
   );
+
+  return response.data;
+}
+
+export async function updateMeRequest({ name, dateOfBirth, gender, picture }) {
+  const prefix = getApiPrefix();
+
+  const payload = {
+    name,
+    date_of_birth: dateOfBirth,
+    gender,
+  };
+
+  if (picture) {
+    payload.picture = picture;
+  }
+
+  const response = await api.patch(`${prefix}/users/users/me/`, payload, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   return response.data;
 }

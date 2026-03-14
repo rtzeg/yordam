@@ -60,14 +60,14 @@ const resources = {
                 loading: "Загружаем специалиста...",
             },
 
-            favoritesPage: {
-                title: "Избранные психологи",
-                empty:
-                    "У вас пока нет избранных специалистов. Добавьте психолога на странице поиска или профиля.",
-                loading: "Загружаем ваших избранных специалистов...",
-                notFound:
-                    "Вы добавили специалистов в избранное, но они сейчас не найдены в списке. Возможно, их статус изменился.",
-            },
+            // favoritesPage: {
+            //     title: "Избранные психологи",
+            //     empty:
+            //         "У вас пока нет избранных специалистов. Добавьте психолога на странице поиска или профиля.",
+            //     loading: "Загружаем ваших избранных специалистов...",
+            //     notFound:
+            //         "Вы добавили специалистов в избранное, но они сейчас не найдены в списке. Возможно, их статус изменился.",
+            // },
 
             // ⬇⬇⬇ НОВОЕ: ХЕДЕР
             header: {
@@ -856,6 +856,8 @@ const resources = {
                     noPhoto: "Нет фото",
                     changePhoto: "Изменить фото",
                     hint: "JPG, PNG до 5 МБ. Картинка будет обрезана по кругу.",
+                    uploadHint:
+                        "Поддержку загрузки фото подключим, когда уточним формат picture на бэке.",
                     errorType: "Поддерживаются только JPG и PNG.",
                     errorSize: "Файл не должен превышать {{max}} МБ."
                 },
@@ -865,7 +867,12 @@ const resources = {
                     fullNameLabel: "Имя и фамилия",
                     emailLabel: "Email",
                     emailHint:
-                        "Email используется для входа и уведомлений. Смена почты будет доступна позже."
+                        "Email используется для входа и уведомлений. Смена почты будет доступна позже.",
+                    birthDateLabel: "Дата рождения",
+                    genderLabel: "Пол",
+                    genderPlaceholder: "Выберите пол",
+                    genderMale: "Мужской",
+                    genderFemale: "Женский"
                 },
 
                 notifications: {
@@ -875,6 +882,9 @@ const resources = {
                 },
 
                 saveProfileButton: "Сохранить изменения",
+                saveProfileLoading: "Сохраняем...",
+                saveProfileSuccess: "Изменения сохранены",
+                saveProfileError: "Не удалось сохранить изменения",
 
                 password: {
                     sectionTitle: "Смена пароля",
@@ -1619,28 +1629,28 @@ const resources = {
                     },
                 },
             },
-            favoritesPage: {
-                title: "Sevimli psixologlar",
+            // favoritesPage: {
+            //     title: "Sevimli psixologlar",
 
-                breadcrumbs: {
-                    home: "Bosh sahifa",
-                    favorites: "Sevimli psixologlar",
-                },
+            //     breadcrumbs: {
+            //         home: "Bosh sahifa",
+            //         favorites: "Sevimli psixologlar",
+            //     },
 
-                loading: "Sevimli mutaxassislaringiz yuklanmoqda...",
+            //     loading: "Sevimli mutaxassislaringiz yuklanmoqda...",
 
-                error: {
-                    prefix: "Xatolik:",
-                    default: "Mutaxassislarni yuklashda xatolik yuz berdi.",
-                },
+            //     error: {
+            //         prefix: "Xatolik:",
+            //         default: "Mutaxassislarni yuklashda xatolik yuz berdi.",
+            //     },
 
-                empty: {
-                    noFavorites:
-                        "Hozircha sevimli mutaxassislaringiz yo‘q. Psixologni qidiruv sahifasida yoki profil sahifasida sevimlilarga qo‘shishingiz mumkin.",
-                    missingFromList:
-                        "Siz ba’zi mutaxassislarni sevimlilarga qo‘shgansiz, lekin ular hozir ro‘yxatda topilmadi. Ehtimol, ularning statusi o‘zgargan.",
-                },
-            },
+            //     empty: {
+            //         noFavorites:
+            //             "Hozircha sevimli mutaxassislaringiz yo‘q. Psixologni qidiruv sahifasida yoki profil sahifasida sevimlilarga qo‘shishingiz mumkin.",
+            //         missingFromList:
+            //             "Siz ba’zi mutaxassislarni sevimlilarga qo‘shgansiz, lekin ular hozir ro‘yxatda topilmadi. Ehtimol, ularning statusi o‘zgargan.",
+            //     },
+            // },
             auth: {
                 login: {
                     title: "Akkauntga kirish",
@@ -1794,56 +1804,65 @@ const resources = {
                     next: "Keyingi",
                 },
             },
-            clientSettingsPage: {
-                title: "Hisob sozlamalari",
-                subtitle:
-                    "Bu yerda profil rasmini, ismingizni va bildirishnomalarni sozlashingiz mumkin.",
+           clientSettingsPage: {
+  title: "Hisob sozlamalari",
+  subtitle: "Bu yerda siz profil rasmi, ism va bildirishnomalarni yangilashingiz mumkin.",
 
-                avatar: {
-                    noPhoto: "Rasm yo‘q",
-                    changePhoto: "Rasmni o‘zgartirish",
-                    hint: "JPG, PNG 5 MB gacha. Rasm dumaloq shaklda kesiladi.",
-                    errorType: "Faqat JPG va PNG formatlari qo‘llab-quvvatlanadi.",
-                    errorSize: "Fayl hajmi {{max}} MB dan oshmasligi kerak."
-                },
+  avatar: {
+    noPhoto: "Rasm yo‘q",
+    changePhoto: "Rasmni o‘zgartirish",
+    hint: "JPG, PNG 5 MB gacha. Rasm doira shaklida kesiladi.",
+    uploadHint:
+      "picture formati backendda aniqlangandan keyin rasm yuklash yoqiladi.",
+    errorType: "Faqat JPG va PNG qo‘llab-quvvatlanadi.",
+    errorSize: "Fayl hajmi {{max}} MB dan oshmasligi kerak."
+  },
 
-                profile: {
-                    sectionTitle: "Shaxsiy ma’lumotlar",
-                    fullNameLabel: "Ism va familiya",
-                    emailLabel: "Email",
-                    emailHint:
-                        "Email tizimga kirish va bildirishnomalar uchun ishlatiladi. Pochtani keyinroq o‘zgartirish mumkin bo‘ladi."
-                },
+  profile: {
+    sectionTitle: "Shaxsiy ma’lumotlar",
+    fullNameLabel: "Ism va familiya",
+    emailLabel: "Email",
+    emailHint:
+      "Email kirish va bildirishnomalar uchun ishlatiladi. Emailni almashtirish keyinroq qo‘shiladi.",
+    birthDateLabel: "Tug‘ilgan sana",
+    genderLabel: "Jins",
+    genderPlaceholder: "Jinsni tanlang",
+    genderMale: "Erkak",
+    genderFemale: "Ayol"
+  },
 
-                notifications: {
-                    sectionTitle: "Bildirishnomalar",
-                    emailLabel: "Yangi sessiyalar va eslatmalar haqida xat olish",
-                    pushLabel: "Bo‘ladigan uchrashuvlar haqida push-bildirishnomalar"
-                },
+  notifications: {
+    sectionTitle: "Bildirishnomalar",
+    emailLabel: "Yangi sessiyalar va eslatmalar haqida email olish",
+    pushLabel: "Yaqinlashayotgan uchrashuvlar haqida push-bildirishnomalar"
+  },
 
-                saveProfileButton: "O‘zgarishlarni saqlash",
+  saveProfileButton: "O‘zgarishlarni saqlash",
+  saveProfileLoading: "Saqlanmoqda...",
+  saveProfileSuccess: "O‘zgarishlar saqlandi",
+  saveProfileError: "O‘zgarishlarni saqlab bo‘lmadi",
 
-                password: {
-                    sectionTitle: "Parolni o‘zgartirish",
-                    description:
-                        "Joriy parolni kiriting va yangisini o‘ylab toping. Saqlagandan so‘ng tizimga yangi parol bilan kirasiz.",
+  password: {
+    sectionTitle: "Parolni o‘zgartirish",
+    description:
+      "Joriy parolingizni kiriting va yangisini o‘ylab toping. Saqlangandan keyin yangi parol bilan kirishingiz kerak bo‘ladi.",
 
-                    currentLabel: "Joriy parol",
-                    newLabel: "Yangi parol",
-                    confirmLabel: "Yangi parolni takrorlang",
+    currentLabel: "Joriy parol",
+    newLabel: "Yangi parol",
+    confirmLabel: "Yangi parolni takrorlang",
 
-                    errors: {
-                        fillAll: "Parolni o‘zgartirish uchun barcha maydonlarni to‘ldiring.",
-                        tooShort: "Yangi parol kamida 8 ta belgidan iborat bo‘lishi kerak.",
-                        mismatch: "Parollar mos kelmayapti."
-                    },
+    errors: {
+      fillAll: "Parolni o‘zgartirish uchun barcha maydonlarni to‘ldiring.",
+      tooShort: "Yangi parol kamida 8 ta belgidan iborat bo‘lishi kerak.",
+      mismatch: "Parollar mos kelmaydi."
+    },
 
-                    success:
-                        "Parol yangilandi (hozircha faqat frontda). Haqiqiy o‘zgartirish uchun backend ulashing.",
+    success:
+      "Parol yangilandi (hozircha faqat frontendda). Haqiqiy o‘zgartirish uchun backendni ulang.",
 
-                    submitButton: "Parolni yangilash"
-                }
-            },
+    submitButton: "Parolni yangilash"
+  }
+},
             faqSection: {
                 heading: {
                     blue: "Ko‘p beriladigan",
@@ -2754,53 +2773,62 @@ const resources = {
 
             clientSettingsPage: {
                 title: "Account settings",
-                subtitle:
-                    "Here you can update your profile photo, name and notifications.",
+                subtitle: "Here you can update your profile photo, name and notification settings.",
 
                 avatar: {
                     noPhoto: "No photo",
                     changePhoto: "Change photo",
-                    hint: "JPG, PNG up to 5 MB. The image will be cropped to a circle.",
-                    errorType: "Only JPG and PNG formats are supported.",
-                    errorSize: "File size must not exceed {{max}} MB.",
+                    hint: "JPG, PNG up to 5 MB. The image will be cropped into a circle.",
+                    uploadHint:
+                        "Photo upload will be enabled once we confirm the picture format on the backend.",
+                    errorType: "Only JPG and PNG are supported.",
+                    errorSize: "The file must not exceed {{max}} MB."
                 },
 
                 profile: {
-                    sectionTitle: "Personal data",
-                    fullNameLabel: "Name and surname",
+                    sectionTitle: "Personal information",
+                    fullNameLabel: "Full name",
                     emailLabel: "Email",
                     emailHint:
                         "Email is used for login and notifications. Changing email will be available later.",
+                    birthDateLabel: "Date of birth",
+                    genderLabel: "Gender",
+                    genderPlaceholder: "Select gender",
+                    genderMale: "Male",
+                    genderFemale: "Female"
                 },
 
                 notifications: {
                     sectionTitle: "Notifications",
                     emailLabel: "Receive emails about new sessions and reminders",
-                    pushLabel: "Push notifications about upcoming sessions",
+                    pushLabel: "Push notifications about upcoming meetings"
                 },
 
                 saveProfileButton: "Save changes",
+                saveProfileLoading: "Saving...",
+                saveProfileSuccess: "Changes saved",
+                saveProfileError: "Failed to save changes",
 
                 password: {
                     sectionTitle: "Change password",
                     description:
-                        "Enter your current password and create a new one. After saving, you will log in with the new password.",
+                        "Enter your current password and create a new one. After saving, you will need to sign in with the new password.",
 
                     currentLabel: "Current password",
                     newLabel: "New password",
                     confirmLabel: "Repeat new password",
 
                     errors: {
-                        fillAll: "Fill in all fields to change the password.",
+                        fillAll: "Fill in all password fields.",
                         tooShort: "The new password must be at least 8 characters long.",
-                        mismatch: "Passwords do not match.",
+                        mismatch: "Passwords do not match."
                     },
 
                     success:
-                        "Password updated (only on frontend for now). Connect backend for real change.",
+                        "Password updated (frontend only for now). Connect the backend for real password change.",
 
-                    submitButton: "Update password",
-                },
+                    submitButton: "Update password"
+                }
             },
 
             faqSection: {
