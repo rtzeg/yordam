@@ -2,6 +2,27 @@ import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../auth/AuthContext";
 import { useTranslation } from "react-i18next";
 
+function resolvePictureUrl(picture) {
+  if (!picture) return "";
+
+  if (typeof picture === "string") {
+    return picture;
+  }
+
+  if (typeof picture === "object") {
+    return (
+      picture.large ||
+      picture.medium ||
+      picture.original ||
+      picture.small ||
+      picture.thumbnail ||
+      ""
+    );
+  }
+
+  return "";
+}
+
 export function ClientSettingsPage() {
   const { user, saveProfileSettings, changePassword } = useAuth();
   const { t } = useTranslation();
@@ -30,8 +51,18 @@ export function ClientSettingsPage() {
   const [avatarPreview, setAvatarPreview] = useState("");
   const [avatarError, setAvatarError] = useState("");
   const fileInputRef = useRef(null);
+
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setFullName("");
+      setEmail("");
+      setDateOfBirth("");
+      setGender("");
+      setAvatarPreview("");
+      setAvatarFile(null);
+      localStorage.removeItem("testroma");
+      return;
+    }
 
     const profile = user?.profile || {};
 
@@ -60,26 +91,18 @@ export function ClientSettingsPage() {
         ? rawDate.split("T")[0]
         : rawDate || "";
 
-    const rawGender =
-      profile?.gender ||
-      user?.gender ||
-      "";
+    const rawGender = profile?.gender || user?.gender || "";
 
     const resolvedGender =
       rawGender === "male" || rawGender === "Male"
         ? "M"
         : rawGender === "female" || rawGender === "Female"
-          ? "F"
-          : rawGender || "";
+        ? "F"
+        : rawGender || "";
 
-    const rawPicture =
-      profile?.picture ||
-      profile?.avatar ||
-      user?.picture ||
-      "";
-
-    const resolvedPicture =
-      typeof rawPicture === "string" ? rawPicture : "";
+    const resolvedPicture = resolvePictureUrl(
+      profile?.picture || profile?.avatar || user?.picture || ""
+    );
 
     setFullName(resolvedFullName);
     setEmail(resolvedEmail);
@@ -87,15 +110,6 @@ export function ClientSettingsPage() {
     setGender(resolvedGender);
     setAvatarPreview(resolvedPicture);
     setAvatarFile(null);
-  }, [user]);
-
-  useEffect(() => {
-    if (!user) {
-      localStorage.removeItem("testroma");
-      return;
-    }
-
-    const profile = user?.profile || {};
 
     const testRomaPayload = {
       id: user?.id || null,
@@ -112,77 +126,13 @@ export function ClientSettingsPage() {
 
     localStorage.setItem("testroma", JSON.stringify(testRomaPayload, null, 2));
   }, [user]);
-    
-  useEffect(() => {
-    if (!user) {
-      setFullName("");
-      setEmail("");
-      setDateOfBirth("");
-      setGender("");
-      setAvatarPreview("");
-      setAvatarFile(null);
-      return;
-    }
-
-    const profile = user?.profile || {};
-
-    const resolvedFullName =
-      profile?.name ||
-      profile?.full_name ||
-      user?.fullName ||
-      user?.name ||
-      "";
-
-    const resolvedEmail =
-      profile?.email ||
-      user?.email ||
-      profile?.username ||
-      user?.username ||
-      "";
-
-    const rawDate =
-      profile?.date_of_birth ||
-      profile?.dateOfBirth ||
-      user?.date_of_birth ||
-      "";
-
-    const resolvedDate =
-      typeof rawDate === "string" && rawDate.includes("T")
-        ? rawDate.split("T")[0]
-        : rawDate || "";
-
-    const rawGender =
-      profile?.gender ||
-      user?.gender ||
-      "";
-
-    const resolvedGender =
-      rawGender === "male" || rawGender === "Male"
-        ? "M"
-        : rawGender === "female" || rawGender === "Female"
-          ? "F"
-          : rawGender || "";
-
-    const rawPicture =
-      profile?.picture ||
-      profile?.avatar ||
-      user?.picture ||
-      "";
-
-    const resolvedPicture =
-      typeof rawPicture === "string" ? rawPicture : "";
-
-    setFullName(resolvedFullName);
-    setEmail(resolvedEmail);
-    setDateOfBirth(resolvedDate);
-    setGender(resolvedGender);
-    setAvatarPreview(resolvedPicture);
-    setAvatarFile(null);
-  }, [user]);
 
   useEffect(() => {
     return () => {
-      if (typeof avatarPreview === "string" && avatarPreview.startsWith("blob:")) {
+      if (
+        typeof avatarPreview === "string" &&
+        avatarPreview.startsWith("blob:")
+      ) {
         URL.revokeObjectURL(avatarPreview);
       }
     };
@@ -247,10 +197,10 @@ export function ClientSettingsPage() {
       console.error("PASSWORD CHANGE ERROR:", err);
       setPasswordError(
         err?.message ||
-        t(
-          "clientSettingsPage.password.errors.default",
-          "Ошибка смены пароля"
-        )
+          t(
+            "clientSettingsPage.password.errors.default",
+            "Ошибка смены пароля"
+          )
       );
     } finally {
       setPasswordLoading(false);
@@ -270,7 +220,7 @@ export function ClientSettingsPage() {
         name: fullName,
         dateOfBirth,
         gender,
-        // picture пока не шлем, пока не подтвержден формат на бэке
+        picture: user?.profile?.picture || "",
       });
 
       setProfileSuccess(true);
@@ -278,10 +228,10 @@ export function ClientSettingsPage() {
       console.error("PROFILE SAVE ERROR:", err);
       setProfileError(
         err?.message ||
-        t(
-          "clientSettingsPage.saveProfileError",
-          "Не удалось сохранить профиль"
-        )
+          t(
+            "clientSettingsPage.saveProfileError",
+            "Не удалось сохранить профиль"
+          )
       );
     } finally {
       setProfileLoading(false);
@@ -300,12 +250,12 @@ export function ClientSettingsPage() {
 
     if (!file) return;
 
-    const allowedTypes = ["image/jpeg", "image/png"];
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
     if (!allowedTypes.includes(file.type)) {
       setAvatarError(
         t(
           "clientSettingsPage.avatar.errorType",
-          "Разрешены только JPG и PNG"
+          "Разрешены только JPG, PNG и WEBP"
         )
       );
       return;
@@ -324,7 +274,10 @@ export function ClientSettingsPage() {
 
     setAvatarFile(file);
 
-    if (typeof avatarPreview === "string" && avatarPreview.startsWith("blob:")) {
+    if (
+      typeof avatarPreview === "string" &&
+      avatarPreview.startsWith("blob:")
+    ) {
       URL.revokeObjectURL(avatarPreview);
     }
 
@@ -370,7 +323,7 @@ export function ClientSettingsPage() {
           <input
             type="file"
             ref={fileInputRef}
-            accept="image/jpeg,image/png"
+            accept="image/jpeg,image/png,image/webp"
             className="hidden"
             onChange={handleAvatarChange}
           />
@@ -378,7 +331,7 @@ export function ClientSettingsPage() {
           <p className="mt-2 text-[11px] text-[#9BA6B5]">
             {t(
               "clientSettingsPage.avatar.uploadHint",
-              "Поддержку загрузки фото подключим, когда уточним формат picture на бэке."
+              "Поддержку загрузки фото подключим, когда подтвердим формат отправки на бэке."
             )}
           </p>
 
@@ -394,10 +347,7 @@ export function ClientSettingsPage() {
           >
             <div>
               <h3 className="mb-3 text-sm font-semibold text-[#071A34]">
-                {t(
-                  "clientSettingsPage.profile.sectionTitle",
-                  "Личные данные"
-                )}
+                {t("clientSettingsPage.profile.sectionTitle", "Личные данные")}
               </h3>
 
               <div className="space-y-4">
@@ -483,7 +433,10 @@ export function ClientSettingsPage() {
 
             <div>
               <h3 className="mb-3 text-sm font-semibold text-[#071A34]">
-                {t("clientSettingsPage.notifications.sectionTitle", "Уведомления")}
+                {t(
+                  "clientSettingsPage.notifications.sectionTitle",
+                  "Уведомления"
+                )}
               </h3>
 
               <div className="space-y-2 text-sm text-[#071A34]">
@@ -538,14 +491,11 @@ export function ClientSettingsPage() {
               className="mt-4 inline-flex items-center justify-center rounded-full bg-[#1F98FA] px-6 py-3 text-[14px] font-semibold text-white shadow-[0_14px_30px_rgba(31,152,250,0.55)] transition hover:bg-[#0f84e2] disabled:opacity-60"
             >
               {profileLoading
-                ? t(
-                  "clientSettingsPage.saveProfileLoading",
-                  "Сохранение..."
-                )
+                ? t("clientSettingsPage.saveProfileLoading", "Сохранение...")
                 : t(
-                  "clientSettingsPage.saveProfileButton",
-                  "Сохранить изменения"
-                )}
+                    "clientSettingsPage.saveProfileButton",
+                    "Сохранить изменения"
+                  )}
             </button>
           </form>
 
@@ -635,14 +585,11 @@ export function ClientSettingsPage() {
               className="mt-1 inline-flex items-center justify-center rounded-full bg-[#071A34] px-6 py-3 text-[14px] font-semibold text-white transition hover:bg-[#0b254d] disabled:opacity-60"
             >
               {passwordLoading
-                ? t(
-                  "clientSettingsPage.password.loading",
-                  "Обновление..."
-                )
+                ? t("clientSettingsPage.password.loading", "Обновление...")
                 : t(
-                  "clientSettingsPage.password.submitButton",
-                  "Обновить пароль"
-                )}
+                    "clientSettingsPage.password.submitButton",
+                    "Обновить пароль"
+                  )}
             </button>
           </form>
         </div>
@@ -651,4 +598,4 @@ export function ClientSettingsPage() {
   );
 }
 
-export default ClientSettingsPage;
+export default ClientSettingsPage; 
