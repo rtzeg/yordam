@@ -7,6 +7,7 @@ import {
   googleAuth,
   logoutRequest,
   getMeRequest,
+  changePasswordRequest,
 } from "../../shared/api/auth";
 import {
   AUTH_USER_KEY,
@@ -80,8 +81,8 @@ export function isProfileCompleted(user) {
 
   return Boolean(
     (profile.name || user?.fullName) &&
-      profile.date_of_birth &&
-      profile.gender
+    profile.date_of_birth &&
+    profile.gender
   );
 }
 
@@ -162,7 +163,20 @@ export function AuthProvider({ children }) {
       });
 
       const normalizedTokens = normalizeTokens(data);
-      const normalizedUser = normalizeUser(data, email);
+
+      if (!normalizedTokens?.access) {
+        throw new Error("Сервер не вернул access token");
+      }
+
+      // Сначала сохраняем токены, чтобы следующий запрос /me/ пошел с Authorization
+      saveAuth({
+        user: null,
+        tokens: normalizedTokens,
+      });
+
+      // Сразу тянем настоящий профиль с бэка
+      const me = await getMeRequest();
+      const normalizedUser = normalizeUser(me, email);
 
       saveAuth({
         user: normalizedUser,
@@ -184,6 +198,7 @@ export function AuthProvider({ children }) {
         responseData?.non_field_errors?.[0] ||
         responseData?.username?.[0] ||
         responseData?.password?.[0] ||
+        error?.message ||
         `Ошибка входа (status: ${error?.response?.status || "unknown"})`;
 
       throw new Error(message);
@@ -284,7 +299,8 @@ export function AuthProvider({ children }) {
       saveAuth({
         user: updatedUser,
         tokens,
-      });
+      }
+    );
 
       return updatedUser;
     } catch (error) {
@@ -303,6 +319,33 @@ export function AuthProvider({ children }) {
         responseData?.date_of_birth?.[0] ||
         responseData?.gender?.[0] ||
         `Ошибка сохранения профиля (status: ${error?.response?.status || "unknown"})`;
+
+      throw new Error(message);
+    }
+  };
+
+  const changePassword = async ({ oldPassword, newPassword }) => {
+    try {
+      const data = await changePasswordRequest({
+        oldPassword,
+        newPassword,
+      });
+
+      return data;
+    } catch (error) {
+      console.error("CHANGE PASSWORD ERROR:", error);
+      console.error("CHANGE PASSWORD RESPONSE:", error?.response);
+      console.error("CHANGE PASSWORD DATA:", error?.response?.data);
+
+      const responseData = error?.response?.data;
+
+      const message =
+        responseData?.detail ||
+        responseData?.message ||
+        responseData?.error ||
+        responseData?.old_password?.[0] ||
+        responseData?.new_password?.[0] ||
+        `Ошибка смены пароля (status: ${error?.response?.status || "unknown"})`;
 
       throw new Error(message);
     }
@@ -391,6 +434,7 @@ export function AuthProvider({ children }) {
         register,
         confirmRegisterCode,
         saveProfileSettings,
+        changePassword,
         googleLogin,
         logout,
         updateProfile,

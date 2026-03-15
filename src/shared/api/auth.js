@@ -108,10 +108,10 @@ export async function getMeRequest() {
 export async function updateMeRequest({ name, dateOfBirth, gender, picture }) {
   const prefix = getApiPrefix();
 
-  const formData = new FormData();
+  const payload = {};
 
   if (name !== undefined && name !== null && name !== "") {
-    formData.append("name", name);
+    payload.name = name;
   }
 
   if (
@@ -119,22 +119,51 @@ export async function updateMeRequest({ name, dateOfBirth, gender, picture }) {
     dateOfBirth !== null &&
     dateOfBirth !== ""
   ) {
-    formData.append("date_of_birth", dateOfBirth);
+    payload.date_of_birth = dateOfBirth;
   }
 
   if (gender !== undefined && gender !== null && gender !== "") {
-    formData.append("gender", gender);
+    payload.gender = gender;
   }
 
-  if (picture instanceof File) {
-    formData.append("picture", picture);
+  if (picture !== undefined && picture !== null && picture !== "") {
+    if (typeof picture === "string") {
+      payload.picture = picture;
+    } else if (typeof picture === "object") {
+      payload.picture =
+        picture.large ||
+        picture.medium ||
+        picture.original ||
+        picture.small ||
+        picture.thumbnail ||
+        "";
+    }
   }
 
-  const response = await api.patch(`${prefix}/users/users/me/`, formData, {
+  const response = await api.patch(`${prefix}/users/users/me/`, payload, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      "Content-Type": "application/json",
     },
   });
+
+  return response.data;
+}
+
+export async function changePasswordRequest({ oldPassword, newPassword }) {
+  const prefix = getApiPrefix();
+
+  const response = await api.post(
+    `${prefix}/users/users/password/change/`,
+    {
+      old_password: oldPassword,
+      new_password: newPassword,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   return response.data;
 }
