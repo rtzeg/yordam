@@ -15,6 +15,8 @@ import ForPsychologistsPage from "./pages/ForPsychologistsPage";
 import { LoginPage } from "./features/auth/LoginPage";
 import RegisterPage from "./features/auth/RegisterPage";
 import RegisterConfirmPage from "./features/auth/RegisterConfirmPage";
+import ForgotPasswordPage from "./features/auth/ForgotPasswordPage";
+import ResetPasswordConfirmPage from "./features/auth/ResetPasswordConfirmPage";
 
 // Психологи
 import PsychologistsListPage from "./features/psychologists/pages/PsychologistsListPage";
@@ -57,7 +59,11 @@ export default function App() {
             <Route path="/auth/login" element={<LoginPage />} />
             <Route path="/auth/register/confirm" element={<RegisterConfirmPage />} />
             <Route path="/auth/register" element={<RegisterPage />} />
-
+            <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />
+            <Route
+              path="/auth/reset-password-confirm"
+              element={<ResetPasswordConfirmPage />}
+            />
             <Route
               path="/client"
               element={

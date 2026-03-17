@@ -185,3 +185,41 @@ export async function googleAuth(idToken) {
 
   return response.data;
 }
+
+export async function requestPasswordReset({ email }) {
+  const prefix = getApiPrefix();
+
+  const response = await api.post(
+    `${prefix}/users/users/password/reset/request/`,
+    {
+      username: email,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function confirmPasswordReset({ email, code, newPassword }) {
+  const prefix = getApiPrefix();
+
+  const response = await api.post(
+    `${prefix}/users/users/password/reset/confirm/`,
+    {
+      username: email,
+      code,
+      password: newPassword,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  return response.data;
+}

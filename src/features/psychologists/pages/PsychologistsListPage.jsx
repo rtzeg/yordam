@@ -119,7 +119,6 @@ export function PsychologistsListPage() {
     const approaches = unique(allPsychologists.map((p) => p.approach));
     const languages = unique(allPsychologists.map((p) => p.language));
     const times = unique(allPsychologists.map((p) => p.time));
-
     return [
       {
         key: "therapyType",
@@ -250,9 +249,7 @@ export function PsychologistsListPage() {
       }
 
       return true;
-    });
-
-    if (sortMode === "verified") {
+    }); if (sortMode === "verified") {
       list = [...list].sort((a, b) => (b.verified ? 1 : 0) - (a.verified ? 1 : 0));
     } else if (sortMode === "new") {
       list = [...list].sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
@@ -311,8 +308,8 @@ export function PsychologistsListPage() {
                         type="button"
                         onClick={() => handleFilterChange(group.key, opt.value)}
                         className={`flex w-full items-center justify-between rounded-lg px-2 py-1 text-[13px] ${filters[group.key] === opt.value
-                            ? "bg-[#ECF7FF] text-[#071A34] font-medium"
-                            : "text-[#6F7A89] hover:bg-[#F5F7FA]"
+                          ? "bg-[#ECF7FF] text-[#071A34] font-medium"
+                          : "text-[#6F7A89] hover:bg-[#F5F7FA]"
                           }`}
                       >
                         <span>{opt.label}</span>
@@ -348,9 +345,7 @@ export function PsychologistsListPage() {
               </Link>
               <span className="mx-1">›</span>
               <span>{t("psychologistsList.breadcrumbs.current")}</span>
-            </div>
-
-            {/* Поиск */}
+            </div> {/* Поиск */}
             <div className="mt-4">
               <div className="relative">
                 <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#A0AEC0]" />
@@ -398,8 +393,8 @@ export function PsychologistsListPage() {
                         type="button"
                         onClick={() => handleChangeSort(opt.key)}
                         className={`flex w-full items-center justify-between px-4 py-2 text-left text-[13px] ${sortMode === opt.key
-                            ? "bg-[#F0F7FF] text-[#1F98FA] font-semibold"
-                            : "text-[#071A34] hover:bg-[#F7FAFF]"
+                          ? "bg-[#F0F7FF] text-[#1F98FA] font-semibold"
+                          : "text-[#071A34] hover:bg-[#F7FAFF]"
                           }`}
                       >
                         <span>{opt.label}</span>
@@ -439,9 +434,13 @@ export function PsychologistsListPage() {
             <div className="mb-4 rounded-2xl bg-[#FFECEC] px-4 py-3 text-[13px] text-[#B00020]">
               {error}
             </div>
+<<<<<<< HEAD
           )}
 
           <div className="mt-2 flex flex-col gap-6 lg:mt-0 lg:flex-row">
+=======
+          )} <div className="mt-2 flex flex-col gap-6 lg:mt-0 lg:flex-row">
+>>>>>>> 02c988d (login page)
             {/* Фильтры (desktop) */}
             <aside className="hidden w-full shrink-0 lg:block" style={{ width: '260px' }}>
               <div className="rounded-[32px] bg-white p-5 shadow-[0_18px_42px_rgba(0,0,0,0.06)]">
