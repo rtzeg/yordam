@@ -13,7 +13,7 @@ import {
   Heart,
 } from "lucide-react";
 
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 import logo from "../../assets/images/logo.svg";
 import { useAuth } from "../../features/auth/AuthContext";
@@ -409,12 +409,12 @@ export function Header() {
                   }`}
                 />
                 <span
-                  className={`mt-[4px] block h-[2px] w-5 rounded-full bg-[#071A34] transition-all duration-300 ${
+                  className={`mt-[3px] block h-[2px] w-5 rounded-full bg-[#071A34] transition-all duration-300 ${
                     mobileOpen ? "opacity-0" : "opacity-100"
                   }`}
                 />
                 <span
-                  className={`mt-[4px] block h-[2px] w-5 rounded-full bg-[#071A34] transition-transform duration-300 ${
+                  className={`mt-[3px] block h-[2px] w-5 rounded-full bg-[#071A34] transition-transform duration-300 ${
                     mobileOpen ? "-translate-y-[6px] -rotate-45" : ""
                   }`}
                 />
@@ -473,7 +473,7 @@ export function Header() {
                   })}
                 </div>
 
-                <div className="mt-3 border-top border-t border-[#E7EDF5] pt-3 flex flex-col gap-2">
+                <div className="mt-3 border-t border-[#E7EDF5] pt-3 flex flex-col gap-2">
                   {user ? (
                     <>
                       <div className="flex items-center gap-2 px-1 text-[13px] text-[#6F7A89]">

@@ -49,7 +49,7 @@ export function PsychologistCard({ psychologist }) {
   ].filter(Boolean).slice(0, 5);
 
   return (
-    <article className="w-full max-w-[340px] rounded-[24px] bg-white px-5 py-5 shadow-[0_18px_42px_rgba(67,142,229,0.16)]">
+    <article className="w-full rounded-[24px] bg-white px-5 py-5 shadow-[0_18px_42px_rgba(67,142,229,0.16)]">
       {/* Верх: аватар, имя, опыт, избранное */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3">

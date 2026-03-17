@@ -443,7 +443,7 @@ export function PsychologistsListPage() {
 
           <div className="mt-2 flex flex-col gap-6 md:mt-0 md:flex-row">
             {/* Фильтры (desktop) */}
-            <aside className="hidden w-full max-w-[320px] md:block">
+            <aside className="hidden w-full shrink-0 md:block" style={{ width: '260px' }}>
               <div className="rounded-[32px] bg-white p-5 shadow-[0_18px_42px_rgba(0,0,0,0.06)]">
                 {renderFiltersContent()}
               </div>
@@ -452,8 +452,8 @@ export function PsychologistsListPage() {
             {/* Список */}
             <div className="flex-1">
               {loading && !allPsychologists.length && (
-                <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-                  {Array.from({ length: 6 }).map((_, i) => (
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  {Array.from({ length: 8 }).map((_, i) => (
                     <PsychologistCardSkeleton key={i} />
                   ))}
                 </div>
@@ -467,7 +467,7 @@ export function PsychologistsListPage() {
 
               {!loading && !!visibleList.length && (
                 <>
-                  <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {visibleList.map((psy) => (
                       <PsychologistCard key={psy.id} psychologist={psy} />
                     ))}
