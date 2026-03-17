@@ -191,4 +191,4 @@ export function ResetPasswordConfirmPage() {
   );
 }
 
-export default ResetPasswordConfirmPage;        
+export default ResetPasswordConfirmPage;

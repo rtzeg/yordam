@@ -9,6 +9,10 @@ import {
   getMeRequest,
   changePasswordRequest,
   refreshSessionRequest,
+  requestPasswordReset,
+  confirmPasswordReset,
+  requestAccountDelete,
+  confirmAccountDelete,
 } from "../../shared/api/auth";
 import {
   AUTH_USER_KEY,
@@ -114,8 +118,8 @@ export function isProfileCompleted(user) {
 
   return Boolean(
     (profile.name || user?.fullName) &&
-      profile.date_of_birth &&
-      profile.gender
+    profile.date_of_birth &&
+    profile.gender
   );
 }
 
@@ -149,7 +153,53 @@ export function AuthProvider({ children }) {
       console.error("Auth save error", e);
     }
   };
+  const deleteAccountRequest = async (payload = {}) => {
+    try {
+      const data = await requestAccountDelete(payload);
+      return data;
+    } catch (error) {
+      console.error("DELETE ACCOUNT REQUEST ERROR:", error);
+      console.error("DELETE ACCOUNT REQUEST RESPONSE:", error?.response);
+      console.error("DELETE ACCOUNT REQUEST DATA:", error?.response?.data);
 
+      const responseData = error?.response?.data;
+
+      const message =
+        responseData?.detail ||
+        responseData?.message ||
+        responseData?.error ||
+        responseData?.non_field_errors?.[0] ||
+        `Ошибка запроса удаления аккаунта (status: ${error?.response?.status || "unknown"})`;
+
+      throw new Error(message);
+    }
+  };
+
+  const deleteAccountConfirm = async (payload = {}) => {
+    try {
+      const data = await confirmAccountDelete(payload);
+
+      clearAuthStorage();
+      saveAuth({ user: null, tokens: null });
+
+      return data;
+    } catch (error) {
+      console.error("DELETE ACCOUNT CONFIRM ERROR:", error);
+      console.error("DELETE ACCOUNT CONFIRM RESPONSE:", error?.response);
+      console.error("DELETE ACCOUNT CONFIRM DATA:", error?.response?.data);
+
+      const responseData = error?.response?.data;
+
+      const message =
+        responseData?.detail ||
+        responseData?.message ||
+        responseData?.error ||
+        responseData?.non_field_errors?.[0] ||
+        `Ошибка подтверждения удаления аккаунта (status: ${error?.response?.status || "unknown"})`;
+
+      throw new Error(message);
+    }
+  };
   const refreshAccessTokenIfNeeded = async (currentTokens) => {
     if (!currentTokens?.refresh) {
       throw new Error("Нет refresh token");
@@ -529,6 +579,8 @@ export function AuthProvider({ children }) {
         googleLogin,
         logout,
         updateProfile,
+        deleteAccountRequest,
+        deleteAccountConfirm,
       }}
     >
       {children}

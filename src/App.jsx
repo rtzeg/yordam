@@ -17,57 +17,85 @@ function LoadingSpinner() {
 
 // Общие страницы
 const LandingPage = lazy(() =>
-  import("./pages/LandingPage").then((m) => ({ default: m.LandingPage })),
+  import("./pages/LandingPage").then((m) => ({ default: m.LandingPage }))
 );
+
 const NotFoundPage = lazy(() =>
-  import("./pages/NotFoundPage").then((m) => ({ default: m.NotFoundPage })),
+  import("./pages/NotFoundPage").then((m) => ({ default: m.NotFoundPage }))
 );
+
 const InfluencersPage = lazy(() => import("./pages/InfluencersPage"));
 const CompaniesPage = lazy(() => import("./pages/CompaniesPage"));
-const ForPsychologistsPage = lazy(() =>
-  import("./pages/ForPsychologistsPage"),
-);
+const ForPsychologistsPage = lazy(() => import("./pages/ForPsychologistsPage"));
 const ContactsPage = lazy(() => import("./pages/ContactsPage"));
 
 // Auth
 const LoginPage = lazy(() =>
-  import("./features/auth/LoginPage").then((m) => ({ default: m.LoginPage })),
+  import("./features/auth/LoginPage").then((m) => ({ default: m.LoginPage }))
 );
+
+const ForgotPasswordPage = lazy(() =>
+  import("./features/auth/ForgotPasswordPage").then((m) => ({
+    default: m.ForgotPasswordPage,
+  }))
+);
+
+const ResetPasswordConfirmPage = lazy(() =>
+  import("./features/auth/ResetPasswordConfirmPage").then((m) => ({
+    default: m.ResetPasswordConfirmPage,
+  }))
+);
+
 const RegisterPage = lazy(() => import("./features/auth/RegisterPage"));
 const RegisterConfirmPage = lazy(() =>
-  import("./features/auth/RegisterConfirmPage"),
+  import("./features/auth/RegisterConfirmPage")
 );
 
 // Психологи
 const PsychologistsListPage = lazy(() =>
-  import("./features/psychologists/pages/PsychologistsListPage"),
+  import("./features/psychologists/pages/PsychologistsListPage")
 );
+
 const PsychologistDetailPage = lazy(() =>
-  import("./features/psychologists/pages/PsychologistDetailPage"),
+  import("./features/psychologists/pages/PsychologistDetailPage")
 );
+
 const FavoritePsychologistsPage = lazy(() =>
-  import("./features/psychologists/pages/FavoritePsychologistsPage"),
+  import("./features/psychologists/pages/FavoritePsychologistsPage")
 );
 
 // Кабинет клиента
 const ClientLayout = lazy(() => import("./features/profile/ClientLayout"));
 const ClientProfilePage = lazy(() =>
-  import("./features/profile/ClientProfilePage"),
+  import("./features/profile/ClientProfilePage")
 );
 const ClientPsychologistsPage = lazy(() =>
-  import("./features/profile/ClientPsychologistsPage"),
+  import("./features/profile/ClientPsychologistsPage")
 );
 const ClientSettingsPage = lazy(() =>
-  import("./features/profile/ClientSettingsPage"),
+  import("./features/profile/ClientSettingsPage")
 );
 const ClientBillingPage = lazy(() =>
-  import("./features/profile/ClientBillingPage"),
+  import("./features/profile/ClientBillingPage")
 );
 const ClientVideoChatPage = lazy(() =>
-  import("./features/profile/ClientVideoChatPage"),
+  import("./features/profile/ClientVideoChatPage")
 );
 const ClientSupportPage = lazy(() =>
-  import("./features/profile/ClientSupportPage"),
+  import("./features/profile/ClientSupportPage")
+);
+
+// Новые страницы
+const ChangePasswordPage = lazy(() =>
+  import("./features/profile/ChangePasswordPage").then((m) => ({
+    default: m.ChangePasswordPage,
+  }))
+);
+
+const DeleteAccountPage = lazy(() =>
+  import("./features/profile/DeleteAccountPage").then((m) => ({
+    default: m.DeleteAccountPage,
+  }))
 );
 
 export default function App() {
@@ -79,18 +107,12 @@ export default function App() {
             <Suspense fallback={<LoadingSpinner />}>
               <Routes>
                 <Route path="/" element={<LandingPage />} />
-                <Route
-                  path="/psychologists"
-                  element={<PsychologistsListPage />}
-                />
+                <Route path="/psychologists" element={<PsychologistsListPage />} />
+                <Route path="/psychologists/:id" element={<PsychologistDetailPage />} />
                 <Route path="/influencers" element={<InfluencersPage />} />
                 <Route path="/companies" element={<CompaniesPage />} />
                 <Route path="/psy" element={<ForPsychologistsPage />} />
                 <Route path="/contacts" element={<ContactsPage />} />
-                <Route
-                  path="/psychologists/:id"
-                  element={<PsychologistDetailPage />}
-                />
 
                 <Route
                   path="/favorites"
@@ -102,11 +124,19 @@ export default function App() {
                 />
 
                 <Route path="/auth/login" element={<LoginPage />} />
+                <Route path="/auth/register" element={<RegisterPage />} />
                 <Route
                   path="/auth/register/confirm"
                   element={<RegisterConfirmPage />}
                 />
-                <Route path="/auth/register" element={<RegisterPage />} />
+                <Route
+                  path="/auth/forgot-password"
+                  element={<ForgotPasswordPage />}
+                />
+                <Route
+                  path="/auth/reset-password-confirm"
+                  element={<ResetPasswordConfirmPage />}
+                />
 
                 <Route
                   path="/client"
@@ -125,6 +155,14 @@ export default function App() {
                   <Route path="billing" element={<ClientBillingPage />} />
                   <Route path="videochat" element={<ClientVideoChatPage />} />
                   <Route path="support" element={<ClientSupportPage />} />
+                  <Route
+                    path="change-password"
+                    element={<ChangePasswordPage />}
+                  />
+                  <Route
+                    path="delete-account"
+                    element={<DeleteAccountPage />}
+                  />
                 </Route>
 
                 <Route path="*" element={<NotFoundPage />} />

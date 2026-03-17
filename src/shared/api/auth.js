@@ -218,3 +218,35 @@ export async function confirmPasswordReset({ email, code, newPassword }) {
 
   return response.data;
 }
+
+export async function requestAccountDelete(payload = {}) {
+  const prefix = getApiPrefix();
+
+  const response = await api.post(
+    `${prefix}/users/users/account/delete/request/`,
+    payload,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function confirmAccountDelete(payload = {}) {
+  const prefix = getApiPrefix();
+
+  const response = await api.post(
+    `${prefix}/users/users/account/delete/confirm/`,
+    payload,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  return response.data;
+}
