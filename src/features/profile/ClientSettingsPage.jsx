@@ -50,6 +50,7 @@ export function ClientSettingsPage() {
   const [avatarFile, setAvatarFile] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState("");
   const [avatarError, setAvatarError] = useState("");
+
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -97,8 +98,8 @@ export function ClientSettingsPage() {
       rawGender === "male" || rawGender === "Male"
         ? "M"
         : rawGender === "female" || rawGender === "Female"
-        ? "F"
-        : rawGender || "";
+          ? "F"
+          : rawGender || "";
 
     const resolvedPicture = resolvePictureUrl(
       profile?.picture || profile?.avatar || user?.picture || ""
@@ -197,10 +198,10 @@ export function ClientSettingsPage() {
       console.error("PASSWORD CHANGE ERROR:", err);
       setPasswordError(
         err?.message ||
-          t(
-            "clientSettingsPage.password.errors.default",
-            "Ошибка смены пароля"
-          )
+        t(
+          "clientSettingsPage.password.errors.default",
+          "Ошибка смены пароля"
+        )
       );
     } finally {
       setPasswordLoading(false);
@@ -220,19 +221,33 @@ export function ClientSettingsPage() {
         name: fullName,
         dateOfBirth,
         gender,
-        picture: user?.profile?.picture || "",
+        pictureFile: avatarFile,
       });
 
       setProfileSuccess(true);
+      setAvatarFile(null);
     } catch (err) {
       console.error("PROFILE SAVE ERROR:", err);
-      setProfileError(
+      console.error("PROFILE SAVE RESPONSE:", err?.response);
+      console.error("PROFILE SAVE DATA:", err?.response?.data);
+
+      const responseData = err?.response?.data;
+
+      const message =
+        responseData?.detail ||
+        responseData?.message ||
+        responseData?.error ||
+        responseData?.picture?.[0] ||
+        responseData?.name?.[0] ||
+        responseData?.date_of_birth?.[0] ||
+        responseData?.gender?.[0] ||
         err?.message ||
-          t(
-            "clientSettingsPage.saveProfileError",
-            "Не удалось сохранить профиль"
-          )
-      );
+        t(
+          "clientSettingsPage.saveProfileError",
+          "Не удалось сохранить профиль"
+        );
+
+      setProfileError(message);
     } finally {
       setProfileLoading(false);
     }
@@ -331,9 +346,15 @@ export function ClientSettingsPage() {
           <p className="mt-2 text-[11px] text-[#9BA6B5]">
             {t(
               "clientSettingsPage.avatar.uploadHint",
-              "Поддержку загрузки фото подключим, когда подтвердим формат отправки на бэке."
+              "Фото загружается как файл через multipart/form-data."
             )}
           </p>
+
+          {avatarFile && (
+            <p className="mt-1 text-[11px] text-[#6F7A89]">
+              {avatarFile.name}
+            </p>
+          )}
 
           {avatarError && (
             <p className="mt-1 text-[11px] text-[#FF4D3D]">{avatarError}</p>
@@ -493,9 +514,9 @@ export function ClientSettingsPage() {
               {profileLoading
                 ? t("clientSettingsPage.saveProfileLoading", "Сохранение...")
                 : t(
-                    "clientSettingsPage.saveProfileButton",
-                    "Сохранить изменения"
-                  )}
+                  "clientSettingsPage.saveProfileButton",
+                  "Сохранить изменения"
+                )}
             </button>
           </form>
 
@@ -587,9 +608,9 @@ export function ClientSettingsPage() {
               {passwordLoading
                 ? t("clientSettingsPage.password.loading", "Обновление...")
                 : t(
-                    "clientSettingsPage.password.submitButton",
-                    "Обновить пароль"
-                  )}
+                  "clientSettingsPage.password.submitButton",
+                  "Обновить пароль"
+                )}
             </button>
           </form>
         </div>
@@ -598,4 +619,4 @@ export function ClientSettingsPage() {
   );
 }
 
-export default ClientSettingsPage; 
+export default ClientSettingsPage;
