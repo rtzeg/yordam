@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import cloud from "../../assets/images/cloud.png";
 import chatBubble from "../../assets/images/chat_bubble.png";
 import telegramIcon from "../../assets/images/telegram.svg";
@@ -92,10 +94,10 @@ export function Footer() {
                   {t("footer.columnYordamTitle")}
                 </h3>
                 <ul className="mt-3 space-y-2 text-[13px] text-[#4A6277]">
-                  <li>{t("footer.specialists")}</li>
-                  <li>{t("footer.influencers")}</li>
-                  <li>{t("footer.partners")}</li>
-                  <li>{t("footer.companies")}</li>
+                  <li><Link to="/psychologists" className="hover:text-[#1F98FA] transition-colors">{t("footer.specialists")}</Link></li>
+                  <li><Link to="/influencers" className="hover:text-[#1F98FA] transition-colors">{t("footer.influencers")}</Link></li>
+                  <li><Link to="/psy" className="hover:text-[#1F98FA] transition-colors">{t("footer.partners")}</Link></li>
+                  <li><Link to="/companies" className="hover:text-[#1F98FA] transition-colors">{t("footer.companies")}</Link></li>
                 </ul>
               </div>
 
@@ -104,10 +106,10 @@ export function Footer() {
                   {t("footer.columnHelpTitle")}
                 </h3>
                 <ul className="mt-3 space-y-2 text-[13px] text-[#4A6277]">
-                  <li>{t("footer.contacts")}</li>
-                  <li>{t("footer.techSupport")}</li>
-                  <li>{t("footer.workAsPsychologist")}</li>
-                  <li>{t("footer.privacyPolicy")}</li>
+                  <li><Link to="/contacts" className="hover:text-[#1F98FA] transition-colors">{t("footer.contacts")}</Link></li>
+                  <li><Link to="/contacts" className="hover:text-[#1F98FA] transition-colors">{t("footer.techSupport")}</Link></li>
+                  <li><Link to="/psy" className="hover:text-[#1F98FA] transition-colors">{t("footer.workAsPsychologist")}</Link></li>
+                  <li><Link to="/#" className="hover:text-[#1F98FA] transition-colors">{t("footer.privacyPolicy")}</Link></li>
                 </ul>
               </div>
             </div>
