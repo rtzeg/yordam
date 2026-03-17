@@ -1,3 +1,5 @@
+// src/components/layout/Header.jsx
+
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import {
@@ -13,7 +15,7 @@ import {
   Heart,
 } from "lucide-react";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 import logo from "../../assets/images/logo.svg";
 import { useAuth } from "../../features/auth/AuthContext";
@@ -43,15 +45,13 @@ function HeaderNavItem({ to, label }) {
         >
           <span>{label}</span>
           <span
-            className={`
-              pointer-events-none absolute -bottom-1 left-0 h-[2px] w-full rounded-full bg-[#1F98FA]
-              origin-left transition-transform duration-500 ease-in-out
-              ${
-                isActive
-                  ? "scale-x-100"
-                  : "scale-x-0 group-hover:scale-x-100"
-              }
-            `}
+            className={`pointer-events-none absolute -bottom-1 left-0 h-[2px] w-full rounded-full bg-[#1F98FA]
+            origin-left transition-transform duration-500 ease-in-out
+            ${
+              isActive
+                ? "scale-x-100"
+                : "scale-x-0 group-hover:scale-x-100"
+            }`}
           />
         </motion.div>
       )}
@@ -114,6 +114,7 @@ export function Header() {
       ) {
         setMenuOpen(false);
       }
+
       if (
         langDropdownRef.current &&
         !langDropdownRef.current.contains(e.target)
@@ -171,6 +172,7 @@ export function Header() {
       setLangMenuOpen(false);
       return;
     }
+
     i18n.changeLanguage(code);
     setLangMenuOpen(false);
   };
@@ -201,7 +203,7 @@ export function Header() {
                 <button
                   type="button"
                   onClick={() => setLangMenuOpen((v) => !v)}
-                  className="flex items-center gap-2 rounded-full border border-[#D0D9E5] bg-[#F5F7FB] px-2.5 py-1.5 text-[13px] text-[#071A34] hover:border-[#1F98FA] hover:bg-[#EDF5FF] transition-colors"
+                  className="flex items-center gap-2 rounded-full border border-[#D0D9E5] bg-[#F5F7FB] px-2.5 py-1.5 text-[13px] text-[#071A34] transition-colors hover:border-[#1F98FA] hover:bg-[#EDF5FF]"
                 >
                   <img
                     src={currentLangObj.icon}
@@ -220,6 +222,7 @@ export function Header() {
                   <div className="absolute right-0 top-[120%] z-40 w-[150px] rounded-2xl border border-[#E1E8F0] bg-white py-2 shadow-[0_12px_30px_rgba(15,35,52,0.16)]">
                     {languages.map((lang) => {
                       const active = lang.code === currentLang;
+
                       return (
                         <button
                           key={lang.code}
@@ -227,7 +230,7 @@ export function Header() {
                           onClick={() => changeLanguage(lang.code)}
                           className={`flex w-full items-center gap-2 px-3 py-2 text-left text-[13px] ${
                             active
-                              ? "bg-[#F0F7FF] text-[#1F98FA] font-semibold"
+                              ? "bg-[#F0F7FF] font-semibold text-[#1F98FA]"
                               : "text-[#071A34] hover:bg-[#F7FAFF]"
                           }`}
                         >
@@ -290,7 +293,7 @@ export function Header() {
                   <button
                     type="button"
                     onClick={() => setMenuOpen((v) => !v)}
-                    className="flex items-center gap-3 rounded-full border border-[#C7D2E2] bg-white px-2.5 py-1.5 hover:border-[#1F98FA] transition-colors"
+                    className="flex items-center gap-3 rounded-full border border-[#C7D2E2] bg-white px-2.5 py-1.5 transition-colors hover:border-[#1F98FA]"
                   >
                     {avatarUrl ? (
                       <img
@@ -446,7 +449,7 @@ export function Header() {
                     to={link.to}
                     className={`rounded-xl px-3 py-2 ${
                       isActive(link.to)
-                        ? "bg-[#F0F7FF] text-[#1F98FA] font-semibold"
+                        ? "bg-[#F0F7FF] font-semibold text-[#1F98FA]"
                         : "hover:bg-[#F7FAFF]"
                     }`}
                   >
@@ -457,6 +460,7 @@ export function Header() {
                 <div className="mt-2 flex gap-2">
                   {languages.map((lang) => {
                     const active = lang.code === currentLang;
+
                     return (
                       <button
                         key={lang.code}
@@ -464,7 +468,7 @@ export function Header() {
                         onClick={() => changeLanguage(lang.code)}
                         className={`flex flex-1 items-center justify-center gap-1 rounded-full border px-2 py-1 text-[13px] ${
                           active
-                            ? "border-[#1F98FA] bg-[#F0F7FF] text-[#1F98FA] font-semibold"
+                            ? "border-[#1F98FA] bg-[#F0F7FF] font-semibold text-[#1F98FA]"
                             : "border-[#D0D9E5] text-[#071A34]"
                         }`}
                       >
@@ -479,7 +483,7 @@ export function Header() {
                   })}
                 </div>
 
-                <div className="mt-3 border-t border-[#E7EDF5] pt-3 flex flex-col gap-2">
+                <div className="mt-3 flex flex-col gap-2 border-t border-[#E7EDF5] pt-3">
                   {user ? (
                     <>
                       <div className="flex items-center gap-2 px-1 text-[13px] text-[#6F7A89]">
@@ -496,7 +500,7 @@ export function Header() {
                         )}
 
                         <div className="flex flex-col leading-tight">
-                          <span className="text-[#071A34] font-semibold">
+                          <span className="font-semibold text-[#071A34]">
                             {displayName}
                           </span>
                           <span className="text-[11px] text-[#9BA6B5]">
