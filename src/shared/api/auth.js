@@ -105,13 +105,18 @@ export async function getMeRequest() {
   return response.data;
 }
 
-export async function updateMeRequest({ name, dateOfBirth, gender, picture }) {
+export async function updateMeRequest({
+  name,
+  dateOfBirth,
+  gender,
+  pictureFile,
+}) {
   const prefix = getApiPrefix();
 
-  const payload = {};
+  const formData = new FormData();
 
   if (name !== undefined && name !== null && name !== "") {
-    payload.name = name;
+    formData.append("name", name);
   }
 
   if (
@@ -119,30 +124,20 @@ export async function updateMeRequest({ name, dateOfBirth, gender, picture }) {
     dateOfBirth !== null &&
     dateOfBirth !== ""
   ) {
-    payload.date_of_birth = dateOfBirth;
+    formData.append("date_of_birth", dateOfBirth);
   }
 
   if (gender !== undefined && gender !== null && gender !== "") {
-    payload.gender = gender;
+    formData.append("gender", gender);
   }
 
-  if (picture !== undefined && picture !== null && picture !== "") {
-    if (typeof picture === "string") {
-      payload.picture = picture;
-    } else if (typeof picture === "object") {
-      payload.picture =
-        picture.large ||
-        picture.medium ||
-        picture.original ||
-        picture.small ||
-        picture.thumbnail ||
-        "";
-    }
+  if (pictureFile instanceof File) {
+    formData.append("picture", pictureFile);
   }
 
-  const response = await api.patch(`${prefix}/users/users/me/`, payload, {
+  const response = await api.patch(`${prefix}/users/users/me/`, formData, {
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "multipart/form-data",
     },
   });
 
